@@ -278,14 +278,14 @@ var IndexSearch = (function() {
         options = options || {};
 
         var repository_ = repository || {repositories: {}};
-        var indexFields_ = options.indexFields || [];
+        var indexOnFields_ = options.indexOnFields || [];
 
-        if (empty(indexFields_)) {
-            throw new Error('require {string[]} : options.indexFields');
+        if (empty(indexOnFields_)) {
+            throw new Error('require {string[]} : options.indexOnFields');
         } else {
-            for (var index in indexFields_) {
-                if (indexFields_[index] === 'repositories') {
-                    throw new Error('field name \'repositories\' in {string[]} : options.indexFields is reserved word');
+            for (var index in indexOnFields_) {
+                if (indexOnFields_[index] === 'repositories') {
+                    throw new Error('field name \'repositories\' in {string[]} : options.indexOnFields is reserved word');
                 }
             }
         }
@@ -331,8 +331,8 @@ var IndexSearch = (function() {
         }
 
         function walkRepositoryReadKeyword(repository) {
-            for (var index in indexFields_) {
-                var indexName = indexFields_[index];
+            for (var field in indexOnFields_) {
+                var indexName = indexOnFields_[field];
                 createDictionary(repository[indexName]);
             }
 
@@ -347,8 +347,8 @@ var IndexSearch = (function() {
         }
 
         function walkRepositoryWriteIndex(level, index, repository) {
-            for (var i in indexFields_) {
-                var indexName = indexFields_[i];
+            for (var field in indexOnFields_) {
+                var indexName = indexOnFields_[field];
                 if (notDefined(duplicated[repository[indexName]])) {
                     duplicated[repository[indexName]] = 0;
                     index_.getIndexWriter().writeIndex(index, repository[indexName]);
@@ -403,7 +403,7 @@ var IndexSearch = (function() {
 
             keyword = keyword.trim().toLowerCase();
 
-            // keyword search not change such as empty keyword
+            // keyword not change, such as user try type an empty keyword
             // return old result
             if (keyword_ === keyword) {
                 return new ResultSearch({
@@ -430,23 +430,24 @@ var IndexSearch = (function() {
                 content: result_
             });
         };
-        
-        function copyRepository(repository){
+
+        function copyRepository(repository) {
             var newRepository = {};
-            for(var fieldName in repository){
-                newRepository[fieldName] = repository[fieldName];
-                
-                for(var indexName in indexFields_){
-                    if(fieldName === indexFields_[indexName]){
-                        var sentence = repository[fieldName];
-                        var highlightText = highlighter_.highlight(keyword_, sentence);
-                        if(notEmpty(highlightText)){
-                            newRepository[fieldName + 'Highlight'] = highlightText;
+            for (var fieldName in repository) {
+                if (fieldName !== 'repositories') {
+                    newRepository[fieldName] = repository[fieldName];
+                    for (var indexName in indexOnFields_) {
+                        if (fieldName === indexOnFields_[indexName]) {
+                            var sentence = newRepository[fieldName];
+                            var highlightText = highlighter_.highlight(keyword_, sentence);
+                            if (notEmpty(highlightText)) {
+                                newRepository[fieldName + 'Highlight'] = highlightText;
+                            }
                         }
                     }
                 }
             }
-            
+
             return newRepository;
         }
 

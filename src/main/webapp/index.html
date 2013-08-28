@@ -24,9 +24,9 @@
                     showResult(repository);
                     inputSearch.keyup(function() {
                         var keyword = inputSearch.val();
-                        var resultSearch = indexSearch.search(keyword);
-                        console.log(indexSearch.getKeyword() + ' : total => ' + resultSearch.getTotalHighlight());
-                        showResult(resultSearch.getContent());
+                        var result = indexSearch.search(keyword);
+                        console.log(indexSearch.getKeyword() + ' : total => ' + result.getTotalHighlight());
+                        showResult(result.getContent());
                     });
 
                     function showResult(result) {
@@ -43,7 +43,7 @@
 
                         for (var index in repositories) {
                             var repo = repositories[index];
-                            var link = $('<a>').attr('href', repo.link).html(repo.Highlight || repo.name);
+                            var link = $('<a>').attr('href', repo.link).html(repo.nameHighlight || repo.name);
                             var childDOM = $('<ol>');
                             var li = $('<li>').attr('class', repo.level).append(link).append(childDOM);
                             parentDOM.append(li);
@@ -54,7 +54,7 @@
                 });
             })(jQuery, new IndexSearch(repository, {
                 maximumIndexKeySize : 5,
-                indexFields : ['name']        
+                indexOnFields : ['name']        
             }));
         </script>
 
