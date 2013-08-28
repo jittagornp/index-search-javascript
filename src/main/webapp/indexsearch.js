@@ -9,7 +9,7 @@
 var IndexSearch = (function() {
 
     function defined(object) {
-        return object !== undefined && typeof object !== 'undefined';
+        return typeof object !== 'undefined';
     }
 
     function notDefined(object) {
@@ -74,6 +74,108 @@ var IndexSearch = (function() {
     }
 
     /**
+     * class Interface
+     * 
+     * @author : redcrow
+     * @create on 25/02/2013
+     * @website na5cent.blogspot.com
+     */
+    var Interface = (function() {
+
+        /**
+         * for ensure constructor input type require
+         */
+        function ensureConstructorRequire(name, methods) {
+            if (typeof name !== 'string') {
+                throw new Error('constructor of Interface class require first argument is \'string\', but is \'' + (typeof name) + '\'.');
+            }
+
+            if (typeof methods !== 'object' || methods.length === undefined) {
+                throw new Error('constructor of Interface class require second argument is \'array of string\', but is \'' + (typeof methods) + '\'.');
+            }
+        }
+
+        /**
+         * for ensure method type require
+         */
+        function ensureMethodType(method, index) {
+            if (typeof method !== 'string') {
+                throw new Error('constructor of Interface class require second argument is \'array of string\', but method index ' + index + ' is not \'string\', is \'' + (typeof method) + '\'.');
+            }
+
+            return method;
+        }
+
+        /**
+         * constructor
+         * 
+         * {string} name
+         * {string[]} method names 
+         */
+        return function(name, methods) {
+            if (arguments.length !== 2) {
+                throw new Error("constructor of Interface class require 2 arguments : Interface({string} name, {string[]} method names");
+            }
+            ensureConstructorRequire(name, methods);
+
+            var _name = name;
+            var _methods = [];
+
+            for (var index = 0; index < methods.length; index++) {
+                var method = ensureMethodType(methods[index], index);
+                _methods.push(method);
+            }
+
+            this.getName = function() {
+                return _name;
+            };
+
+            this.getMethods = function() {
+                return _methods;
+            };
+        };
+    })();
+
+    /**
+     * static method Interface.ensureImplements
+     * 
+     * for ensure class implements an interfaces.
+     */
+    Interface.ensureImplements = function(clazz, interfacs) {
+        if (arguments.length !== 2) {
+            throw new Error('Interface.ensureImplements require 2 arguments : Interface.ensureImplement({object} obj, {interface[]} interfaces).');
+        }
+
+        if (typeof clazz !== 'object') {
+            throw new Error('first argument of Interface.ensureImplements is not \'object\', but is \'' + (typeof clazz) + '\'.');
+        }
+
+        if (typeof interfacs !== 'object' || interfacs.length === undefined) {
+            throw new Error('second argument of Interface.ensureImplements is not \'array of interface\', but is \'' + (typeof interfacs) + '\'.');
+        }
+
+        for (var index = 0; index < interfacs.length; index++) {
+            var interface = interfacs[index];
+            if (interface.constructor !== Interface) {
+                throw new Error('second argument of Interface.ensureImplements index ' + index + ' is not interface.');
+            }
+
+            var methods = interface.getMethods();
+            for (var property in methods) {
+                var method = methods[property];
+
+                if (clazz[method] === undefined) {
+                    throw new Error('implementation class is not define method \'' + method + '\' of Interface \'' + interface.getName() + '\'.');
+                }
+
+                if (typeof clazz[method] !== 'function') {
+                    throw new Error('implementation class define \'' + method + '\' is not \'method\', but is \'' + (typeof clazz[method]) + '\'.');
+                }
+            }
+        }
+    };
+
+    /**
      * class ResultSearch 
      *
      * bean for keep result after searching
@@ -82,6 +184,7 @@ var IndexSearch = (function() {
         var totalHighlight__ = result.totalHighlight || 0;
         var totalSentence__ = result.totalSentence || 0;
         var content__ = result.content || {repositories: {}};
+        var suggestions__ = result.suggestions || [];
 
         this.getTotalHighlight = function() {
             return totalHighlight__;
@@ -94,6 +197,10 @@ var IndexSearch = (function() {
         this.getContent = function() {
             return content__;
         };
+
+        this.getSuggestions = function() {
+            return suggestions__;
+        };
     };
 
     /**
@@ -102,11 +209,12 @@ var IndexSearch = (function() {
      * for make html highlight result search    				
      */
     var Highlighter = function(cssClass) {
+        var cssClass__ = cssClass;
         var totalSentence__ = 0;
         var totalHighlight__ = 0;
 
         function highlightKeyword(keyword) {
-            return '<span class=' + cssClass + '>' + escapseString(keyword) + '</span>';
+            return '<span class=' + cssClass__ + '>' + escapseString(keyword) + '</span>';
         }
 
         this.getTotalSentence = function() {
@@ -130,13 +238,13 @@ var IndexSearch = (function() {
             totalSentence__ = 0;
         };
 
-        this.highlight = function(keyword, text) {
-            var highlightText = '';
+        this.highlight = function(keyword, sentence) {
+            var sentenceHighlighted = '';
             var keywordLength = keyword.length;
 
-            var index = findIndex(keyword, text);
+            var index = findIndex(keyword, sentence);
             if (index === -1) {
-                return highlightText;
+                return sentenceHighlighted;
             }
 
             totalSentence__ = totalSentence__ + 1;
@@ -144,95 +252,93 @@ var IndexSearch = (function() {
                 totalHighlight__ = totalHighlight__ + 1;
 
                 var lastIndex = index + keywordLength;
-                var before = escapseString(text.substring(0, index));
-                var center = highlightKeyword(text.substring(index, lastIndex));
+                var infront = escapseString(sentence.substring(0, index));
+                var highlighted = highlightKeyword(sentence.substring(index, lastIndex));
 
                 //concatenation 
-                highlightText = highlightText + before + center;
+                sentenceHighlighted = sentenceHighlighted + infront + highlighted;
 
                 //re text
-                text = text.substring(lastIndex);
+                sentence = sentence.substring(lastIndex);
                 //
-                index = findIndex(keyword, text);
+                index = findIndex(keyword, sentence);
                 if (index === -1) {
-                    highlightText = highlightText + escapseString(text);
+                    sentenceHighlighted = sentenceHighlighted + escapseString(sentence);
                     break;
                 }
             }
 
 
-            return highlightText;
+            return sentenceHighlighted;
         };
     };
 
     /**
+     * define IndexStore interface
+     */
+    var IndexStore = new Interface('IndexStore', ['writeIndex', 'readIndex', 'addDictionary', 'addDictionary', 'getDictionary', 'getIndexs']);
+
+    /**
      * class MemoryIndex
      * 
-     * for read write an index
+     * for store index in memory
      */
     var MemoryIndex = function(maximumKeySize) {
-        if (notDefined(maximumKeySize) || maximumKeySize < 1) {
-            maximumKeySize = 1;
+        var maximumKeySize__ = maximumKeySize;
+
+        if (notDefined(maximumKeySize__) || maximumKeySize__ < 1) {
+            maximumKeySize__ = 1;
         }
 
         var indexs__ = [];
-        for (var keySizeIndex = 1; keySizeIndex <= maximumKeySize; keySizeIndex++) {
+        for (var keySizeIndex = 1; keySizeIndex <= maximumKeySize__; keySizeIndex++) {
             indexs__[keySizeIndex] = {};
         }
 
-        var IndexWriter = function() {
+        this.writeIndex = function(index, sentence) {
+            if (notDefined(sentence)) {
+                return;
+            }
 
-            this.writeIndex = function(index, sentence) {
-                if (notDefined(sentence)) {
-                    return;
-                }
+            for (var keySizeIndex in indexs__) {
+                for (var dictionryIndex in indexs__[keySizeIndex]) {
+                    var keywordList = indexs__[keySizeIndex][dictionryIndex];
 
-                for (var keySizeIndex in indexs__) {
-                    for (var dictionryIndex in indexs__[keySizeIndex]) {
-                        var keywordList = indexs__[keySizeIndex][dictionryIndex];
+                    for (var keywordIndex in keywordList) {
+                        var indexs = keywordList[keywordIndex];
 
-                        for (var keywordIndex in keywordList) {
-                            var indexs = keywordList[keywordIndex];
-
-                            if (foundIn(keywordIndex, sentence) && notFoundIn(index, indexs)) {
-                                indexs.push(index);
-                            }
+                        if (foundIn(keywordIndex, sentence) && notFoundIn(index, indexs)) {
+                            indexs.push(index);
                         }
                     }
                 }
-            };
+            }
         };
 
-        var IndexReader = function() {
+        this.readIndex = function(keyword) {
+            var dictionary;
+            var indexList = [];
+            if (keyword.length <= maximumKeySize__) {
+                dictionary = indexs__[keyword.length][keyword];
+            } else {
+                dictionary = indexs__[maximumKeySize__][keyword.substring(0, maximumKeySize__)];
+            }
 
-            this.readIndex = function(keyword) {
-                var dictionary;
-                var indexList = [];
-                if (keyword.length <= maximumKeySize) {
-                    dictionary = indexs__[keyword.length][keyword];
-                } else {
-                    dictionary = indexs__[maximumKeySize][keyword.substring(0, maximumKeySize)];
-                }
-
-                for (var dictionaryIndex in dictionary) {
-                    if (foundIn(keyword, dictionaryIndex)) {
-                        var indexs = dictionary[dictionaryIndex];
-                        for (var idx in indexs) {
-                            if (notFoundIn(indexs[idx], indexList)) {
-                                indexList.push(indexs[idx]);
-                            }
+            for (var dictionaryIndex in dictionary) {
+                if (foundIn(keyword, dictionaryIndex)) {
+                    var indexs = dictionary[dictionaryIndex];
+                    for (var idx in indexs) {
+                        if (notFoundIn(indexs[idx], indexList)) {
+                            indexList.push(indexs[idx]);
                         }
                     }
                 }
+            }
 
-                return indexList;
-            };
+            return indexList;
         };
 
-        var indexWriter__ = new IndexWriter();
-        var indexReader__ = new IndexReader();
-
-        this.addKeywordDictionary = function(keyword) {
+        this.addDictionary = function(keyword) {
             keyword = keyword.trim().toLowerCase();
 
             if (empty(keyword)) {
@@ -256,16 +362,50 @@ var IndexSearch = (function() {
             }
         };
 
-        this.getIndexWriter = function() {
-            return indexWriter__;
+        this.getDictionary = function(keyword) {
+
         };
 
-        this.getIndexReader = function() {
-            return indexReader__;
-        };
-
-        this.get = function() {
+        this.getIndexs = function() {
             return indexs__;
+        };
+    };
+
+    /**
+     * class IndexWriter
+     * 
+     * for write index into index store
+     */
+    var IndexWriter = function(indexStore) {
+        var indexStore__ = indexStore;
+
+        this.writeIndex = function(index, sentence) {
+            indexStore__.writeIndex(index, sentence);
+        };
+
+        this.addDictionary = function(keyword) {
+            indexStore__.addDictionary(keyword);
+        };
+    };
+
+    /**
+     * class IndexReader
+     * 
+     * for write index into index store
+     */
+    var IndexReader = function(indexStore) {
+        var indexStore__ = indexStore;
+
+        this.readIndex = function(keyword) {
+            return indexStore__.readIndex(keyword);
+        };
+
+        this.getDictionary = function(keyword) {
+            return indexStore__.getDictionary(keyword);
+        };
+
+        this.getIndexs = function() {
+            return indexStore__.getIndexs();
         };
     };
 
@@ -280,20 +420,16 @@ var IndexSearch = (function() {
         var repository_ = repository || {repositories: {}};
         var indexOnFields_ = options.indexOnFields || [];
 
-        if (empty(indexOnFields_)) {
-            throw new Error('require {string[]} : options.indexOnFields');
-        } else {
-            for (var index in indexOnFields_) {
-                if (indexOnFields_[index] === 'repositories') {
-                    throw new Error('field name \'repositories\' in {string[]} : options.indexOnFields is reserved word');
-                }
-            }
-        }
-
         var highlighter_ = new Highlighter(options.highlightClass || 'highlighter');
-        var index_ = new MemoryIndex(options.maximumIndexKeySize || 3);
+        var indexStoreImplmentation_ = options.indexStore || new MemoryIndex(options.maximumIndexKeySize || 3);
+        Interface.ensureImplements(indexStoreImplmentation_, [IndexStore]);
+        
+        var indexWriter_ = new IndexWriter(indexStoreImplmentation_);
+        var indexReader_ = new IndexReader(indexStoreImplmentation_);
 
         var indexSeparator_ = options.indexSeparator || '/';
+        var postfixFieldNameHighlight_ = options.postfixFieldNameHighlight || 'Highlight';
+
         var result_;
         var keyword_ = '';
         var duplicated_ = {};
@@ -307,6 +443,15 @@ var IndexSearch = (function() {
             return replaceNotation(text).split(' ');
         };
 
+        if (empty(indexOnFields_)) {
+            throw new Error('require {string[]} : options.indexOnFields');
+        } else {
+            for (var index in indexOnFields_) {
+                if (indexOnFields_[index] === 'repositories') {
+                    throw new Error('field name \'repositories\' in {string[]} : options.indexOnFields is reserved word');
+                }
+            }
+        }
 
         //----------------------------------------------------------------------
         createIndex();
@@ -326,7 +471,7 @@ var IndexSearch = (function() {
 
             var keywords = stopword_(sentence);
             for (var keywordIndex in keywords) {
-                index_.addKeywordDictionary(keywords[keywordIndex]);
+                indexWriter_.addDictionary(keywords[keywordIndex]);
             }
         }
 
@@ -350,17 +495,17 @@ var IndexSearch = (function() {
             for (var field in indexOnFields_) {
                 var indexName = indexOnFields_[field];
                 var duplicatedType = duplicated_[indexName];
-                
-                if(notDefined(duplicatedType)){
+
+                if (notDefined(duplicatedType)) {
                     duplicatedType = {};
                     duplicated_[indexName] = duplicatedType;
                 }
-                
+
                 var duplicatedField = duplicatedType[repository[indexName]];
                 if (notDefined(duplicatedField)) {
                     duplicatedField = 0;
                     duplicatedType[repository[indexName]] = duplicatedField;
-                    index_.getIndexWriter().writeIndex(index, repository[indexName]);
+                    indexWriter_.writeIndex(index, repository[indexName]);
                 } else {
                     duplicatedField = duplicatedField + 1;
                 }
@@ -394,7 +539,7 @@ var IndexSearch = (function() {
         };
 
         this.getIndexs = function() {
-            return index_.get();
+            return indexReader_.getIndexs();
         };
 
         this.clear = function() {
@@ -428,7 +573,7 @@ var IndexSearch = (function() {
             //
             keyword_ = keyword;
 
-            var indexs = index_.getIndexReader().readIndex(keyword_);
+            var indexs = indexReader_.readIndex(keyword_);
             for (var idx in indexs) {
                 pullRepository(indexs[idx]);
             }
@@ -439,26 +584,6 @@ var IndexSearch = (function() {
                 content: result_
             });
         };
-
-        function copyRepository(repository) {
-            var newRepository = {};
-            for (var fieldName in repository) {
-                if (fieldName !== 'repositories') {
-                    newRepository[fieldName] = repository[fieldName];
-                    for (var indexName in indexOnFields_) {
-                        if (fieldName === indexOnFields_[indexName]) {
-                            var sentence = newRepository[fieldName];
-                            var highlightText = highlighter_.highlight(keyword_, sentence);
-                            if (notEmpty(highlightText)) {
-                                newRepository[fieldName + 'Highlight'] = highlightText;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return newRepository;
-        }
 
         function pullRepository(index) {
             var indexArray = index.split(indexSeparator_);
@@ -485,6 +610,26 @@ var IndexSearch = (function() {
 
                 resultPointer = repo;
             }
+        }
+
+        function copyRepository(repository) {
+            var newRepository = {};
+            for (var fieldName in repository) {
+                if (fieldName !== 'repositories') {
+                    newRepository[fieldName] = repository[fieldName];
+                    for (var indexName in indexOnFields_) {
+                        if (fieldName === indexOnFields_[indexName]) {
+                            var sentence = newRepository[fieldName];
+                            var highlightText = highlighter_.highlight(keyword_, sentence);
+                            if (notEmpty(highlightText)) {
+                                newRepository[fieldName + postfixFieldNameHighlight_] = highlightText;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return newRepository;
         }
     };
 })();
