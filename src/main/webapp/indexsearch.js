@@ -34,12 +34,7 @@ var IndexSearch = (function() {
     }
 
     function foundIn(element, list) {
-        if (typeof list === 'string') {
-            element = element.toLowerCase();
-            list = list.toLowerCase();
-        }
-
-        return list.indexOf(element) !== -1;
+        return findIndex(element, list) !== -1;
     }
 
     function notFoundIn(element, list) {
@@ -51,6 +46,7 @@ var IndexSearch = (function() {
                 .replace(/>/g, '&gt;')
                 .replace(/</g, '&lt;')
                 .replace(/"/g, '&quot;');
+
         return text;
     }
 
@@ -85,7 +81,7 @@ var IndexSearch = (function() {
     var ResultSearch = function(result) {
         var totalHighlight__ = result.totalHighlight || 0;
         var totalSentence__ = result.totalSentence || 0;
-        var content__ = result.content || {posts: {}};
+        var content__ = result.content || {repositories: {}};
 
         this.getTotalHighlight = function() {
             return totalHighlight__;
@@ -186,8 +182,8 @@ var IndexSearch = (function() {
 
         var IndexWriter = function() {
 
-            this.writeIndex = function(path, text) {
-                if (notDefined(text)) {
+            this.writeIndex = function(index, sentence) {
+                if (notDefined(sentence)) {
                     return;
                 }
 
@@ -196,10 +192,10 @@ var IndexSearch = (function() {
                         var keywordList = indexs__[keySizeIndex][dictionryIndex];
 
                         for (var keywordIndex in keywordList) {
-                            var paths = keywordList[keywordIndex];
+                            var indexs = keywordList[keywordIndex];
 
-                            if (foundIn(keywordIndex, text) && notFoundIn(path, paths)) {
-                                paths.push(path);
+                            if (foundIn(keywordIndex, sentence) && notFoundIn(index, indexs)) {
+                                indexs.push(index);
                             }
                         }
                     }
@@ -228,7 +224,7 @@ var IndexSearch = (function() {
                         }
                     }
                 }
-                
+
                 return indexList;
             };
         };
@@ -268,15 +264,7 @@ var IndexSearch = (function() {
             return indexReader__;
         };
 
-        this.get = function(keyword) {
-            if (keyword.length <= maximumKeySize) {
-                return indexs__[keyword.length][keyword];
-            } else {
-                return indexs__[maximumKeySize][keyword.substring(0, maximumKeySize)];
-            }
-        };
-
-        this.gets = function() {
+        this.get = function() {
             return indexs__;
         };
     };
@@ -289,12 +277,24 @@ var IndexSearch = (function() {
 
         options = options || {};
 
-        var repository_ = repository || {posts: {}};
+        var repository_ = repository || {repositories: {}};
+        var indexFields_ = options.indexFields || [];
+
+        if (empty(indexFields_)) {
+            throw new Error('require {string[]} : options.indexFields');
+        } else {
+            for (var index in indexFields_) {
+                if (indexFields_[index] === 'repositories') {
+                    throw new Error('field name \'repositories\' in {string[]} : options.indexFields is reserved word');
+                }
+            }
+        }
+
         var highlighter_ = new Highlighter(options.highlightClass || 'highlighter');
         var index_ = new MemoryIndex(options.maximumIndexKeySize || 3);
 
         var indexSeparator_ = options.indexSeparator || '/';
-        var repositoryResult_;
+        var result_;
         var keyword_ = '';
         var duplicated = {};
 
@@ -314,8 +314,8 @@ var IndexSearch = (function() {
         function createIndex() {
             walkRepositoryReadKeyword(repository_);
 
-            for (var postIndex in repository_.posts) {
-                walkRepositoryWriteIndex(0, postIndex, repository_.posts[postIndex]);
+            for (var postIndex in repository_.repositories) {
+                walkRepositoryWriteIndex(0, postIndex, repository_.repositories[postIndex]);
             }
         }
 
@@ -330,38 +330,44 @@ var IndexSearch = (function() {
             }
         }
 
-        function walkRepositoryReadKeyword(parent) {
-            createDictionary(parent.name);
+        function walkRepositoryReadKeyword(repository) {
+            for (var index in indexFields_) {
+                var indexName = indexFields_[index];
+                createDictionary(repository[indexName]);
+            }
 
-            var posts = parent.posts;
-            if (empty(posts)) {
+            var repositories = repository.repositories;
+            if (empty(repositories)) {
                 return;
             }
 
-            for (var index in posts) {
-                walkRepositoryReadKeyword(posts[index]);
+            for (var index in repositories) {
+                walkRepositoryReadKeyword(repositories[index]);
             }
         }
 
         function walkRepositoryWriteIndex(level, index, repository) {
-            if (notDefined(duplicated[repository.name])) {
-                duplicated[repository.name] = 0;
-                index_.getIndexWriter().writeIndex(index, repository.name);
-            } else {
-                duplicated[repository.name] = duplicated[repository.name] + 1;
+            for (var i in indexFields_) {
+                var indexName = indexFields_[i];
+                if (notDefined(duplicated[repository[indexName]])) {
+                    duplicated[repository[indexName]] = 0;
+                    index_.getIndexWriter().writeIndex(index, repository[indexName]);
+                } else {
+                    duplicated[repository[indexName]] = duplicated[repository[indexName]] + 1;
+                }
             }
 
             // modify repository
             repository.level = 'level-' + level;
             repository.index = index + '';
 
-            var posts = repository.posts;
-            if (empty(posts)) {
+            var repositories = repository.repositories;
+            if (empty(repositories)) {
                 return;
             }
 
-            for (var postIndex in posts) {
-                walkRepositoryWriteIndex(level + 1, index + indexSeparator_ + postIndex, posts[postIndex]);
+            for (var postIndex in repositories) {
+                walkRepositoryWriteIndex(level + 1, index + indexSeparator_ + postIndex, repositories[postIndex]);
             }
         }
 
@@ -379,7 +385,7 @@ var IndexSearch = (function() {
         };
 
         this.getIndexs = function() {
-            return index_.gets();
+            return index_.get();
         };
 
         this.clear = function() {
@@ -403,13 +409,13 @@ var IndexSearch = (function() {
                 return new ResultSearch({
                     totalHighlight: highlighter_.getTotalHighlight(),
                     totalSentence: highlighter_.getTotalSentence(),
-                    content: repositoryResult_
+                    content: result_
                 });
             }
 
             //clean results
             highlighter_.resetTotal();
-            repositoryResult_ = {posts: {}};
+            result_ = {repositories: {}};
             //
             keyword_ = keyword;
 
@@ -421,41 +427,53 @@ var IndexSearch = (function() {
             return new ResultSearch({
                 totalHighlight: highlighter_.getTotalHighlight(),
                 totalSentence: highlighter_.getTotalSentence(),
-                content: repositoryResult_
+                content: result_
             });
         };
+        
+        function copyRepository(repository){
+            var newRepository = {};
+            for(var fieldName in repository){
+                newRepository[fieldName] = repository[fieldName];
+                
+                for(var indexName in indexFields_){
+                    if(fieldName === indexFields_[indexName]){
+                        var sentence = repository[fieldName];
+                        var highlightText = highlighter_.highlight(keyword_, sentence);
+                        if(notEmpty(highlightText)){
+                            newRepository[fieldName + 'Highlight'] = highlightText;
+                        }
+                    }
+                }
+            }
+            
+            return newRepository;
+        }
 
         function pullRepository(index) {
             var indexArray = index.split(indexSeparator_);
             var repositoryPointer = repository_;
-            var resultPointer = repositoryResult_;
+            var resultPointer = result_;
 
             for (var idx in indexArray) {
-                var position = indexArray[idx];
+                var subIndex = indexArray[idx];
 
-                if (empty(position)) {
+                if (empty(subIndex)) {
                     break;
                 }
 
-                repositoryPointer = repositoryPointer.posts[position];
-                var temp = resultPointer.posts[position];
-                if (notDefined(temp)) {
-                    temp = {
-                        level: repositoryPointer.level,
-                        index: repositoryPointer.index,
-                        name: repositoryPointer.name,
-                        link: repositoryPointer.link,
-                        highlight: highlighter_.highlight(keyword_, repositoryPointer.name)
-                    };
-
-                    resultPointer.posts[position] = temp;
+                repositoryPointer = repositoryPointer.repositories[subIndex];
+                var repo = resultPointer.repositories[subIndex];
+                if (notDefined(repo)) {
+                    repo = copyRepository(repositoryPointer);
+                    resultPointer.repositories[subIndex] = repo;
                 }
 
-                if (notDefined(temp.posts)) {
-                    temp.posts = {};
+                if (notDefined(repo.repositories)) {
+                    repo.repositories = {};
                 }
 
-                resultPointer = temp;
+                resultPointer = repo;
             }
         }
     };

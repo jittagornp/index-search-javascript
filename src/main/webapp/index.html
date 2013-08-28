@@ -35,24 +35,27 @@
                         walkTreeShowResult(result, ul);
                     }
 
-                    function walkTreeShowResult(parent, parentDOM) {
-                        var posts = parent.posts;
-                        if (!posts || posts.length === 0) {
+                    function walkTreeShowResult(repository, parentDOM) {
+                        var repositories = repository.repositories;
+                        if (!repositories || repositories.length === 0) {
                             return;
                         }
 
-                        for (var index in posts) {
-                            var child = posts[index];
-                            var link = $('<a>').attr('href', child.link).html(child.highlight || child.name);
+                        for (var index in repositories) {
+                            var repo = repositories[index];
+                            var link = $('<a>').attr('href', repo.link).html(repo.Highlight || repo.name);
                             var childDOM = $('<ol>');
-                            var li = $('<li>').attr('class', child.level).append(link).append(childDOM);
+                            var li = $('<li>').attr('class', repo.level).append(link).append(childDOM);
                             parentDOM.append(li);
 
-                            walkTreeShowResult(child, childDOM);
+                            walkTreeShowResult(repo, childDOM);
                         }
                     }
                 });
-            })(jQuery, new IndexSearch(repository));
+            })(jQuery, new IndexSearch(repository, {
+                maximumIndexKeySize : 5,
+                indexFields : ['name']        
+            }));
         </script>
 
         <input id="inputSearch"/>

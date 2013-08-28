@@ -1,10 +1,10 @@
 ﻿var repository = {
-    posts: [
+    repositories: [
         /* AI(Artificial Intelligence) */
         {
             name: "AI(Artificial Intelligence)",
             link: "http://na5cent.blogspot.com/search/label/AI%28Artificial%20Intelligence%29",
-            posts: [
+            repositories: [
                 {
                     name: "Back Propagation Algorithm",
                     link: "http://na5cent.blogspot.com/2011/03/back-propagation-algorithm.html"
@@ -15,7 +15,7 @@
         {
             name: "algorithm",
             link: "http://na5cent.blogspot.com/search/label/algorithm",
-            posts: [
+            repositories: [
                 {
                     name: "การคำนวณระยะห่าง ของตำแหน่ง GPS 2 จุด (javaScript)",
                     link: "http://na5cent.blogspot.com/2011/07/gps-2-javascript.html"
@@ -42,7 +42,7 @@
         {
             name: "android",
             link: "http://na5cent.blogspot.com/search/label/android",
-            posts: [
+            repositories: [
                 {
                     name: "Generate API key google map android (linux ubuntu)",
                     link: "http://na5cent.blogspot.com/2012/02/generate-api-key-google-map-android.html"
@@ -121,7 +121,7 @@
         {
             name: "assembly",
             link: "http://na5cent.blogspot.com/search/label/assembly",
-            posts: [
+            repositories: [
                 {
                     name: "เขียนเพลง ด้วยภาษา Assembly",
                     link: "http://na5cent.blogspot.com/2011/12/assembly.html"
@@ -136,7 +136,7 @@
         {
             name: "backtrack",
             link: "http://na5cent.blogspot.com/search/label/backtrack",
-            posts: [
+            repositories: [
                 {
                     name: "nmap (Network Mapper)",
                     link: "http://na5cent.blogspot.com/2012/01/nmap_4612.html"
@@ -155,7 +155,7 @@
         {
             name: "c/c++",
             link: "http://na5cent.blogspot.com/search/label/c%2Fc%2B%2B",
-            posts: [
+            repositories: [
                 {
                     name: "พีระมิดตัวเลข โดยใช้ลูปเดียว ด้วยภาษา C",
                     link: "http://na5cent.blogspot.com/2010/11/c.html"
@@ -182,7 +182,7 @@
         {
             name: "css",
             link: "http://na5cent.blogspot.com/search/label/css",
-            posts: [
+            repositories: [
                 {
                     name: "integrate external css",
                     link: "http://na5cent.blogspot.com/2012/02/integrate-external-css.html"
@@ -257,7 +257,7 @@
         {
             name: "database",
             link: "http://na5cent.blogspot.com/search/label/database",
-            posts: [
+            repositories: [
                 {
                     name: "หน้าที่และความรับผิดชอบของ DBA(Database Administrator) หรือ ผู้ดูแลระบบฐานข้อมูล",
                     link: "http://na5cent.blogspot.com/2011/04/dbadatabase-administrator.html"
@@ -276,7 +276,7 @@
         {
             name: "elastic search",
             link: "http://na5cent.blogspot.com/search/label/elastic%20search",
-            posts: [
+            repositories: [
                 {
                     name: "install elastic search on ubuntu 12.04",
                     link: "http://na5cent.blogspot.com/2013/08/install-elastic-search.html"
@@ -295,7 +295,7 @@
         {
             name: "glassfish server",
             link: "http://na5cent.blogspot.com/search/label/glassfish%20server",
-            posts: [
+            repositories: [
                 {
                     name: "ปิด response headers http : glassfish",
                     link: "http://na5cent.blogspot.com/2012/09/response-headers-http-glassfish.html"
@@ -322,7 +322,7 @@
         {
             name: "google map api",
             link: "http://na5cent.blogspot.com/search/label/google%20map%20api",
-            posts: [
+            repositories: [
                 {
                     name: "Start Google Map API V3",
                     link: "http://na5cent.blogspot.com/2012/06/start-google-map-api-v3.html"
@@ -337,7 +337,7 @@
         {
             name: "html",
             link: "http://na5cent.blogspot.com/search/label/html",
-            posts: [
+            repositories: [
                 {
                     name: "แก้ปัญหา upload file ผ่าน ajax ไม่ได้",
                     link: "http://na5cent.blogspot.com/2011/08/upload-file-ajax.html"
@@ -364,7 +364,7 @@
         {
             name: "interface",
             link: "http://na5cent.blogspot.com/search/label/interface",
-            posts: [
+            repositories: [
                 {
                     name: "การทำงานของคีย์บอร์ด",
                     link: "http://na5cent.blogspot.com/2011/03/blog-post.html"
@@ -375,7 +375,7 @@
         {
             name: "it security",
             link: "http://na5cent.blogspot.com/search/label/it%20security",
-            posts: [
+            repositories: [
                 {
                     name: "กระบวนการทำลายเซ็นต์ดิจิตอล (Digital Signature Methodology)",
                     link: "http://na5cent.blogspot.com/2012/04/digital-signature-methodology.html"
@@ -402,7 +402,7 @@
         {
             name: "jasper report",
             link: "http://na5cent.blogspot.com/search/label/jasper%20report",
-            posts: [
+            repositories: [
                 {
                     name: "inject jasper report pdf viewer into java application (step by step)",
                     link: "http://na5cent.blogspot.com/2013/04/inject-jasper-pdf-viewer-into-java.html"
@@ -421,7 +421,7 @@
         {
             name: "java",
             link: "http://na5cent.blogspot.com/search/label/java",
-            posts: [
+            repositories: [
                 {
                     name: "ดู IP เครื่อง ด้วยภาษา JAVA",
                     link: "http://na5cent.blogspot.com/2011/04/ip-java.html"
@@ -848,7 +848,7 @@
         {
             name: "java script",
             link: "http://na5cent.blogspot.com/search/label/java%20script",
-            posts: [
+            repositories: [
                 {
                     name: "การคำนวณระยะห่าง ของตำแหน่ง GPS 2 จุด (javaScript)",
                     link: "http://na5cent.blogspot.com/2011/07/gps-2-javascript.html"
@@ -1003,7 +1003,7 @@
         {
             name: "javaserver faces",
             link: "http://na5cent.blogspot.com/search/label/javaserver%20faces",
-            posts: [
+            repositories: [
                 {
                     name: "สร้างตัวแปร Session Scroped ใน Request Scroped ManageBean (BackingBean)",
                     link: "http://na5cent.blogspot.com/search/label/javaserver%20faces"
@@ -1122,7 +1122,7 @@
         {
             name: "JPA(Java Persistence API)",
             link: "http://na5cent.blogspot.com/search/label/JPA%28Java%20Persistence%20API%29",
-            posts: [
+            repositories: [
                 {
                     name: "use multiple base package repositories : java",
                     link: "http://na5cent.blogspot.com/2012/09/use-multiple-base-package-repositories.html"
@@ -1177,7 +1177,7 @@
         {
             name: "jquery",
             link: "http://na5cent.blogspot.com/search/label/jquery",
-            posts: [
+            repositories: [
                 {
                     name: "Basic ajax jQuery",
                     link: "http://na5cent.blogspot.com/2012/02/basic-ajax-jquery.html"
@@ -1260,7 +1260,7 @@
         {
             name: "json",
             link: "http://na5cent.blogspot.com/search/label/json",
-            posts: [
+            repositories: [
                 {
                     name: "AJAX (jquery) request PHP JSON",
                     link: "http://na5cent.blogspot.com/2012/02/ajax-jquery-request-php-json.html"
@@ -1295,7 +1295,7 @@
         {
             name: "jsp(JavaServer Pages)",
             link: "http://na5cent.blogspot.com/search/label/jsp%28JavaServer%20Pages%29",
-            posts: [
+            repositories: [
                 {
                     name: "jsp include file",
                     link: "http://na5cent.blogspot.com/2012/09/jsp-include-file.html"
@@ -1322,7 +1322,7 @@
         {
             name: "less",
             link: "http://na5cent.blogspot.com/search/label/less",
-            posts: [
+            repositories: [
                 {
                     name: "การติดตั้งและใช้งาน less (dynamic css)",
                     link: "http://na5cent.blogspot.com/2012/06/less-dynamic-css.html"
@@ -1357,7 +1357,7 @@
         {
             name: "linux",
             link: "http://na5cent.blogspot.com/search/label/linux",
-            posts: [
+            repositories: [
                 {
                     name: "รู้จักกับ wmii",
                     link: "http://na5cent.blogspot.com/2011/12/wmii.html"
@@ -1396,7 +1396,7 @@
         {
             name: "linux command",
             link: "http://na5cent.blogspot.com/search/label/linux%20command",
-            posts: [
+            repositories: [
                 {
                     name: "chmod on linux",
                     link: "http://na5cent.blogspot.com/2011/04/chmod-on-linux.html"
@@ -1451,7 +1451,7 @@
         {
             name: "maven",
             link: "http://na5cent.blogspot.com/search/label/maven",
-            posts: [
+            repositories: [
                 {
                     name: "maven install .jar file to local repository",
                     link: "http://na5cent.blogspot.com/2013/05/install-jar-file-to-local-repository.html"
@@ -1470,7 +1470,7 @@
         {
             name: "mongodb",
             link: "http://na5cent.blogspot.com/search/label/mongodb",
-            posts: [
+            repositories: [
                 {
                     name: "ติดตั้ง mongodb บน windows7 (install mongoDB on windows7)",
                     link: "http://na5cent.blogspot.com/2012/11/mongodb-windows7-install-mongodb-on.html"
@@ -1481,7 +1481,7 @@
         {
             name: "mysql",
             link: "http://na5cent.blogspot.com/search/label/mysql",
-            posts: [
+            repositories: [
                 {
                     name: "ใช้งาน mysql ผ่าน terminal",
                     link: "http://na5cent.blogspot.com/2012/01/mysql-terminal.html"
@@ -1500,7 +1500,7 @@
         {
             name: "network",
             link: "http://na5cent.blogspot.com/search/label/network",
-            posts: [
+            repositories: [
                 {
                     name: "Well-Known TCP Port Numbers",
                     link: "http://na5cent.blogspot.com/2011/12/well-known-tcp-port-numbers.html"
@@ -1511,7 +1511,7 @@
         {
             name: "nodejs",
             link: "http://na5cent.blogspot.com/search/label/nodejs",
-            posts: [
+            repositories: [
                 {
                     name: "ติดตั้ง nodejs บน linux ubuntu",
                     link: "http://na5cent.blogspot.com/2012/07/nodejs-ubuntu.html"
@@ -1522,7 +1522,7 @@
         {
             name: "oracle",
             link: "http://na5cent.blogspot.com/search/label/oracle",
-            posts: [
+            repositories: [
                 {
                     name: "Oracle Certified Associate (OCA)",
                     link: "http://na5cent.blogspot.com/2011/04/oracle-certified-associate-oca.html"
@@ -1549,7 +1549,7 @@
         {
             name: "oracle sql",
             link: "http://na5cent.blogspot.com/search/label/oracle%20sql",
-            posts: [
+            repositories: [
                 {
                     name: "การยกเลิกอักขระ syntax ใน Oracle SQL",
                     link: "http://na5cent.blogspot.com/2012/01/syntax-oracle-sql.html"
@@ -1580,7 +1580,7 @@
         {
             name: "orientDB",
             link: "http://na5cent.blogspot.com/search/label/orientDB",
-            posts: [
+            repositories: [
                 {
                     name: "Query Record ID ของ OrientDBL",
                     link: "http://na5cent.blogspot.com/2012/05/query-record-id-orientdb.html"
@@ -1595,7 +1595,7 @@
         {
             name: "other",
             link: "http://na5cent.blogspot.com/search/label/other",
-            posts: [
+            repositories: [
                 {
                     name: "แนะนำอาวุธประจำกาย",
                     link: "http://na5cent.blogspot.com/2011/07/blog-post.html"
@@ -1638,7 +1638,7 @@
         {
             name: "phishing",
             link: "http://na5cent.blogspot.com/search/label/phishing",
-            posts: [
+            repositories: [
                 {
                     name: "Cloning website ด้วย Website Ripper Copier",
                     link: "http://na5cent.blogspot.com/2012/02/cloning-website-website-ripper-copier.html"
@@ -1649,7 +1649,7 @@
         {
             name: "php",
             link: "http://na5cent.blogspot.com/search/label/php",
-            posts: [
+            repositories: [
                 {
                     name: "การเรียกใช้งาน reCaptcha ของ Google",
                     link: "http://na5cent.blogspot.com/2011/07/recaptcha-google.html"
@@ -1672,7 +1672,7 @@
         {
             name: "primefaces",
             link: "http://na5cent.blogspot.com/search/label/primefaces",
-            posts: [
+            repositories: [
                 {
                     name: "ajax ใน primefaces",
                     link: "http://na5cent.blogspot.com/2012/05/ajax-primefaces.html"
@@ -1727,7 +1727,7 @@
         {
             name: "scanning",
             link: "http://na5cent.blogspot.com/search/label/scanning",
-            posts: [
+            repositories: [
                 {
                     name: "0x001 นิยามของการสแกน(Scanning-Definition)",
                     link: "http://na5cent.blogspot.com/2012/01/0x001-scanning-definition.html"
@@ -1754,7 +1754,7 @@
         {
             name: "solidworks",
             link: "http://na5cent.blogspot.com/search/label/solidworks",
-            posts: [
+            repositories: [
                 {
                     name: "สร้างสกรู (make screw) ด้วย solidworks",
                     link: "http://na5cent.blogspot.com/2011/12/make-screw-solidworks.html"
@@ -1785,7 +1785,7 @@
         {
             name: "spoofing",
             link: "http://na5cent.blogspot.com/search/label/spoofing",
-            posts: [
+            repositories: [
                 {
                     name: "DNS spoof with ettercap on backtrack 5",
                     link: "http://na5cent.blogspot.com/2012/02/dns-spoof-with-ettercap-on-backtrack-5.html"
@@ -1800,7 +1800,7 @@
         {
             name: "spring framework",
             link: "http://na5cent.blogspot.com/search/label/spring%20%20framework",
-            posts: [
+            repositories: [
                 {
                     name: "spring filter language",
                     link: "http://na5cent.blogspot.com/2012/07/spring-filter-language.html"
@@ -1887,7 +1887,7 @@
         {
             name: "spring mvc",
             link: "http://na5cent.blogspot.com/search/label/spring%20mvc",
-            posts: [
+            repositories: [
                 {
                     name: "spring-mvc get static resources",
                     link: "http://na5cent.blogspot.com/2012/09/spring-mvc-get-static-resources.html"
@@ -1906,7 +1906,7 @@
         {
             name: "ubuntu server",
             link: "http://na5cent.blogspot.com/search/label/ubuntu%20server",
-            posts: [
+            repositories: [
                 {
                     name: "แก้ปัญหาใช้บริการ web server ที่ติดตั้งผ่าน virtual box ไม่ได้",
                     link: "http://na5cent.blogspot.com/2011/12/web-server-virtual-box.html"
@@ -1977,7 +1977,7 @@
         {
             name: "unit test",
             link: "http://na5cent.blogspot.com/search/label/unit%20test",
-            posts: [
+            repositories: [
                 {
                     name: "jUnit Test Life Cycle : java",
                     link: "http://na5cent.blogspot.com/2013/06/junit-test-life-cycle-java.html"
@@ -1988,7 +1988,7 @@
         {
             name: "vmware",
             link: "http://na5cent.blogspot.com/search/label/vmware",
-            posts: [
+            repositories: [
                 {
                     name: "Cloning VMware",
                     link: "http://na5cent.blogspot.com/2013/08/cloning-vmware.html"
@@ -1999,7 +1999,7 @@
         {
             name: "weather api",
             link: "http://na5cent.blogspot.com/search/label/weather%20api",
-            posts: [
+            repositories: [
                 {
                     name: "basic weather api",
                     link: "http://na5cent.blogspot.com/2012/06/basic-weather-api.html"
@@ -2010,7 +2010,7 @@
         {
             name: "windows",
             link: "http://na5cent.blogspot.com/search/label/windows",
-            posts: [
+            repositories: [
                 {
                     name: "ลืม password windows 7",
                     link: "http://na5cent.blogspot.com/2011/04/password-windows-7.html"
@@ -2045,7 +2045,7 @@
         {
             name: "windows command",
             link: "http://na5cent.blogspot.com/search/label/windows%20command",
-            posts: [
+            repositories: [
                 {
                     name: "การเข้าใช้งาน Shared Folders ของเครื่องในวงแลนผ่าน command line windows7",
                     link: "http://na5cent.blogspot.com/2012/01/shared-folders-command-line-windows7.html"
@@ -2084,7 +2084,7 @@
         {
             name: "windows registry",
             link: "http://na5cent.blogspot.com/search/label/windows%20registry",
-            posts: [
+            repositories: [
                 {
                     name: "ซ่อน / lock drive ใน Windows 7",
                     link: "http://na5cent.blogspot.com/2011/08/lock-drive-windows7.html"
