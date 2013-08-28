@@ -441,7 +441,7 @@ var IndexSearch = (function() {
 
         options = options || {};
 
-        var repository__ = repository || {repositories: {}};
+        var repository__ = repository || {repositories: []};
         var indexOnFields__ = options.indexOnFields || [];
 
         var highlighter__ = new Highlighter(options.highlightClass || 'highlighter');
@@ -469,10 +469,8 @@ var IndexSearch = (function() {
         if (empty(indexOnFields__)) {
             throw new Error('require {string[]} : options.indexOnFields');
         } else {
-            for (var index in indexOnFields__) {
-                if (indexOnFields__[index] === 'repositories') {
-                    throw new Error('field name \'repositories\' in {string[]} : options.indexOnFields is reserved word');
-                }
+            if (foundIn('repositories', indexOnFields__)) {
+                throw new Error('field name \'repositories\' in {string[]} : options.indexOnFields is reserved word');
             }
         }
 
@@ -600,7 +598,7 @@ var IndexSearch = (function() {
 
             //clean results
             highlighter__.resetTotal();
-            result__ = {repositories: {}};
+            result__ = {repositories: []};
             //
             keyword__ = keyword;
 
@@ -636,7 +634,7 @@ var IndexSearch = (function() {
                 }
 
                 if (notDefined(repo.repositories)) {
-                    repo.repositories = {};
+                    repo.repositories = [];
                 }
 
                 resultPointer = repo;
