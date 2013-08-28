@@ -410,7 +410,7 @@ var IndexSearch = (function() {
 
     /**
      * class IndexReader
-     * for write index into index store
+     * for read index from index store
      */
     var IndexReader = function(indexStore) {
         var indexStore__ = indexStore;
@@ -480,6 +480,10 @@ var IndexSearch = (function() {
             for (var repoIndex in repository_.repositories) {
                 walkRepositoryWriteIndex(0, repoIndex, repository_.repositories[repoIndex]);
             }
+
+            for (var duplicateType in duplicated_) {
+                delete duplicated_[duplicateType];
+            }
         }
 
         function createDictionary(sentence) {
@@ -510,6 +514,25 @@ var IndexSearch = (function() {
         }
 
         function walkRepositoryWriteIndex(level, index, repository) {
+            reduceRepository(repository, function(indexName) {
+                indexWriter_.writeIndex(index, repository[indexName]);
+            });
+
+            // add field
+            repository.level = 'level-' + level;
+            repository.index = index + '';
+
+            var repositories = repository.repositories;
+            if (empty(repositories)) {
+                return;
+            }
+
+            for (var repoIndex in repositories) {
+                walkRepositoryWriteIndex(level + 1, index + indexSeparator_ + repoIndex, repositories[repoIndex]);
+            }
+        }
+
+        function reduceRepository(repository, callback) {
             for (var field in indexOnFields_) {
                 var indexName = indexOnFields_[field];
                 var duplicatedType = duplicated_[indexName];
@@ -521,25 +544,10 @@ var IndexSearch = (function() {
 
                 var duplicatedField = duplicatedType[repository[indexName]];
                 if (notDefined(duplicatedField)) {
-                    duplicatedField = 0;
+                    duplicatedField = true;
                     duplicatedType[repository[indexName]] = duplicatedField;
-                    indexWriter_.writeIndex(index, repository[indexName]);
-                } else {
-                    duplicatedField = duplicatedField + 1;
+                    callback(indexName);
                 }
-            }
-
-            // modify repository
-            repository.level = 'level-' + level;
-            repository.index = index + '';
-
-            var repositories = repository.repositories;
-            if (empty(repositories)) {
-                return;
-            }
-
-            for (var repoIndex in repositories) {
-                walkRepositoryWriteIndex(level + 1, index + indexSeparator_ + repoIndex, repositories[repoIndex]);
             }
         }
 
