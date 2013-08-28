@@ -1,4 +1,4 @@
-var repository = {
+﻿var repository = {
     posts: [
         /* AI(Artificial Intelligence) */
         {

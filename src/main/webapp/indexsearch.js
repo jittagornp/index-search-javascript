@@ -191,6 +191,10 @@ var IndexSearch = (function() {
      * for read write an index
      */
     var MemoryIndex = function(maximumKeySize) {
+        if(maximumKeySize < 1){
+            maximumKeySize = 1;
+        }
+        
         var indexs__ = [];
         for (var keySizeIndex = 1; keySizeIndex <= maximumKeySize; keySizeIndex++) {
             indexs__[keySizeIndex] = {};
