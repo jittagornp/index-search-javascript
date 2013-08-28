@@ -1,6 +1,5 @@
 /**
  * class IndexSearch
- * 
  * @author redcrow (jittagorn pitakmetagoon)
  * @create on 26/08/2013
  * @website na5cent.blogspot.com
@@ -73,9 +72,36 @@ var IndexSearch = (function() {
         return text;
     }
 
+    function is(data, type) {
+        return Object.prototype.toString.call(data) === '[object ' + type + ']';
+    }
+
+    function isFunction(data) {
+        return is(data, 'Function');
+    }
+
+    function isArray(data) {
+        return is(data, 'Array');
+    }
+
+    function isString(data) {
+        return is(data, 'String');
+    }
+
+    function isNumber(data) {
+        return is(data, 'Number');
+    }
+
+    function isObject(data) {
+        return is(data, 'Object');
+    }
+
+    function isRegExp(data) {
+        return is(data, 'RegExp');
+    }
+
     /**
      * class Interface
-     * 
      * @author : redcrow
      * @create on 25/02/2013
      * @website na5cent.blogspot.com
@@ -86,11 +112,11 @@ var IndexSearch = (function() {
          * for ensure constructor input type require
          */
         function ensureConstructorRequire(name, methods) {
-            if (typeof name !== 'string') {
+            if (!isString(name)) {
                 throw new Error('constructor of Interface class require first argument is \'string\', but is \'' + (typeof name) + '\'.');
             }
 
-            if (typeof methods !== 'object' || methods.length === undefined) {
+            if (!isArray(methods)) {
                 throw new Error('constructor of Interface class require second argument is \'array of string\', but is \'' + (typeof methods) + '\'.');
             }
         }
@@ -99,7 +125,7 @@ var IndexSearch = (function() {
          * for ensure method type require
          */
         function ensureMethodType(method, index) {
-            if (typeof method !== 'string') {
+            if (!isString(method)) {
                 throw new Error('constructor of Interface class require second argument is \'array of string\', but method index ' + index + ' is not \'string\', is \'' + (typeof method) + '\'.');
             }
 
@@ -107,8 +133,7 @@ var IndexSearch = (function() {
         }
 
         /**
-         * constructor
-         * 
+         * Interface constructor
          * {string} name
          * {string[]} method names 
          */
@@ -138,7 +163,6 @@ var IndexSearch = (function() {
 
     /**
      * static method Interface.ensureImplements
-     * 
      * for ensure class implements an interfaces.
      */
     Interface.ensureImplements = function(clazz, interfacs) {
@@ -146,11 +170,11 @@ var IndexSearch = (function() {
             throw new Error('Interface.ensureImplements require 2 arguments : Interface.ensureImplement({object} obj, {interface[]} interfaces).');
         }
 
-        if (typeof clazz !== 'object') {
+        if (!isObject(clazz)) {
             throw new Error('first argument of Interface.ensureImplements is not \'object\', but is \'' + (typeof clazz) + '\'.');
         }
 
-        if (typeof interfacs !== 'object' || interfacs.length === undefined) {
+        if (!isArray(interfacs)) {
             throw new Error('second argument of Interface.ensureImplements is not \'array of interface\', but is \'' + (typeof interfacs) + '\'.');
         }
 
@@ -164,11 +188,11 @@ var IndexSearch = (function() {
             for (var property in methods) {
                 var method = methods[property];
 
-                if (clazz[method] === undefined) {
+                if (notDefined(clazz[method])) {
                     throw new Error('implementation class is not define method \'' + method + '\' of Interface \'' + interface.getName() + '\'.');
                 }
 
-                if (typeof clazz[method] !== 'function') {
+                if (!isFunction(clazz[method])) {
                     throw new Error('implementation class define \'' + method + '\' is not \'method\', but is \'' + (typeof clazz[method]) + '\'.');
                 }
             }
@@ -177,7 +201,6 @@ var IndexSearch = (function() {
 
     /**
      * class ResultSearch 
-     *
      * bean for keep result after searching
      */
     var ResultSearch = function(result) {
@@ -205,7 +228,6 @@ var IndexSearch = (function() {
 
     /**
      * class Highlighter
-     *
      * for make html highlight result search    				
      */
     var Highlighter = function(cssClass) {
@@ -276,14 +298,13 @@ var IndexSearch = (function() {
     /**
      * define IndexStore interface
      */
-    var IndexStore = new Interface('IndexStore', ['writeIndex', 'readIndex', 'addDictionary', 'addDictionary', 'getDictionary', 'getIndexs']);
+    var IndexStore = new Interface('IndexStore', ['writeIndex', 'readIndex', 'addDictionary', 'getDictionary', 'getIndexs']);
 
     /**
-     * class MemoryIndex
-     * 
+     * class MemoryIndexStore
      * for store index in memory
      */
-    var MemoryIndex = function(maximumKeySize) {
+    var MemoryIndexStore = function(maximumKeySize) {
         var maximumKeySize__ = maximumKeySize;
 
         if (notDefined(maximumKeySize__) || maximumKeySize__ < 1) {
@@ -373,7 +394,6 @@ var IndexSearch = (function() {
 
     /**
      * class IndexWriter
-     * 
      * for write index into index store
      */
     var IndexWriter = function(indexStore) {
@@ -390,7 +410,6 @@ var IndexSearch = (function() {
 
     /**
      * class IndexReader
-     * 
      * for write index into index store
      */
     var IndexReader = function(indexStore) {
@@ -421,9 +440,9 @@ var IndexSearch = (function() {
         var indexOnFields_ = options.indexOnFields || [];
 
         var highlighter_ = new Highlighter(options.highlightClass || 'highlighter');
-        var indexStoreImplmentation_ = options.indexStore || new MemoryIndex(options.maximumIndexKeySize || 3);
+        var indexStoreImplmentation_ = options.indexStore || new MemoryIndexStore(options.maximumIndexKeySize || 3);
         Interface.ensureImplements(indexStoreImplmentation_, [IndexStore]);
-        
+
         var indexWriter_ = new IndexWriter(indexStoreImplmentation_);
         var indexReader_ = new IndexReader(indexStoreImplmentation_);
 
@@ -436,7 +455,6 @@ var IndexSearch = (function() {
 
         /**
          * function stopword
-         * 
          * use for separate keyword from sentence
          */
         var stopword_ = options.stopword || function(text) {
