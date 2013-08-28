@@ -12,86 +12,70 @@ var IndexSearch = (function() {
         return object !== undefined && typeof object !== 'undefined';
     }
 
-    function undefined(object) {
+    function notDefined(object) {
         return !defined(object);
     }
 
     function empty(list) {
-        return undefined(list) || list.length === 0;
+        return notDefined(list) || list.length === 0;
     }
 
-    /**
-     * class Collections
-     *
-     * utilities method for process collection
-     */
-    var Collections = {
-        //
-        empty: function(list) {
-            return undefined(list) || list.length === 0;
-        },
-        //        
-        findIndex: function(element, list) {
-            if (typeof list === 'string') {
-                element = element.toLowerCase();
-                list = list.toLowerCase();
-            }
+    function notEmpty(list) {
+        return !empty(list);
+    }
 
-            return list.indexOf(element);
-        },
-        //       
-        foundIn: function(element, list) {
-            if (typeof list === 'string') {
-                element = element.toLowerCase();
-                list = list.toLowerCase();
-            }
-
-            return list.indexOf(element) !== -1;
-        },
-        //      
-        notFoundIn: function(element, list) {
-            return !Collections.foundIn(element, list);
+    function findIndex(element, list) {
+        if (typeof list === 'string') {
+            element = element.toLowerCase();
+            list = list.toLowerCase();
         }
-    };
 
-    /**
-     * class StringUtils
-     *
-     * utilities method for process string
-     */
-    var StringUtils = {
-        //
-        escapseString: function(text) {
-            text = text.replace(/&/g, '&amp;')
-                    .replace(/>/g, '&gt;')
-                    .replace(/</g, '&lt;')
-                    .replace(/"/g, '&quot;');
-            return text;
-        },
-        //
-        replaceNotation: function(text) {
-            if (undefined(text)) {
-                return '';
-            }
+        return list.indexOf(element);
+    }
 
-            text = text.replace(/\(/g, ' ')
-                    .replace(/\)/g, ' ')
-                    .replace(/\,/g, ' ')
-                    .replace(/\//g, ' ')
-                    .replace(/\\/g, ' ')
-                    .replace(/\:/g, ' ')
-                    .replace(/\./g, ' ')
-                    .replace(/\>/g, ' ')
-                    .replace(/\</g, ' ')
-                    .replace(/\[/g, ' ')
-                    .replace(/\]/g, ' ')
-                    .replace(/\+/g, ' ')
-                    .replace(/\=/g, ' ')
-                    .replace(/\;/g, ' ');
-
-            return text;
+    function foundIn(element, list) {
+        if (typeof list === 'string') {
+            element = element.toLowerCase();
+            list = list.toLowerCase();
         }
-    };
+
+        return list.indexOf(element) !== -1;
+    }
+
+    function notFoundIn(element, list) {
+        return !foundIn(element, list);
+    }
+
+    function escapseString(text) {
+        text = text.replace(/&/g, '&amp;')
+                .replace(/>/g, '&gt;')
+                .replace(/</g, '&lt;')
+                .replace(/"/g, '&quot;');
+        return text;
+    }
+
+    function replaceNotation(text) {
+        if (notDefined(text)) {
+            return '';
+        }
+
+        text = text.replace(/\(/g, ' ')
+                .replace(/\)/g, ' ')
+                .replace(/\,/g, ' ')
+                .replace(/\//g, ' ')
+                .replace(/\\/g, ' ')
+                .replace(/\:/g, ' ')
+                .replace(/\./g, ' ')
+                .replace(/\>/g, ' ')
+                .replace(/\</g, ' ')
+                .replace(/\[/g, ' ')
+                .replace(/\]/g, ' ')
+                .replace(/\+/g, ' ')
+                .replace(/\=/g, ' ')
+                .replace(/\;/g, ' ');
+
+        return text;
+    }
 
     /**
      * class ResultSearch 
@@ -126,7 +110,7 @@ var IndexSearch = (function() {
         var totalHighlight__ = 0;
 
         function highlightKeyword(keyword) {
-            return '<span class=' + cssClass + '>' + StringUtils.escapseString(keyword) + '</span>';
+            return '<span class=' + cssClass + '>' + escapseString(keyword) + '</span>';
         }
 
         this.getTotalSentence = function() {
@@ -154,7 +138,7 @@ var IndexSearch = (function() {
             var highlightText = '';
             var keywordLength = keyword.length;
 
-            var index = Collections.findIndex(keyword, text);
+            var index = findIndex(keyword, text);
             if (index === -1) {
                 return highlightText;
             }
@@ -164,7 +148,7 @@ var IndexSearch = (function() {
                 totalHighlight__ = totalHighlight__ + 1;
 
                 var lastIndex = index + keywordLength;
-                var before = StringUtils.escapseString(text.substring(0, index));
+                var before = escapseString(text.substring(0, index));
                 var center = highlightKeyword(text.substring(index, lastIndex));
 
                 //concatenation 
@@ -173,9 +157,9 @@ var IndexSearch = (function() {
                 //re text
                 text = text.substring(lastIndex);
                 //
-                index = Collections.findIndex(keyword, text);
+                index = findIndex(keyword, text);
                 if (index === -1) {
-                    highlightText = highlightText + StringUtils.escapseString(text);
+                    highlightText = highlightText + escapseString(text);
                     break;
                 }
             }
@@ -191,10 +175,10 @@ var IndexSearch = (function() {
      * for read write an index
      */
     var MemoryIndex = function(maximumKeySize) {
-        if(maximumKeySize < 1){
+        if (maximumKeySize < 1) {
             maximumKeySize = 1;
         }
-        
+
         var indexs__ = [];
         for (var keySizeIndex = 1; keySizeIndex <= maximumKeySize; keySizeIndex++) {
             indexs__[keySizeIndex] = {};
@@ -203,7 +187,7 @@ var IndexSearch = (function() {
         var IndexWriter = function() {
 
             this.writeIndex = function(path, text) {
-                if (undefined(text)) {
+                if (notDefined(text)) {
                     return;
                 }
 
@@ -212,10 +196,10 @@ var IndexSearch = (function() {
                         var keywordList = indexs__[keySizeIndex][dictionryIndex];
 
                         for (var keywordIndex in keywordList) {
-                            var keyword = keywordList[keywordIndex];
+                            var paths = keywordList[keywordIndex];
 
-                            if (Collections.foundIn(keywordIndex, text) && Collections.notFoundIn(path, keyword)) {
-                                keyword.push(path);
+                            if (foundIn(keywordIndex, text) && notFoundIn(path, paths)) {
+                                paths.push(path);
                             }
                         }
                     }
@@ -225,8 +209,27 @@ var IndexSearch = (function() {
 
         var IndexReader = function() {
 
-            this.readIndex = function() {
+            this.readIndex = function(keyword) {
+                var dictionary;
+                var indexList = [];
+                if (keyword.length <= maximumKeySize) {
+                    dictionary = indexs__[keyword.length][keyword];
+                } else {
+                    dictionary = indexs__[maximumKeySize][keyword.substring(0, maximumKeySize)];
+                }
 
+                for (var dictionaryIndex in dictionary) {
+                    if (foundIn(keyword, dictionaryIndex)) {
+                        var indexs = dictionary[dictionaryIndex];
+                        for (var idx in indexs) {
+                            if (notFoundIn(indexs[idx], indexList)) {
+                                indexList.push(indexs[idx]);
+                            }
+                        }
+                    }
+                }
+                
+                return indexList;
             };
         };
 
@@ -236,7 +239,7 @@ var IndexSearch = (function() {
         this.addKeywordDictionary = function(keyword) {
             keyword = keyword.trim().toLowerCase();
 
-            if (Collections.empty(keyword)) {
+            if (empty(keyword)) {
                 return;
             }
 
@@ -245,12 +248,12 @@ var IndexSearch = (function() {
                     var dictionary = keyword.substring(0, keySizeIndex);
                     var dictionaryList = indexs__[keySizeIndex][dictionary];
 
-                    if (undefined(dictionaryList)) {
+                    if (notDefined(dictionaryList)) {
                         indexs__[keySizeIndex][dictionary] = {};
                         dictionaryList = indexs__[keySizeIndex][dictionary];
                     }
 
-                    if (undefined(dictionaryList[keyword])) {
+                    if (notDefined(dictionaryList[keyword])) {
                         dictionaryList[keyword] = [];
                     }
                 }
@@ -278,18 +281,19 @@ var IndexSearch = (function() {
         };
     };
 
-    //======================== constructor =========================
+    //============================== constructor ===============================
     return function(repository, options) {
-        if (undefined(repository)) {
+        if (notDefined(repository)) {
             throw new Error('require first parameter is repository');
         }
 
         options = options || {};
 
+        var repository_ = repository || {posts: {}};
         var highlighter_ = new Highlighter(options.highlightClass || 'highlighter');
         var index_ = new MemoryIndex(options.maximumIndexKeySize || 3);
 
-        var pathSeparator_ = options.pathSeparator || '/';
+        var indexSeparator_ = options.indexSeparator || '/';
         var repositoryResult_;
         var keyword_ = '';
         var duplicated = {};
@@ -300,18 +304,18 @@ var IndexSearch = (function() {
          * use for separate keyword from sentence
          */
         var stopword_ = options.stopword || function(text) {
-            return StringUtils.replaceNotation(text).split(' ');
+            return replaceNotation(text).split(' ');
         };
 
 
-        //----------------------------------------------------------
+        //----------------------------------------------------------------------
         createIndex();
 
         function createIndex() {
-            walkRepositoryReadKeyword(repository);
+            walkRepositoryReadKeyword(repository_);
 
-            for (var index in repository.posts) {
-                walkRepositoryWriteIndex(0, index, repository.posts[index]);
+            for (var postIndex in repository_.posts) {
+                walkRepositoryWriteIndex(0, postIndex, repository_.posts[postIndex]);
             }
         }
 
@@ -339,29 +343,30 @@ var IndexSearch = (function() {
             }
         }
 
-        function walkRepositoryWriteIndex(level, path, parentTopic) {
-            if (undefined(duplicated[parentTopic.name])) {
-                duplicated[parentTopic.name] = 0;
-                index_.getIndexWriter().writeIndex(path, parentTopic.name);
+        function walkRepositoryWriteIndex(level, index, repository) {
+            if (notDefined(duplicated[repository.name])) {
+                duplicated[repository.name] = 0;
+                index_.getIndexWriter().writeIndex(index, repository.name);
             } else {
-                duplicated[parentTopic.name] = duplicated[parentTopic.name] + 1;
+                duplicated[repository.name] = duplicated[repository.name] + 1;
             }
 
-            parentTopic.level = 'level-' + level;
-            parentTopic.path = path + '';
-            var posts = parentTopic.posts;
-            if (undefined(posts) || posts.length === 0) {
+            // modify repository
+            repository.level = 'level-' + level;
+            repository.index = index + '';
+
+            var posts = repository.posts;
+            if (empty(posts)) {
                 return;
             }
 
-            for (var topicIndex in posts) {
-                var childTopic = posts[topicIndex];
-                walkRepositoryWriteIndex(level + 1, path + pathSeparator_ + topicIndex, childTopic);
+            for (var postIndex in posts) {
+                walkRepositoryWriteIndex(level + 1, index + indexSeparator_ + postIndex, posts[postIndex]);
             }
         }
 
         this.reIndex = function(repo) {
-            repository = repo;
+            repository_ = repo;
             createIndex();
         };
 
@@ -377,14 +382,23 @@ var IndexSearch = (function() {
             return index_.gets();
         };
 
+        this.clear = function() {
+            return new ResultSearch({
+                content: repository_
+            });
+        };
+
         this.search = function(keyword) {
             if (empty(keyword)) {
                 return new ResultSearch({
-                    content: repository
+                    content: repository_
                 });
             }
 
             keyword = keyword.trim().toLowerCase();
+
+            // keyword search not change such as empty keyword
+            // return old result
             if (keyword_ === keyword) {
                 return new ResultSearch({
                     totalHighlight: highlighter_.getTotalHighlight(),
@@ -399,14 +413,9 @@ var IndexSearch = (function() {
             //
             keyword_ = keyword;
 
-            var dictionary = dictionary = index_.get(keyword_);
-            for (var dictionaryIndex in dictionary) {
-                if (Collections.foundIn(keyword_, dictionaryIndex)) {
-                    for (var index in dictionary[dictionaryIndex]) {
-                        var path = dictionary[dictionaryIndex][index];
-                        pullRepository(path);
-                    }
-                }
+            var indexs = index_.getIndexReader().readIndex(keyword_);
+            for (var idx in indexs) {
+                pullRepository(indexs[idx]);
             }
 
             return new ResultSearch({
@@ -416,13 +425,13 @@ var IndexSearch = (function() {
             });
         };
 
-        function pullRepository(path) {
-            var pathArray = path.split(pathSeparator_);
-            var repositoryPointer = repository;
+        function pullRepository(index) {
+            var indexArray = index.split(indexSeparator_);
+            var repositoryPointer = repository_;
             var resultPointer = repositoryResult_;
 
-            for (var pathIndex in pathArray) {
-                var position = pathArray[pathIndex];
+            for (var idx in indexArray) {
+                var position = indexArray[idx];
 
                 if (empty(position)) {
                     break;
@@ -430,10 +439,10 @@ var IndexSearch = (function() {
 
                 repositoryPointer = repositoryPointer.posts[position];
                 var temp = resultPointer.posts[position];
-                if (undefined(temp)) {
+                if (notDefined(temp)) {
                     temp = {
                         level: repositoryPointer.level,
-                        path: repositoryPointer.path,
+                        index: repositoryPointer.index,
                         name: repositoryPointer.name,
                         link: repositoryPointer.link,
                         highlight: highlighter_.highlight(keyword_, repositoryPointer.name)
@@ -442,7 +451,7 @@ var IndexSearch = (function() {
                     resultPointer.posts[position] = temp;
                 }
 
-                if (undefined(temp.posts)) {
+                if (notDefined(temp.posts)) {
                     temp.posts = {};
                 }
 
