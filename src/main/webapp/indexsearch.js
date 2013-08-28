@@ -102,7 +102,7 @@ var IndexSearch = (function() {
 
     /**
      * class Interface
-     * @author : redcrow
+     * @author redcrow
      * @create on 25/02/2013
      * @website na5cent.blogspot.com
      */
@@ -428,30 +428,35 @@ var IndexSearch = (function() {
         };
     };
 
-    //============================== constructor ===============================
-    return function(repository, options) {
+
+    /**
+     * constructor of IndexSearch
+     * @param {repository} repository
+     * @param {object} options
+     */
+    var constructor = function(repository, options) {
         if (notDefined(repository)) {
             throw new Error('require first parameter is repository');
         }
 
         options = options || {};
 
-        var repository_ = repository || {repositories: {}};
-        var indexOnFields_ = options.indexOnFields || [];
+        var repository__ = repository || {repositories: {}};
+        var indexOnFields__ = options.indexOnFields || [];
 
-        var highlighter_ = new Highlighter(options.highlightClass || 'highlighter');
-        var indexStoreImplmentation_ = options.indexStore || new MemoryIndexStore(options.maximumIndexKeySize || 3);
-        Interface.ensureImplements(indexStoreImplmentation_, [IndexStore]);
+        var highlighter__ = new Highlighter(options.highlightClass || 'highlighter');
+        var indexStoreImplmentation__ = options.indexStore || new MemoryIndexStore(options.maximumIndexKeySize || 3);
+        Interface.ensureImplements(indexStoreImplmentation__, [IndexStore]);
 
-        var indexWriter_ = new IndexWriter(indexStoreImplmentation_);
-        var indexReader_ = new IndexReader(indexStoreImplmentation_);
+        var indexWriter__ = new IndexWriter(indexStoreImplmentation__);
+        var indexReader__ = new IndexReader(indexStoreImplmentation__);
 
-        var indexSeparator_ = options.indexSeparator || '/';
-        var postfixFieldNameHighlight_ = options.postfixFieldNameHighlight || 'Highlight';
+        var indexSeparator__ = options.indexSeparator || '/';
+        var postfixFieldNameHighlight__ = options.postfixFieldNameHighlight || 'Highlight';
 
-        var result_;
-        var keyword_ = '';
-        var duplicated_ = {};
+        var result__;
+        var keyword__ = '';
+        var duplicated__ = {};
 
         /**
          * function stopword
@@ -461,11 +466,11 @@ var IndexSearch = (function() {
             return replaceNotation(text).split(' ');
         };
 
-        if (empty(indexOnFields_)) {
+        if (empty(indexOnFields__)) {
             throw new Error('require {string[]} : options.indexOnFields');
         } else {
-            for (var index in indexOnFields_) {
-                if (indexOnFields_[index] === 'repositories') {
+            for (var index in indexOnFields__) {
+                if (indexOnFields__[index] === 'repositories') {
                     throw new Error('field name \'repositories\' in {string[]} : options.indexOnFields is reserved word');
                 }
             }
@@ -475,14 +480,14 @@ var IndexSearch = (function() {
         createIndex();
 
         function createIndex() {
-            walkRepositoryReadKeyword(repository_);
+            walkRepositoryReadKeyword(repository__);
 
-            for (var repoIndex in repository_.repositories) {
-                walkRepositoryWriteIndex(0, repoIndex, repository_.repositories[repoIndex]);
+            for (var repoIndex in repository__.repositories) {
+                walkRepositoryWriteIndex(0, repoIndex, repository__.repositories[repoIndex]);
             }
 
-            for (var duplicateType in duplicated_) {
-                delete duplicated_[duplicateType];
+            for (var duplicateType in duplicated__) {
+                delete duplicated__[duplicateType];
             }
         }
 
@@ -493,13 +498,13 @@ var IndexSearch = (function() {
 
             var keywords = stopword_(sentence);
             for (var keywordIndex in keywords) {
-                indexWriter_.addDictionary(keywords[keywordIndex]);
+                indexWriter__.addDictionary(keywords[keywordIndex]);
             }
         }
 
         function walkRepositoryReadKeyword(repository) {
-            for (var field in indexOnFields_) {
-                var indexName = indexOnFields_[field];
+            for (var field in indexOnFields__) {
+                var indexName = indexOnFields__[field];
                 createDictionary(repository[indexName]);
             }
 
@@ -514,8 +519,8 @@ var IndexSearch = (function() {
         }
 
         function walkRepositoryWriteIndex(level, index, repository) {
-            reduceIndex(repository, function(indexName) {
-                indexWriter_.writeIndex(index, repository[indexName]);
+            reduceIndex(repository, function(sentence) {
+                indexWriter__.writeIndex(index, sentence);
             });
 
             // add field
@@ -528,36 +533,36 @@ var IndexSearch = (function() {
             }
 
             for (var repoIndex in repositories) {
-                walkRepositoryWriteIndex(level + 1, index + indexSeparator_ + repoIndex, repositories[repoIndex]);
+                walkRepositoryWriteIndex(level + 1, index + indexSeparator__ + repoIndex, repositories[repoIndex]);
             }
         }
 
         function reduceIndex(repository, callback) {
-            for (var field in indexOnFields_) {
-                var indexName = indexOnFields_[field];
-                var duplicatedType = duplicated_[indexName];
+            for (var field in indexOnFields__) {
+                var indexName = indexOnFields__[field];
+                var duplicatedType = duplicated__[indexName];
 
                 if (notDefined(duplicatedType)) {
                     duplicatedType = {};
-                    duplicated_[indexName] = duplicatedType;
+                    duplicated__[indexName] = duplicatedType;
                 }
 
                 var duplicatedField = duplicatedType[repository[indexName]];
                 if (notDefined(duplicatedField)) {
                     duplicatedField = true;
                     duplicatedType[repository[indexName]] = duplicatedField;
-                    callback(indexName);
+                    callback(repository[indexName]);
                 }
             }
         }
 
         this.reIndex = function(repo) {
-            repository_ = repo;
+            repository__ = repo;
             createIndex();
         };
 
         this.getKeyword = function() {
-            return keyword_;
+            return keyword__;
         };
 
         this.getRepository = function() {
@@ -565,19 +570,19 @@ var IndexSearch = (function() {
         };
 
         this.getIndexs = function() {
-            return indexReader_.getIndexs();
+            return indexReader__.getIndexs();
         };
 
         this.clear = function() {
             return new ResultSearch({
-                content: repository_
+                content: repository__
             });
         };
 
         this.search = function(keyword) {
             if (empty(keyword)) {
                 return new ResultSearch({
-                    content: repository_
+                    content: repository__
                 });
             }
 
@@ -585,36 +590,36 @@ var IndexSearch = (function() {
 
             // keyword not change, such as user try type an empty keyword
             // return old result
-            if (keyword_ === keyword) {
+            if (keyword__ === keyword) {
                 return new ResultSearch({
-                    totalHighlight: highlighter_.getTotalHighlight(),
-                    totalSentence: highlighter_.getTotalSentence(),
-                    content: result_
+                    totalHighlight: highlighter__.getTotalHighlight(),
+                    totalSentence: highlighter__.getTotalSentence(),
+                    content: result__
                 });
             }
 
             //clean results
-            highlighter_.resetTotal();
-            result_ = {repositories: {}};
+            highlighter__.resetTotal();
+            result__ = {repositories: {}};
             //
-            keyword_ = keyword;
+            keyword__ = keyword;
 
-            var indexs = indexReader_.readIndex(keyword_);
+            var indexs = indexReader__.readIndex(keyword__);
             for (var idx in indexs) {
                 pullRepository(indexs[idx]);
             }
 
             return new ResultSearch({
-                totalHighlight: highlighter_.getTotalHighlight(),
-                totalSentence: highlighter_.getTotalSentence(),
-                content: result_
+                totalHighlight: highlighter__.getTotalHighlight(),
+                totalSentence: highlighter__.getTotalSentence(),
+                content: result__
             });
         };
 
         function pullRepository(index) {
-            var indexArray = index.split(indexSeparator_);
-            var repositoryPointer = repository_;
-            var resultPointer = result_;
+            var indexArray = index.split(indexSeparator__);
+            var repositoryPointer = repository__;
+            var resultPointer = result__;
 
             for (var idx in indexArray) {
                 var subIndex = indexArray[idx];
@@ -643,12 +648,12 @@ var IndexSearch = (function() {
             for (var fieldName in repository) {
                 if (fieldName !== 'repositories') {
                     newRepository[fieldName] = repository[fieldName];
-                    for (var indexName in indexOnFields_) {
-                        if (fieldName === indexOnFields_[indexName]) {
+                    for (var indexName in indexOnFields__) {
+                        if (fieldName === indexOnFields__[indexName]) {
                             var sentence = newRepository[fieldName];
-                            var highlightText = highlighter_.highlight(keyword_, sentence);
+                            var highlightText = highlighter__.highlight(keyword__, sentence);
                             if (notEmpty(highlightText)) {
-                                newRepository[fieldName + postfixFieldNameHighlight_] = highlightText;
+                                newRepository[fieldName + postfixFieldNameHighlight__] = highlightText;
                             }
                         }
                     }
@@ -658,4 +663,11 @@ var IndexSearch = (function() {
             return newRepository;
         }
     };
+
+
+    /**
+     * IndexSearch return
+     */
+    return constructor;
+
 })();
