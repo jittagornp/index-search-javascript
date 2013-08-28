@@ -21,7 +21,7 @@
                     var inputSearch = $('#inputSearch');
                     var resultSearch = $('#resultSearch');
 
-                    showResult(topic);
+                    showResult(repository);
                     inputSearch.keyup(function() {
                         var keyword = inputSearch.val();
                         var resultSearch = indexSearch.search(keyword);
@@ -52,7 +52,7 @@
                         }
                     }
                 });
-            })(jQuery, new IndexSearch(topic));
+            })(jQuery, new IndexSearch(repository));
         </script>
 
         <input id="inputSearch"/>
