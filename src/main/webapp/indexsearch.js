@@ -171,7 +171,7 @@ var IndexSearch = (function() {
      * for read write an index
      */
     var MemoryIndex = function(maximumKeySize) {
-        if (maximumKeySize < 1) {
+        if (notDefined(maximumKeySize) || maximumKeySize < 1) {
             maximumKeySize = 1;
         }
 
@@ -296,7 +296,7 @@ var IndexSearch = (function() {
         var indexSeparator_ = options.indexSeparator || '/';
         var result_;
         var keyword_ = '';
-        var duplicated = {};
+        var duplicated_ = {};
 
         /**
          * function stopword
@@ -314,8 +314,8 @@ var IndexSearch = (function() {
         function createIndex() {
             walkRepositoryReadKeyword(repository_);
 
-            for (var postIndex in repository_.repositories) {
-                walkRepositoryWriteIndex(0, postIndex, repository_.repositories[postIndex]);
+            for (var repoIndex in repository_.repositories) {
+                walkRepositoryWriteIndex(0, repoIndex, repository_.repositories[repoIndex]);
             }
         }
 
@@ -349,11 +349,20 @@ var IndexSearch = (function() {
         function walkRepositoryWriteIndex(level, index, repository) {
             for (var field in indexOnFields_) {
                 var indexName = indexOnFields_[field];
-                if (notDefined(duplicated[repository[indexName]])) {
-                    duplicated[repository[indexName]] = 0;
+                var duplicatedType = duplicated_[indexName];
+                
+                if(notDefined(duplicatedType)){
+                    duplicatedType = {};
+                    duplicated_[indexName] = duplicatedType;
+                }
+                
+                var duplicatedField = duplicatedType[repository[indexName]];
+                if (notDefined(duplicatedField)) {
+                    duplicatedField = 0;
+                    duplicatedType[repository[indexName]] = duplicatedField;
                     index_.getIndexWriter().writeIndex(index, repository[indexName]);
                 } else {
-                    duplicated[repository[indexName]] = duplicated[repository[indexName]] + 1;
+                    duplicatedField = duplicatedField + 1;
                 }
             }
 
@@ -366,8 +375,8 @@ var IndexSearch = (function() {
                 return;
             }
 
-            for (var postIndex in repositories) {
-                walkRepositoryWriteIndex(level + 1, index + indexSeparator_ + postIndex, repositories[postIndex]);
+            for (var repoIndex in repositories) {
+                walkRepositoryWriteIndex(level + 1, index + indexSeparator_ + repoIndex, repositories[repoIndex]);
             }
         }
 
