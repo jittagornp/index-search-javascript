@@ -514,7 +514,7 @@ var IndexSearch = (function() {
         }
 
         function walkRepositoryWriteIndex(level, index, repository) {
-            reduceRepository(repository, function(indexName) {
+            reduceIndex(repository, function(indexName) {
                 indexWriter_.writeIndex(index, repository[indexName]);
             });
 
@@ -532,7 +532,7 @@ var IndexSearch = (function() {
             }
         }
 
-        function reduceRepository(repository, callback) {
+        function reduceIndex(repository, callback) {
             for (var field in indexOnFields_) {
                 var indexName = indexOnFields_[field];
                 var duplicatedType = duplicated_[indexName];
