@@ -104,6 +104,25 @@ var IndexSearch = (function() {
         return is(data, 'Undefined');
     }
 
+    function totalProperties(object) {
+        var total = 0;
+        for (var property in object) {
+            total = total + 1;
+        }
+
+        return total;
+    }
+
+    function numberFormat(number) {
+        var flotNumber = parseFloat(number);
+        var integerNumber = parseInt(number);
+        if ((flotNumber - integerNumber) === 0) {
+            return integerNumber;
+        } else {
+            return new Number(number).toFixed(2);
+        }
+    }
+
     /**
      * class Interface
      * @author redcrow
@@ -434,6 +453,116 @@ var IndexSearch = (function() {
         };
     };
 
+    /**
+     * class Suggession
+     * 
+     */
+    var Suggestion = function(settings) {
+        var dictionary__ = settings.dictionary;
+        var samePercent__ = settings.samePercent;
+        var suggestionsSize__ = settings.suggestionsSize;
+
+        /**
+         * for find total character map of string
+         */
+        function reduceKeywordAndTransformToMap(keyword) {
+            var map = {};
+            for (var i = 0; i < keyword.length; i++) {
+                var character = keyword.charAt(i);
+                if (notDefined(map[character])) {
+                    map[character] = {
+                        duplicate: 0,
+                        position: 0
+                    };
+                }
+                map[character].duplicate = map[character].duplicate + 1;
+                map[character].position = map[character].position + i;
+            }
+
+            return map;
+        }
+
+        /**
+         * for compute percentage between keyword and word compare
+         */
+        function computePercentage(keywordMap, compareMap) {
+            var percentTotal = 0;
+
+            for (var keywordProperty in keywordMap) {
+                if (notDefined(compareMap[keywordProperty])) {
+                    compareMap[keywordProperty] = {
+                        duplicate: 0,
+                        position: 0
+                    };
+                }
+
+                var keyword = keywordMap[keywordProperty];
+                var compare = compareMap[keywordProperty];
+
+                var keyWordPropertyValue = keyword.duplicate + keyword.position;
+                var comparePropertyValue = compare.duplicate + compare.position;
+
+                if (keyWordPropertyValue !== 0 && comparePropertyValue !== 0) {
+
+                    var propertyBase = (comparePropertyValue + keyWordPropertyValue) / 2;
+                    if (keyWordPropertyValue >= comparePropertyValue) {
+                        percentTotal = percentTotal + (comparePropertyValue / propertyBase);
+                    } else {
+                        percentTotal = percentTotal + (keyWordPropertyValue / propertyBase);
+                    }
+                }
+            }
+
+            var mapBase = (totalProperties(keywordMap) + totalProperties(compareMap)) / 2;
+
+            return 100 * (percentTotal / mapBase);
+        }
+
+        this.getSuggestionsWhenSearchFound = function() {
+            var suggestions = [];
+            for (var dictionaryIndex in dictionary__) {
+                suggestions.push({
+                    word: dictionaryIndex
+                });
+
+                if (suggestions.length === suggestionsSize__) {
+                    break;
+                }
+            }
+
+            suggestions = suggestions.sort(function(keyword1, keyword2) {
+                return keyword1.length - keyword2.length;
+            });
+
+            return suggestions;
+        };
+
+        this.getSuggestionsWhenSearchNotFound = function(keyword) {
+            var suggestions = [];
+
+            for (var dictionaryIndex in dictionary__) {
+                var compareWord = dictionaryIndex.toLowerCase();
+
+                var keywordMap = reduceKeywordAndTransformToMap(keyword);
+                var compareMap = reduceKeywordAndTransformToMap(compareWord);
+                var percent = computePercentage(keywordMap, compareMap);
+
+                if (percent >= samePercent__) {
+                    suggestions.push({
+                        word: compareWord,
+                        percent: numberFormat(percent)
+                    });
+                }
+            }
+
+            suggestions = suggestions.sort(function(keyword1, keyword2) {
+                return keyword2.percent - keyword1.percent;
+            });
+
+            return suggestions;
+        };
+    };
+
 
     /**
      * constructor of IndexSearch
@@ -465,8 +594,9 @@ var IndexSearch = (function() {
         var keyword__ = '';
         var duplicated__ = {};
         var additionalDictionaries__ = settings.additionalDictionaries || [];
-        var seggestions = [];
-        var suggestionsSize__ = settings.suggestionsSize || 10;
+        var suggestionList__ = [];
+        var suggestionSamePercent__ = settings.suggestionSamePercent__ || 60;
+        var notFoundTimes__ = 0;
 
         /**
          * function stopword
@@ -604,14 +734,14 @@ var IndexSearch = (function() {
                     totalPosition: highlighter__.getTotalHighlight(),
                     totalSentence: highlighter__.getTotalSentence(),
                     content: resultNode__,
-                    suggestions: seggestions
+                    suggestions: suggestionList__
                 });
             }
 
             //clean results
             highlighter__.resetTotal();
             resultNode__ = {nodes: []};
-            seggestions = [];
+            suggestionList__ = [];
             //
             keyword__ = keyword;
 
@@ -619,32 +749,36 @@ var IndexSearch = (function() {
             for (var idx in indexs) {
                 pullNode(indexs[idx]);
             }
-            
-            seggestions = getSuggestions(indexReader__.getDictionary(keyword__));
+
+            pullSuggestions();
 
             return new ResultSearch({
                 totalPosition: highlighter__.getTotalHighlight(),
                 totalSentence: highlighter__.getTotalSentence(),
                 content: resultNode__,
-                suggestions: seggestions
+                suggestions: suggestionList__
             });
         };
 
-        function getSuggestions(dictionary) {
-            var suggestions = [];
-            for (var dictionaryIndex in dictionary) {
-                suggestions.push(dictionaryIndex);
+        function pullSuggestions() {
+            if (empty(resultNode__.nodes)) {
+                notFoundTimes__ = notFoundTimes__ + 1;
+                var key = keyword__.substring(0, keyword__.length - notFoundTimes__);
 
-                if (suggestions.length === suggestionsSize__) {
-                    break;
-                }
+                suggestionList__ = new Suggestion({
+                    dictionary: indexReader__.getDictionary(key),
+                    suggestionsSize: settings.suggestionsSize || 10,
+                    samePercent: suggestionSamePercent__
+                }).getSuggestionsWhenSearchNotFound(keyword__);
+            } else {
+                notFoundTimes__ = 0;
+
+                suggestionList__ = new Suggestion({
+                    dictionary: indexReader__.getDictionary(keyword__),
+                    suggestionsSize: settings.suggestionsSize || 10,
+                    samePercent: suggestionSamePercent__
+                }).getSuggestionsWhenSearchFound();
             }
-
-            suggestions = suggestions.sort(function(keyword1, keyword2){
-                return keyword1.length - keyword2.length;
-            });
-
-            return suggestions;
         }
 
         function pullNode(index) {

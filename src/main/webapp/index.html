@@ -36,41 +36,54 @@
                     $inputSearch.keyup(function() {
                         var keyword = $inputSearch.val();
                         var result = indexSearch__.search(keyword);
+                        
+                        $summary.text('');
                         if (result.getTotalPosition() !== 0) {
                             $summary.text('search : \'' + indexSearch__.getKeyword() + '\' found ' + result.getTotalPosition() + ' positions on ' + result.getTotalSentence() + ' sentences.');
-                        }else{
-                            $summary.text('');
                         }
-                        
-                        if(result.getSuggestions().length !== 0){
-                            $suggestions.text('suggestions : ' + result.getSuggestions());
-                        }else{
-                            $suggestions.text('');
+
+
+                        $suggestions.text('');
+                        var suggestions = result.getSuggestions();
+                        if (suggestions.length !== 0) {
+                            $suggestions.append('suggestions : ');
+                            var list = '';
+                            for (var suggestIndex in suggestions) {
+                                var suggest = suggestions[suggestIndex];
+                                var word = suggest.word;
+                                if (suggest.percent) {
+                                    word = word + '(' + suggest.percent + '%)';
+                                }
+                                
+                                list = list + ', ' + word;
+                            }
+                            
+                            $suggestions.append(list.substring(2));
                         }
-                        
+
                         showResult(result.getContent());
                     });
 
-                    function showResult(result) {
-                        var $parentDOM = $('<ul>');
-                        $repositories.html($parentDOM);
-                        walkRepositoryShowResult(result, $parentDOM);
+                    function showResult(rootNode) {
+                        var $rootDOM = $('<ul>');
+                        $repositories.html($rootDOM);
+                        walkRepositoryShowResult(rootNode, $rootDOM);
                     }
 
-                    function walkRepositoryShowResult(node, $parentDOM) {
-                        var nodes = node.nodes;
+                    function walkRepositoryShowResult(parentNode, $parentDOM) {
+                        var nodes = parentNode.nodes;
                         if (!nodes || nodes.length === 0) {
                             return;
                         }
 
                         for (var index in nodes) {
-                            var nd = nodes[index];
-                            var $link = $('<a>').attr('href', nd.link).html(nd.nameHighlight || nd.name);
+                            var childNode = nodes[index];
+                            var $link = $('<a>').attr('href', childNode.link).html(childNode.nameHighlight || childNode.name);
                             var $childDOM = $('<ol>');
-                            var $list = $('<li>').attr('class', nd.level).append($link).append($childDOM);
+                            var $list = $('<li>').attr('class', childNode.level).append($link).append($childDOM);
                             $parentDOM.append($list);
 
-                            walkRepositoryShowResult(nd, $childDOM);
+                            walkRepositoryShowResult(childNode, $childDOM);
                         }
                     }
                 });
