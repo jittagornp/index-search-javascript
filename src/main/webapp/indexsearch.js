@@ -467,8 +467,8 @@ var IndexSearch = (function() {
      */
     var Suggestion = function(settings) {
         var dictionary__ = settings.dictionary;
-        var samePercent__ = settings.samePercent;
-        var suggestionsSize__ = settings.suggestionsSize;
+        var samePercent__ = settings.samePercent || 60;
+        var suggestionsSize__ = settings.suggestionsSize || 10;
 
         /**
          * for find total character map of string
@@ -504,11 +504,11 @@ var IndexSearch = (function() {
                     };
                 }
 
-                var keyword = keywordMap[keywordProperty];
-                var compare = compareMap[keywordProperty];
+                var keywordObj = keywordMap[keywordProperty];
+                var compareObj = compareMap[keywordProperty];
 
-                var keyWordPropertyValue = keyword.duplicate + keyword.position;
-                var comparePropertyValue = compare.duplicate + compare.position;
+                var keyWordPropertyValue = keywordObj.duplicate + keywordObj.position;
+                var comparePropertyValue = compareObj.duplicate + compareObj.position;
 
                 if (keyWordPropertyValue !== 0 && comparePropertyValue !== 0) {
 
@@ -607,7 +607,7 @@ var IndexSearch = (function() {
         var duplicated__ = {};
         var additionalDictionaries__ = settings.additionalDictionaries || [];
         var suggestionList__ = [];
-        var suggestionSamePercent__ = settings.suggestionSamePercent__ || 60;
+        var suggestionSamePercent__ = settings.suggestionSamePercent;
         var notFoundTimes__ = 0;
 
         /**
@@ -779,7 +779,7 @@ var IndexSearch = (function() {
 
                 suggestionList__ = new Suggestion({
                     dictionary: indexReader__.getDictionary(key),
-                    suggestionsSize: settings.suggestionsSize || 10,
+                    suggestionsSize: settings.suggestionsSize,
                     samePercent: suggestionSamePercent__
                 }).getSuggestionsWhenSearchNotFound(keyword__);
             } else {
@@ -787,7 +787,7 @@ var IndexSearch = (function() {
 
                 suggestionList__ = new Suggestion({
                     dictionary: indexReader__.getDictionary(keyword__),
-                    suggestionsSize: settings.suggestionsSize || 10,
+                    suggestionsSize: settings.suggestionsSize,
                     samePercent: suggestionSamePercent__
                 }).getSuggestionsWhenSearchFound();
             }
