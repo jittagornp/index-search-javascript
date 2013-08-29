@@ -65,7 +65,7 @@ var settings = {
 	//indexStore : instance on class which implement interface IndexStore,
 	//postfixFieldNameHighlight : defualt is 'Highlight',
 	//percentSuggest : default is 60,
-	//stopword : function(sentence){  by default use while space for stop word 
+	//stopword : function(sentence){  by default use white space for stop word 
 	//    return array of keyword	
 	//}
 };
@@ -146,4 +146,4 @@ when you search you will see field 'nameHighligh' (by default) which is html hig
 IndexSearch will find other keyword suggestions which same the keyword search following percentSuggest.
 such as you search 'java2' but not found this keyword in dictionary, it's will find other keyword which same 'java2', 
 result is 'java' because 'java' same 'java2' 75% > 60%(by default)  
-- <i>stopword</i> (optional) : is the function for separate keyword from sentence. by default user while space for stop word.  
+- <i>stopword</i> (optional) : is the function for separate keyword from sentence. by default user white space for stop word.  
