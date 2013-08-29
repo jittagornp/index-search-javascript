@@ -19,27 +19,27 @@
             (function($, node) {
                 $(function() {
                     //==========================================================
-                    var indexSearch = new IndexSearch(node, {
+                    var indexSearch__ = new IndexSearch(node, {
                         maximumIndexKeySize: 5,
                         indexOnFields: ['name'],
                         additionalDictionaries: additionalDictionaries
                     });
                     //==========================================================
                     
-                    var inputSearch = $('#inputSearch');
-                    var resultSearch = $('#resultSearch');
+                    var $inputSearch = $('#inputSearch');
+                    var $resultSearch = $('#resultSearch');
 
                     showResult(node);
-                    inputSearch.keyup(function() {
-                        var keyword = inputSearch.val();
-                        var result = indexSearch.search(keyword);
-                        console.log(indexSearch.getKeyword() + ' : total => ' + result.getTotalHighlight());
+                    $inputSearch.keyup(function() {
+                        var keyword = $inputSearch.val();
+                        var result = indexSearch__.search(keyword);
+                        console.log(indexSearch__.getKeyword() + ' : total => ' + result.getTotalHighlight());
                         showResult(result.getContent());
                     });
 
                     function showResult(result) {
                         var ul = $('<ul>');
-                        resultSearch.html(ul);
+                        $resultSearch.html(ul);
                         walkRepositoryShowResult(result, ul);
                     }
 
