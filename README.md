@@ -3,7 +3,7 @@ index-search-javascript
 
 for search repositories tree by index search methodology.<br/>
 <h3>How to use</h3>
-1. <b>define repositories or data for searching</b><br/>
+1) <b>define repositories or data for searching</b><br/>
 
 node pattern
 ```js
@@ -54,14 +54,15 @@ var rootNode = {
         ...
 }
 ```
-2. <b>create IndexSearch instance and set require settings</b>
+2) <b>create IndexSearch instance and set require settings</b>
 
 ```js
 var settings = {
 	repository: rootNode, //require
 	indexOnFields: ['name'], //require
 	maximumDictionaryKeySize: 5, 
-	additionalDictionaries: additionalDictionaries
+	additionalDictionaries: additionalDictionaries,
+	//indexStore : 
 };
 
 var indexSearch__ = new IndexSearch(settings);
@@ -69,7 +70,7 @@ var indexSearch__ = new IndexSearch(settings);
 <b>settings attribute</b>:<br/>
 - <i>repository</i> (require) : the repository that you define following above example (topic 1).
 - <i>indexOnFields</i> (require) : an array of string for tell IndexSearch that you need make index on the field name in your node.
-- <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary, following above example define is 5, if keyword you as 'javascript'
+- <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary, following above example define is 5<br/> if keyword you as 'javascript'
 IndexSearch will create dictionary 5 pattern is 'j', 'ja', 'jav', 'java', 'javas'
 - <i>additionalDictionaries</i> (optional) : an arry of string for add additional keyword from external into dictionary
 <br/>you can define following as : <br/>
@@ -85,6 +86,15 @@ IndexSearch will create dictionary 5 pattern is 'j', 'ja', 'jav', 'java', 'javas
     'แชร์',
     'เหมาะ'
 ];
+```
+- <i>indexStore</i> (optional) : store of keeping an index, default is MemeryIndexStore<br/>
+you ca custom yor index store by implement an interface IndexStore which define following method :
+
+```js
+/**
+ * define IndexStore interface
+ */
+var IndexStore = new Interface('IndexStore', ['writeIndex', 'readIndex', 'addDictionary', 'getDictionary', 'getIndexs']);
 ```
 
 
