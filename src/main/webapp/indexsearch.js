@@ -402,11 +402,19 @@ var IndexSearch = (function() {
         };
 
         this.getDictionary = function(keyword) {
-            var dictionary;
+            if(empty(keyword)){
+                return {};
+            }
+            
+            var dictionary = {};
             if (keyword.length <= maximumKeySize__) {
                 dictionary = indexs__[keyword.length][keyword];
             } else {
                 dictionary = indexs__[maximumKeySize__][keyword.substring(0, maximumKeySize__)];
+            }
+
+            if(notDefined(dictionary)){
+                dictionary = {};
             }
 
             return dictionary;
