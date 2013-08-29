@@ -74,12 +74,12 @@ var settings = {
 var indexSearch__ = new IndexSearch(settings);
 ```
 <b>settings attribute</b>:<br/>
-- <i>repository</i> (require) : the repository that you define following above example (topic 1).
+- <i>repository</i> (require) : the repository that you define following above example.
 
 - <i>indexOnFields</i> (require) : an array of string for tell IndexSearch that you need make index on the field name in your node.
 
 - <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary. following above example define is 5<br/> if keyword you as 'javascript'
-IndexSearch will create dictionary 5 pattern is 'j', 'ja', 'jav', 'java', 'javas'
+IndexSearch will create dictionary 5 patterns is 'j', 'ja', 'jav', 'java', 'javas'
 
 - <i>additionalDictionaries</i> (optional) : an arry of string for add additional keyword from external into dictionary
 <br/>you can define following as : <br/>
@@ -96,7 +96,7 @@ IndexSearch will create dictionary 5 pattern is 'j', 'ja', 'jav', 'java', 'javas
     'เหมาะ'
 ];
 ```
-- <i>indexStore</i> (optional) : store of keeping an index, default is MemeryIndexStore<br/>
+- <i>indexStore</i> (optional) : store for keeping an index, default is MemeryIndexStore<br/>
 you can custom your index store by implement an interface IndexStore which define following method :
 
 ```js
