@@ -72,7 +72,7 @@ var indexSearch__ = new IndexSearch(settings);
 - <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary, following above example define is 5, if keyword you as 'javascript'
 IndexSearch will create dictionary 5 pattern is 'j', 'ja', 'jav', 'java', 'javas'
 - <i>additionalDictionaries</i> (optional) : an arry of string for add additional keyword from external into dictionary
-you can define following<br/>
+<br/>you can define following as : <br/>
 
 ```js
 ﻿var additionalDictionaries = [
