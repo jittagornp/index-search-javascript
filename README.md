@@ -3,12 +3,12 @@ index-search-javascript
 
 for search repositories tree<br/>
 <h3>How to use</h3>
-1) <b>define repositories</b> or <b>data</b> for searching<br/>
+<b> 1) define repositories or data for searching</b><br/>
 node pattern
 ```js
 var node = {
     
-    //custom your attribute...
+    //custom your attributes...
     
     nodes : [ ] //require this attribute    
 };
@@ -34,7 +34,6 @@ var node = {
                 }
             ]
         },
-        /* algorithm */
         {
             name: "algorithm",
             link: "http://na5cent.blogspot.com/search/label/algorithm",
@@ -55,14 +54,16 @@ var node = {
         ...
 }
 ```
-2) create IndexSearch instance and set require settings
+<b>2) create IndexSearch instance and set require settings</b>
 ```js
-var indexSearch__ = new IndexSearch({
+var settings = {
 	repository: repository, //require
 	indexOnFields: ['name'], //require
 	maximumIndexKeySize: 5,
 	additionalDictionaries: additionalDictionaries
-});
+};
+
+var indexSearch__ = new IndexSearch(settings);
 ```
 
 
