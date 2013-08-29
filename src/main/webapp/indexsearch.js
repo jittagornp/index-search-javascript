@@ -12,7 +12,7 @@ var IndexSearch = (function() {
     }
 
     function notDefined(object) {
-        return !defined(object);
+        return isUndefined(object);
     }
 
     function empty(list) {

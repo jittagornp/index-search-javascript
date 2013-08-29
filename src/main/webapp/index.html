@@ -16,9 +16,16 @@
         <script src="additionalDictionaries.js"></script>
         <script src="indexsearch.js"></script>
         <script>
-            (function($, indexSearch) {
-                console.log(indexSearch.getIndexs());
+            (function($, node) {
                 $(function() {
+                    //==========================================================
+                    var indexSearch = new IndexSearch(node, {
+                        maximumIndexKeySize: 5,
+                        indexOnFields: ['name'],
+                        additionalDictionaries: additionalDictionaries
+                    });
+                    //==========================================================
+                    
                     var inputSearch = $('#inputSearch');
                     var resultSearch = $('#resultSearch');
 
@@ -43,21 +50,17 @@
                         }
 
                         for (var index in nodes) {
-                            var repo = nodes[index];
-                            var link = $('<a>').attr('href', repo.link).html(repo.nameHighlight || repo.name);
+                            var nd = nodes[index];
+                            var link = $('<a>').attr('href', nd.link).html(nd.nameHighlight || nd.name);
                             var childDOM = $('<ol>');
-                            var li = $('<li>').attr('class', repo.level).append(link).append(childDOM);
+                            var li = $('<li>').attr('class', nd.level).append(link).append(childDOM);
                             parentDOM.append(li);
 
-                            walkRepositoryShowResult(repo, childDOM);
+                            walkRepositoryShowResult(nd, childDOM);
                         }
                     }
                 });
-            })(jQuery, new IndexSearch(node, {
-                maximumIndexKeySize : 5,
-                indexOnFields : ['name'],
-                additionalDictionaries : additionalDictionaries
-            }));
+            })(jQuery, node);
         </script>
 
         <input id="inputSearch"/>
