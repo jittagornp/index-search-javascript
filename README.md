@@ -131,6 +131,6 @@ var MyIndexStore = function(maximumDictionaryKeySize){
     }
 };
 ```
-- <i>postfixFieldNameHighlight</i> (optional) : postfix of index field name such as you need index on field 'name'<br/>
-when IndexSearch you search you will see field 'nameHighligh' (by default) which is html highlight of 'name'
+- <i>postfixFieldNameHighlight</i> (optional) : postfix of index field name, such as you need index on field 'name'<br/>
+when you search you will see field 'nameHighligh' (by default) which is html highlight of 'name'
 
