@@ -327,15 +327,15 @@ var IndexSearch = (function() {
      * class MemoryIndexStore
      * for store index in memory
      */
-    var MemoryIndexStore = function(maximumKeySize) {
-        var maximumKeySize__ = maximumKeySize;
+    var MemoryIndexStore = function(maximumDictionaryKeySize) {
+        var maximumDictionaryKeySize__ = maximumDictionaryKeySize;
 
-        if (notDefined(maximumKeySize__) || maximumKeySize__ < 1) {
-            maximumKeySize__ = 1;
+        if (notDefined(maximumDictionaryKeySize__) || maximumDictionaryKeySize__ < 1) {
+            maximumDictionaryKeySize__ = 1;
         }
 
         var indexs__ = [];
-        for (var keySizeIndex = 1; keySizeIndex <= maximumKeySize__; keySizeIndex++) {
+        for (var keySizeIndex = 1; keySizeIndex <= maximumDictionaryKeySize__; keySizeIndex++) {
             indexs__[keySizeIndex] = {};
         }
 
@@ -407,10 +407,10 @@ var IndexSearch = (function() {
             }
 
             var dictionary = {};
-            if (keyword.length <= maximumKeySize__) {
+            if (keyword.length <= maximumDictionaryKeySize__) {
                 dictionary = indexs__[keyword.length][keyword];
             } else {
-                dictionary = indexs__[maximumKeySize__][keyword.substring(0, maximumKeySize__)];
+                dictionary = indexs__[maximumDictionaryKeySize__][keyword.substring(0, maximumDictionaryKeySize__)];
             }
 
             if (notDefined(dictionary)) {
@@ -467,7 +467,7 @@ var IndexSearch = (function() {
      */
     var Suggestion = function(settings) {
         var dictionary__ = settings.dictionary;
-        var samePercent__ = settings.samePercent || 60;
+        var percentSuggest__ = settings.percentSuggest || 60;
         var suggestionsSize__ = settings.suggestionsSize || 10;
 
         /**
@@ -557,7 +557,7 @@ var IndexSearch = (function() {
                 var compareMap = reduceKeywordAndTransformToMap(compareWord);
                 var percent = computePercentage(keywordMap, compareMap);
 
-                if (percent >= samePercent__) {
+                if (percent >= percentSuggest__) {
                     suggestions.push({
                         word: compareWord,
                         percent: numberFormat(percent)
@@ -595,7 +595,7 @@ var IndexSearch = (function() {
         var indexOnFields__ = settings.indexOnFields || [];
 
         var highlighter__ = new Highlighter(settings.highlightClass || 'highlighter');
-        var indexStoreImplmentation__ = settings.indexStore || new MemoryIndexStore(settings.maximumIndexKeySize || 3);
+        var indexStoreImplmentation__ = settings.indexStore || new MemoryIndexStore(settings.maximumDictionaryKeySize || 3);
         Interface.ensureImplements(indexStoreImplmentation__, [IndexStore]);
 
         var indexWriter__ = new IndexWriter(indexStoreImplmentation__);
@@ -609,7 +609,6 @@ var IndexSearch = (function() {
         var duplicated__ = {};
         var additionalDictionaries__ = settings.additionalDictionaries || [];
         var suggestionList__ = [];
-        var suggestionSamePercent__ = settings.suggestionSamePercent;
         var notFoundTimes__ = 0;
 
         /**
@@ -783,7 +782,7 @@ var IndexSearch = (function() {
                 suggestionList__ = new Suggestion({
                     dictionary: indexReader__.getDictionary(key),
                     suggestionsSize: settings.suggestionsSize,
-                    samePercent: suggestionSamePercent__
+                    percentSuggest: settings.percentSuggest
                 }).getSuggestionsWhenSearchNotFound(keyword__);
             } else {
                 notFoundTimes__ = 0;
@@ -791,7 +790,7 @@ var IndexSearch = (function() {
                 suggestionList__ = new Suggestion({
                     dictionary: indexReader__.getDictionary(keyword__),
                     suggestionsSize: settings.suggestionsSize,
-                    samePercent: suggestionSamePercent__
+                    percentSuggest: settings.percentSuggest
                 }).getSuggestionsWhenSearchFound(keyword__);
             }
         }
