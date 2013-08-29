@@ -461,7 +461,7 @@ var IndexSearch = (function() {
         var resultNode__;
         var keyword__ = '';
         var duplicated__ = {};
-        var additionalDictionarys__ = options.additionalDictionarys || [];
+        var additionalDictionaries__ = options.additionalDictionaries || [];
 
         /**
          * function stopword
@@ -482,8 +482,8 @@ var IndexSearch = (function() {
 
         function createIndex() {
             walkRepositoryReadKeyword(node__);
-            for (var dictionaryIndex in additionalDictionarys__) {
-                indexWriter__.addDictionary(additionalDictionarys__[dictionaryIndex]);
+            for (var dictionaryIndex in additionalDictionaries__) {
+                indexWriter__.addDictionary(additionalDictionaries__[dictionaryIndex]);
             }
 
             for (var nodeIndex in node__.nodes) {
