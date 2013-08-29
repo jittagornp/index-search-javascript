@@ -20,13 +20,13 @@
                 $(function() {
                     //==========================================================
                     var indexSearch__ = new IndexSearch({
-                        repository : repository,
+                        repository: repository, //require
+                        indexOnFields: ['name'], //require
                         maximumIndexKeySize: 5,
-                        indexOnFields: ['name'],
                         additionalDictionaries: additionalDictionaries
                     });
                     //==========================================================
-                    
+
                     var $inputSearch = $('#inputSearch');
                     var $resultSearch = $('#resultSearch');
 
