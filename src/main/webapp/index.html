@@ -21,7 +21,7 @@
                     var inputSearch = $('#inputSearch');
                     var resultSearch = $('#resultSearch');
 
-                    showResult(repository);
+                    showResult(node);
                     inputSearch.keyup(function() {
                         var keyword = inputSearch.val();
                         var result = indexSearch.search(keyword);
@@ -35,14 +35,14 @@
                         walkTreeShowResult(result, ul);
                     }
 
-                    function walkTreeShowResult(repository, parentDOM) {
-                        var repositories = repository.repositories;
-                        if (!repositories || repositories.length === 0) {
+                    function walkTreeShowResult(node, parentDOM) {
+                        var nodes = node.nodes;
+                        if (!nodes || nodes.length === 0) {
                             return;
                         }
 
-                        for (var index in repositories) {
-                            var repo = repositories[index];
+                        for (var index in nodes) {
+                            var repo = nodes[index];
                             var link = $('<a>').attr('href', repo.link).html(repo.nameHighlight || repo.name);
                             var childDOM = $('<ol>');
                             var li = $('<li>').attr('class', repo.level).append(link).append(childDOM);
@@ -52,7 +52,7 @@
                         }
                     }
                 });
-            })(jQuery, new IndexSearch(repository, {
+            })(jQuery, new IndexSearch(node, {
                 maximumIndexKeySize : 5,
                 indexOnFields : ['name']        
             }));

@@ -206,7 +206,7 @@ var IndexSearch = (function() {
     var ResultSearch = function(result) {
         var totalHighlight__ = result.totalHighlight || 0;
         var totalSentence__ = result.totalSentence || 0;
-        var content__ = result.content || {repositories: {}};
+        var content__ = result.content || {nodes: {}};
         var suggestions__ = result.suggestions || [];
 
         this.getTotalHighlight = function() {
@@ -431,17 +431,17 @@ var IndexSearch = (function() {
 
     /**
      * constructor of IndexSearch
-     * @param {repository} repository
+     * @param {node} node
      * @param {object} options
      */
-    var constructor = function(repository, options) {
-        if (notDefined(repository)) {
-            throw new Error('require first parameter is repository');
+    var constructor = function(node, options) {
+        if (notDefined(node)) {
+            throw new Error('require first parameter is node');
         }
 
         options = options || {};
 
-        var repository__ = repository || {repositories: []};
+        var node__ = node || {nodes: []};
         var indexOnFields__ = options.indexOnFields || [];
 
         var highlighter__ = new Highlighter(options.highlightClass || 'highlighter');
@@ -468,20 +468,18 @@ var IndexSearch = (function() {
 
         if (empty(indexOnFields__)) {
             throw new Error('require {string[]} : options.indexOnFields');
-        } else {
-            if (foundIn('repositories', indexOnFields__)) {
-                throw new Error('field name \'repositories\' in {string[]} : options.indexOnFields is reserved word');
-            }
+        } else if (foundIn('nodes', indexOnFields__)) {
+            throw new Error('field name \'nodes\' in {string[]} : options.indexOnFields is reserved word');
         }
 
         //----------------------------------------------------------------------
         createIndex();
 
         function createIndex() {
-            walkRepositoryReadKeyword(repository__);
+            walkRepositoryReadKeyword(node__);
 
-            for (var repoIndex in repository__.repositories) {
-                walkRepositoryWriteIndex(0, repoIndex, repository__.repositories[repoIndex]);
+            for (var repoIndex in node__.nodes) {
+                walkRepositoryWriteIndex(0, repoIndex, node__.nodes[repoIndex]);
             }
 
             for (var duplicateType in duplicated__) {
@@ -500,42 +498,42 @@ var IndexSearch = (function() {
             }
         }
 
-        function walkRepositoryReadKeyword(repository) {
+        function walkRepositoryReadKeyword(node) {
             for (var field in indexOnFields__) {
                 var indexName = indexOnFields__[field];
-                createDictionary(repository[indexName]);
+                createDictionary(node[indexName]);
             }
 
-            var repositories = repository.repositories;
-            if (empty(repositories)) {
+            var nodes = node.nodes;
+            if (empty(nodes)) {
                 return;
             }
 
-            for (var index in repositories) {
-                walkRepositoryReadKeyword(repositories[index]);
+            for (var index in nodes) {
+                walkRepositoryReadKeyword(nodes[index]);
             }
         }
 
-        function walkRepositoryWriteIndex(level, index, repository) {
-            reduceIndex(repository, function(sentence) {
+        function walkRepositoryWriteIndex(level, index, node) {
+            reduceIndex(node, function(sentence) {
                 indexWriter__.writeIndex(index, sentence);
             });
 
             // add field
-            repository.level = 'level-' + level;
-            repository.index = index + '';
+            node.level = 'level-' + level;
+            node.index = index + '';
 
-            var repositories = repository.repositories;
-            if (empty(repositories)) {
+            var nodes = node.nodes;
+            if (empty(nodes)) {
                 return;
             }
 
-            for (var repoIndex in repositories) {
-                walkRepositoryWriteIndex(level + 1, index + indexSeparator__ + repoIndex, repositories[repoIndex]);
+            for (var repoIndex in nodes) {
+                walkRepositoryWriteIndex(level + 1, index + indexSeparator__ + repoIndex, nodes[repoIndex]);
             }
         }
 
-        function reduceIndex(repository, callback) {
+        function reduceIndex(node, callback) {
             for (var field in indexOnFields__) {
                 var indexName = indexOnFields__[field];
                 var duplicatedType = duplicated__[indexName];
@@ -545,17 +543,17 @@ var IndexSearch = (function() {
                     duplicated__[indexName] = duplicatedType;
                 }
 
-                var duplicatedField = duplicatedType[repository[indexName]];
+                var duplicatedField = duplicatedType[node[indexName]];
                 if (notDefined(duplicatedField)) {
                     duplicatedField = true;
-                    duplicatedType[repository[indexName]] = duplicatedField;
-                    callback(repository[indexName]);
+                    duplicatedType[node[indexName]] = duplicatedField;
+                    callback(node[indexName]);
                 }
             }
         }
 
         this.reIndex = function(repo) {
-            repository__ = repo;
+            node__ = repo;
             createIndex();
         };
 
@@ -564,7 +562,7 @@ var IndexSearch = (function() {
         };
 
         this.getRepository = function() {
-            return repository;
+            return node;
         };
 
         this.getIndexs = function() {
@@ -573,14 +571,14 @@ var IndexSearch = (function() {
 
         this.clear = function() {
             return new ResultSearch({
-                content: repository__
+                content: node__
             });
         };
 
         this.search = function(keyword) {
             if (empty(keyword)) {
                 return new ResultSearch({
-                    content: repository__
+                    content: node__
                 });
             }
 
@@ -598,13 +596,13 @@ var IndexSearch = (function() {
 
             //clean results
             highlighter__.resetTotal();
-            result__ = {repositories: []};
+            result__ = {nodes: []};
             //
             keyword__ = keyword;
 
             var indexs = indexReader__.readIndex(keyword__);
             for (var idx in indexs) {
-                pullRepository(indexs[idx]);
+                pullNode(indexs[idx]);
             }
 
             return new ResultSearch({
@@ -614,10 +612,10 @@ var IndexSearch = (function() {
             });
         };
 
-        function pullRepository(index) {
+        function pullNode(index) {
             var indexArray = index.split(indexSeparator__);
-            var repositoryPointer = repository__;
-            var resultPointer = result__;
+            var nodePointer = node__;
+            var resultNodePointer = result__;
 
             for (var idx in indexArray) {
                 var subIndex = indexArray[idx];
@@ -626,39 +624,39 @@ var IndexSearch = (function() {
                     break;
                 }
 
-                repositoryPointer = repositoryPointer.repositories[subIndex];
-                var repo = resultPointer.repositories[subIndex];
+                nodePointer = nodePointer.nodes[subIndex];
+                var repo = resultNodePointer.nodes[subIndex];
                 if (notDefined(repo)) {
-                    repo = copyRepository(repositoryPointer);
-                    resultPointer.repositories[subIndex] = repo;
+                    repo = copyNode(nodePointer);
+                    resultNodePointer.nodes[subIndex] = repo;
                 }
 
-                if (notDefined(repo.repositories)) {
-                    repo.repositories = [];
+                if (notDefined(repo.nodes)) {
+                    repo.nodes = [];
                 }
 
-                resultPointer = repo;
+                resultNodePointer = repo;
             }
         }
 
-        function copyRepository(repository) {
-            var newRepository = {};
-            for (var fieldName in repository) {
-                if (fieldName !== 'repositories') {
-                    newRepository[fieldName] = repository[fieldName];
+        function copyNode(node) {
+            var newNode = {};
+            for (var fieldName in node) {
+                if (fieldName !== 'nodes') {
+                    newNode[fieldName] = node[fieldName];
                     for (var indexName in indexOnFields__) {
                         if (fieldName === indexOnFields__[indexName]) {
-                            var sentence = newRepository[fieldName];
+                            var sentence = newNode[fieldName];
                             var highlightText = highlighter__.highlight(keyword__, sentence);
                             if (notEmpty(highlightText)) {
-                                newRepository[fieldName + postfixFieldNameHighlight__] = highlightText;
+                                newNode[fieldName + postfixFieldNameHighlight__] = highlightText;
                             }
                         }
                     }
                 }
             }
 
-            return newRepository;
+            return newNode;
         }
     };
 
