@@ -1,9 +1,10 @@
 index-search-javascript
 =======================
 
-for search repositories tree<br/>
+for search repositories tree by index search methodology.<br/>
 <h3>How to use</h3>
-<b> 1) define repositories or data for searching</b><br/>
+1. <b>define repositories or data for searching</b><br/>
+
 node pattern
 ```js
 var node = {
@@ -53,20 +54,37 @@ var rootNode = {
         ...
 }
 ```
-<b>2) create IndexSearch instance and set require settings</b>
+2. <b>create IndexSearch instance and set require settings</b>
+
 ```js
 var settings = {
 	repository: rootNode, //require
 	indexOnFields: ['name'], //require
-	maximumIndexKeySize: 5, 
+	maximumDictionaryKeySize: 5, 
 	additionalDictionaries: additionalDictionaries
 };
 
 var indexSearch__ = new IndexSearch(settings);
 ```
 <b>settings attribute</b>:<br/>
-- <i>repository</i> (require) : the repository that you define following above example.
-- <i>indexOnFields</i> (require) : an array of string for tell IndexSearch that yout need make index on field name in a node.
-- <i>maximumIndexKeySize</i> (optional) : default is 3, for make dictionary keyword an index size follow you define if you define the most IndexSearch can search faster more than 
+- <i>repository</i> (require) : the repository that you define following above example (topic 1).
+- <i>indexOnFields</i> (require) : an array of string for tell IndexSearch that you need make index on the field name in your node.
+- <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary, following above example define is 5, if keyword you as 'javascript'
+IndexSearch will create dictionary 5 pattern is 'j', 'ja', 'jav', 'java', 'javas'
+- <i>additionalDictionaries</i> (optional) : an arry of string for add additional keyword from external into dictionary
+you can define following<br/>
+
+```js
+﻿var additionalDictionaries = [
+    'หลาย',
+    'ดูแล',
+    'ระยะ',
+    'วงกลม',
+    'ปัญหา',
+    'ระดับ',
+    'แชร์',
+    'เหมาะ'
+];
+```
 
 
