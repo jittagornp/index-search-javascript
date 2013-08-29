@@ -139,14 +139,15 @@ var MyIndexStore = function(maximumDictionaryKeySize){
     }
 };
 ```
-- <i>postfixFieldNameHighlight</i> (optional) : postfix of highlight field name which you make index.
+- <i>postfixFieldNameHighlight</i> (optional) : postfix of highlight field name which you make an index.
 such as you need make index on field 'name', 
 when you search you will see field 'nameHighligh' (by default) which is html highlight of 'name'
 
 - <i>percentSuggest</i> (optional) : default is 60 percent, for tell IndexSearch when you search not found, 
 IndexSearch will find other keyword suggestions which same the keyword search following percentSuggest.
 such as you search 'java2' but not found this keyword in dictionary, it's will find other keyword which same 'java2', 
-result is 'java' because 'java' same 'java2' 75% > 60%(by default)  
+result is 'java' because 'java' same 'java2' 75% > 60%(by default).
+algorithm for compute the same percent of 2 strings http://na5cent.blogspot.com/2013/02/algorithm-for-find-difference.html. 
 
 - <i>suggestionsSize</i> (optinal) : number of suggestion keyword, default is 10 keyword 
 
