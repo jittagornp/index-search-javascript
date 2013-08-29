@@ -28,7 +28,7 @@
                     //==========================================================
 
                     var $searchInput = $('#searchInput');
-                    var $refreshButton = $('#refreshButton');
+                    var $clearButton = $('#clearButton');
                     var $summary = $('#summary');
                     var $suggestions = $('#suggestions');
                     var $repositories = $('#repositories');
@@ -74,7 +74,7 @@
                         showResult(result.getContent());
                     });
                     
-                    $refreshButton.click(function(){
+                    $clearButton.click(function(){
                         $searchInput.val('');
                         indexSearch__.clear();
                         $summary.text('');
@@ -108,7 +108,7 @@
             })(jQuery, node);
         </script>
 
-        <input id="searchInput"/><button id="refreshButton">refresh</button>
+        <input id="searchInput"/><button id="clearButton">clear</button>
         <div id="result">
             <div id="summary"></div>
             <div id="suggestions"></div>
