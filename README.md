@@ -62,7 +62,8 @@ var settings = {
 	indexOnFields: ['name'], //require
 	maximumDictionaryKeySize: 5, 
 	additionalDictionaries: additionalDictionaries,
-	//indexStore : 
+	//indexStore : instance on class which implement interface IndexStore,
+	//postfixFieldNameHighlight : defualt is 'Highlight'
 };
 
 var indexSearch__ = new IndexSearch(settings);
@@ -130,5 +131,6 @@ var MyIndexStore = function(maximumDictionaryKeySize){
     }
 };
 ```
-
+- <i>postfixFieldNameHighlight</i> (optional) : postfix of index field name such as you need index on field 'name'<br/>
+when IndexSearch you search you will see field 'nameHighligh' (by default) which is html highlight of 'name'
 
