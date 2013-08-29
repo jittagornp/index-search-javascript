@@ -157,13 +157,15 @@ algorithm for compute the same percent of 2 strings http://na5cent.blogspot.com/
 ```js
 var result = indexSearch__.search(keyword);
 ```
-4) <b>show result</b>
+4) <b>get result</b>
 ```js
 var keyword = indexSearch__.getKeyword();
 var totalPostitionKeywordFound = result.getTotalPosition();
 var totalSentenceKeywordFound = result.getTotalSentence();
 var resultRepository = result.getContent();
-
+```
+5) <b>show result</b>
+```js
 showResult(resultRepository);
 
 //use jquery for process DOM
