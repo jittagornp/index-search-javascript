@@ -38,12 +38,12 @@
                     });
 
                     function showResult(result) {
-                        var ul = $('<ul>');
-                        $resultSearch.html(ul);
-                        walkRepositoryShowResult(result, ul);
+                        var $parentDOM = $('<ul>');
+                        $resultSearch.html($parentDOM);
+                        walkRepositoryShowResult(result, $parentDOM);
                     }
 
-                    function walkRepositoryShowResult(node, parentDOM) {
+                    function walkRepositoryShowResult(node, $parentDOM) {
                         var nodes = node.nodes;
                         if (!nodes || nodes.length === 0) {
                             return;
@@ -51,12 +51,12 @@
 
                         for (var index in nodes) {
                             var nd = nodes[index];
-                            var link = $('<a>').attr('href', nd.link).html(nd.nameHighlight || nd.name);
-                            var childDOM = $('<ol>');
-                            var li = $('<li>').attr('class', nd.level).append(link).append(childDOM);
-                            parentDOM.append(li);
+                            var $link = $('<a>').attr('href', nd.link).html(nd.nameHighlight || nd.name);
+                            var $childDOM = $('<ol>');
+                            var $list = $('<li>').attr('class', nd.level).append($link).append($childDOM);
+                            $parentDOM.append($list);
 
-                            walkRepositoryShowResult(nd, childDOM);
+                            walkRepositoryShowResult(nd, $childDOM);
                         }
                     }
                 });
