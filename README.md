@@ -79,9 +79,9 @@ var indexSearch__ = new IndexSearch(settings);
 - <i>indexOnFields</i> (require) : an array of string for tell IndexSearch that you need make index on the field name in your node.
 
 - <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary. following above example define is 5<br/> if keyword you as 'javascript'
-IndexSearch will create dictionary 5 patterns is 'j', 'ja', 'jav', 'java', 'javas'
+IndexSearch will create dictionary 5 patterns are 'j', 'ja', 'jav', 'java', 'javas'
 
-- <i>additionalDictionaries</i> (optional) : an arry of string for add additional keyword from external into dictionary
+- <i>additionalDictionaries</i> (optional) : an arry of string for add additional keywords from external into dictionary
 <br/>you can define following as : <br/>
 
 ```js
@@ -147,11 +147,11 @@ when you search you will see field 'nameHighligh' (by default) which is html hig
 IndexSearch will find other keyword suggestions which same the keyword search following percentSuggest.
 such as you search 'java2' but not found this keyword in dictionary, it's will find other keyword which same 'java2', 
 result is 'java' because 'java' same 'java2' 75% > 60%(by default).
-algorithm for compute the same percent of 2 strings http://na5cent.blogspot.com/2013/02/algorithm-for-find-difference.html. 
+algorithm for compute the same percent of 2 strings can see in http://na5cent.blogspot.com/2013/02/algorithm-for-find-difference.html. 
 
-- <i>suggestionsSize</i> (optinal) : number of suggestion keyword, default is 10 keyword 
+- <i>suggestionsSize</i> (optinal) : number of suggestion keyword, default is 10 keywords 
 
-- <i>stopword</i> (optional) : is the function for separate keyword from sentence. by default user white space for stop word.  
+- <i>stopword</i> (optional) : is the function for separate keyword from sentence. by default use white space for stop word.  
 
 3) <b>search</b>
 ```js
@@ -160,8 +160,14 @@ var result = indexSearch__.search(keyword);
 4) <b>get result</b>
 ```js
 var keyword = indexSearch__.getKeyword();
+
+//number of keyword that found in resullt search
 var totalPostitionKeywordFound = result.getTotalPosition();
+
+//number of sentence or field name an inexing
 var totalSentenceKeywordFound = result.getTotalSentence();
+
+//result search repository
 var resultRepository = result.getContent();
 ```
 5) <b>show result</b>
@@ -175,6 +181,7 @@ function showResult(rootNode) {
 	walkRepositoryShowResult(rootNode, $rootDOM);
 }
 
+//recursive walk repository (node)
 function walkRepositoryShowResult(parentNode, $parentDOM) {
 	var nodes = parentNode.nodes;
 	if (!nodes || nodes.length === 0) {
@@ -182,7 +189,9 @@ function walkRepositoryShowResult(parentNode, $parentDOM) {
 	}
 
 	for (var index in nodes) {
+		//get current node
 		var childNode = nodes[index];
+		
 		var $link = $('<a>').attr('href', childNode.link).html(childNode.nameHighlight || childNode.name);
 		var $childDOM = $('<ol>');
 		var $list = $('<li>').attr('class', childNode.level).append($link).append($childDOM);
