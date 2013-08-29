@@ -27,14 +27,15 @@
                     });
                     //==========================================================
 
-                    var $inputSearch = $('#inputSearch');
+                    var $searchInput = $('#searchInput');
+                    var $refreshButton = $('#refreshButton');
                     var $summary = $('#summary');
                     var $suggestions = $('#suggestions');
                     var $repositories = $('#repositories');
 
                     showResult(repository);
-                    $inputSearch.keyup(function() {
-                        var keyword = $inputSearch.val();
+                    $searchInput.keyup(function() {
+                        var keyword = $searchInput.val();
                         var result = indexSearch__.search(keyword);
 
                         $summary.text('');
@@ -61,7 +62,7 @@
                                         .attr('data-suggest', suggest.word)
                                         .html(word)
                                         .click(function() {
-                                    $inputSearch.val($(this).attr('data-suggest')).keyup();
+                                    $searchInput.val($(this).attr('data-suggest')).keyup();
                                     return false;
                                 });
 
@@ -71,6 +72,14 @@
                         }
 
                         showResult(result.getContent());
+                    });
+                    
+                    $refreshButton.click(function(){
+                        $searchInput.val('');
+                        indexSearch__.clear();
+                        $summary.text('');
+                        $suggestions.text('');
+                        showResult(repository);
                     });
 
                     function showResult(rootNode) {
@@ -99,7 +108,7 @@
             })(jQuery, node);
         </script>
 
-        <input id="inputSearch"/>
+        <input id="searchInput"/><button id="refreshButton">refresh</button>
         <div id="result">
             <div id="summary"></div>
             <div id="suggestions"></div>

@@ -725,6 +725,7 @@ var IndexSearch = (function() {
         };
 
         this.clear = function() {
+            keyword__ = '';
             return new ResultSearch({
                 content: node__
             });
