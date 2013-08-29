@@ -1,4 +1,4 @@
-<html>
+﻿<html>
     <head>
         <style>
             .highlighter{
@@ -11,8 +11,9 @@
         </style>
     </head>
     <body>
-        <script src="jQuery.js"></script>
+        <script src="jquery.js"></script>
         <script src="repository.js"></script>
+        <script src="additionalDictionarys.js"></script>
         <script src="indexsearch.js"></script>
         <script>
             (function($, indexSearch) {
@@ -54,7 +55,8 @@
                 });
             })(jQuery, new IndexSearch(node, {
                 maximumIndexKeySize : 5,
-                indexOnFields : ['name']        
+                indexOnFields : ['name'],
+                additionalDictionarys : additionalDictionarys
             }));
         </script>
 

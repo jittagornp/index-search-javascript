@@ -8,7 +8,7 @@
 var IndexSearch = (function() {
 
     function defined(object) {
-        return typeof object !== 'undefined';
+        return !isUndefined(object);
     }
 
     function notDefined(object) {
@@ -24,7 +24,7 @@ var IndexSearch = (function() {
     }
 
     function findIndex(element, list) {
-        if (typeof list === 'string') {
+        if (isString(list)) {
             element = element.toLowerCase();
             list = list.toLowerCase();
         }
@@ -98,6 +98,10 @@ var IndexSearch = (function() {
 
     function isRegExp(data) {
         return is(data, 'RegExp');
+    }
+
+    function isUndefined(data) {
+        return is(data, 'Undefined');
     }
 
     /**
@@ -434,14 +438,14 @@ var IndexSearch = (function() {
      * @param {nodeTemp} node__
      * @param {object} options
      */
-    var constructor = function(node__, options) {
-        if (notDefined(node__)) {
+    var constructor = function(node, options) {
+        if (notDefined(node)) {
             throw new Error('require first parameter is node');
         }
 
         options = options || {};
 
-        var node__ = node__ || {nodes: []};
+        var node__ = node;
         var indexOnFields__ = options.indexOnFields || [];
 
         var highlighter__ = new Highlighter(options.highlightClass || 'highlighter');
@@ -457,6 +461,7 @@ var IndexSearch = (function() {
         var resultNode__;
         var keyword__ = '';
         var duplicated__ = {};
+        var additionalDictionarys__ = options.additionalDictionarys || [];
 
         /**
          * function stopword
@@ -467,7 +472,7 @@ var IndexSearch = (function() {
         };
 
         if (empty(indexOnFields__)) {
-            throw new Error('require {string[]} : options.indexOnFields');
+            throw new Error('require index field on {string[]} : options.indexOnFields');
         } else if (foundIn('nodes', indexOnFields__)) {
             throw new Error('field name \'nodes\' in {string[]} : options.indexOnFields is reserved word');
         }
@@ -477,9 +482,12 @@ var IndexSearch = (function() {
 
         function createIndex() {
             walkRepositoryReadKeyword(node__);
+            for (var dictionaryIndex in additionalDictionarys__) {
+                indexWriter__.addDictionary(additionalDictionarys__[dictionaryIndex]);
+            }
 
-            for (var repoIndex in node__.nodes) {
-                walkRepositoryWriteIndex(0, repoIndex, node__.nodes[repoIndex]);
+            for (var nodeIndex in node__.nodes) {
+                walkRepositoryWriteIndex(0, nodeIndex, node__.nodes[nodeIndex]);
             }
 
             for (var duplicateType in duplicated__) {
@@ -509,8 +517,8 @@ var IndexSearch = (function() {
                 return;
             }
 
-            for (var index in nodes) {
-                walkRepositoryReadKeyword(nodes[index]);
+            for (var nodeIndex in nodes) {
+                walkRepositoryReadKeyword(nodes[nodeIndex]);
             }
         }
 
