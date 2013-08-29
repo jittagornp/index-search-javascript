@@ -435,46 +435,47 @@ var IndexSearch = (function() {
 
     /**
      * constructor of IndexSearch
-     * @param {nodeTemp} node__
-     * @param {object} options
+     * @param {object} settings
      */
-    var constructor = function(node, options) {
-        if (notDefined(node)) {
-            throw new Error('require first parameter is node');
+    var constructor = function(settings) {
+        if (notDefined(settings)) {
+            throw new Error('require {object} settings');
         }
 
-        options = options || {};
+        var node__ = settings.repository;
+        if(notDefined(node__)){
+            throw new Error('require {repository} settings.repository');
+        }
+        
+        var indexOnFields__ = settings.indexOnFields || [];
 
-        var node__ = node;
-        var indexOnFields__ = options.indexOnFields || [];
-
-        var highlighter__ = new Highlighter(options.highlightClass || 'highlighter');
-        var indexStoreImplmentation__ = options.indexStore || new MemoryIndexStore(options.maximumIndexKeySize || 3);
+        var highlighter__ = new Highlighter(settings.highlightClass || 'highlighter');
+        var indexStoreImplmentation__ = settings.indexStore || new MemoryIndexStore(settings.maximumIndexKeySize || 3);
         Interface.ensureImplements(indexStoreImplmentation__, [IndexStore]);
 
         var indexWriter__ = new IndexWriter(indexStoreImplmentation__);
         var indexReader__ = new IndexReader(indexStoreImplmentation__);
 
-        var indexSeparator__ = options.indexSeparator || '/';
-        var postfixFieldNameHighlight__ = options.postfixFieldNameHighlight || 'Highlight';
+        var indexSeparator__ = settings.indexSeparator || '/';
+        var postfixFieldNameHighlight__ = settings.postfixFieldNameHighlight || 'Highlight';
 
         var resultNode__;
         var keyword__ = '';
         var duplicated__ = {};
-        var additionalDictionaries__ = options.additionalDictionaries || [];
+        var additionalDictionaries__ = settings.additionalDictionaries || [];
 
         /**
          * function stopword
          * use for separate keyword from sentence
          */
-        var stopword_ = options.stopword || function(text) {
+        var stopword_ = settings.stopword || function(text) {
             return replaceNotation(text).split(' ');
         };
 
         if (empty(indexOnFields__)) {
-            throw new Error('require index field on {string[]} : options.indexOnFields');
+            throw new Error('require index field on {string[]} : settings.indexOnFields');
         } else if (foundIn('nodes', indexOnFields__)) {
-            throw new Error('field name \'nodes\' in {string[]} : options.indexOnFields is reserved word');
+            throw new Error('field name \'nodes\' in {string[]} : settings.indexOnFields is reserved word');
         }
 
         //----------------------------------------------------------------------

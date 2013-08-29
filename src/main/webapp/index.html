@@ -16,10 +16,11 @@
         <script src="additionalDictionaries.js"></script>
         <script src="indexsearch.js"></script>
         <script>
-            (function($, node) {
+            (function($, repository) {
                 $(function() {
                     //==========================================================
-                    var indexSearch__ = new IndexSearch(node, {
+                    var indexSearch__ = new IndexSearch({
+                        repository : repository,
                         maximumIndexKeySize: 5,
                         indexOnFields: ['name'],
                         additionalDictionaries: additionalDictionaries
@@ -29,7 +30,7 @@
                     var $inputSearch = $('#inputSearch');
                     var $resultSearch = $('#resultSearch');
 
-                    showResult(node);
+                    showResult(repository);
                     $inputSearch.keyup(function() {
                         var keyword = $inputSearch.val();
                         var result = indexSearch__.search(keyword);
