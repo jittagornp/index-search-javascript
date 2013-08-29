@@ -36,7 +36,7 @@
                     $inputSearch.keyup(function() {
                         var keyword = $inputSearch.val();
                         var result = indexSearch__.search(keyword);
-                        
+
                         $summary.text('');
                         if (result.getTotalPosition() !== 0) {
                             $summary.text('search : \'' + indexSearch__.getKeyword() + '\' found ' + result.getTotalPosition() + ' positions on ' + result.getTotalSentence() + ' sentences.');
@@ -47,18 +47,27 @@
                         var suggestions = result.getSuggestions();
                         if (suggestions.length !== 0) {
                             $suggestions.append('suggestions : ');
-                            var list = '';
                             for (var suggestIndex in suggestions) {
                                 var suggest = suggestions[suggestIndex];
                                 var word = suggest.word;
                                 if (suggest.percent) {
                                     word = word + '(' + suggest.percent + '%)';
                                 }
-                                
-                                list = list + ', ' + word;
+
+                                if (suggestIndex !== 0) {
+                                    $suggestions.append(', ');
+                                }
+                                var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
+                                        .attr('data-suggest', suggest.word)
+                                        .html(word)
+                                        .click(function() {
+                                    $inputSearch.val($(this).attr('data-suggest')).keyup();
+                                    return false;
+                                });
+
+                                $suggestions.append($suggestItem);
                             }
-                            
-                            $suggestions.append(list.substring(2));
+
                         }
 
                         showResult(result.getContent());
