@@ -192,3 +192,38 @@ function walkRepositoryShowResult(parentNode, $parentDOM) {
 	}
 }
 ```
+6) <b>get and show suggestions</b>
+```js
+$suggestions.text('');
+var suggestions = result.getSuggestions();
+if (suggestions.length !== 0) {
+	$suggestions.append('suggestions : ');
+	for (var suggestIndex in suggestions) {
+		var suggest = suggestions[suggestIndex];
+		var word = suggest.word;
+
+		if (suggestIndex !== '0') {
+			$suggestions.append(', ');
+		}
+
+		if (suggest.percent) {
+			word = word + '(' + suggest.percent + '%)';
+		}
+
+		var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
+				.attr('data-suggest', suggest.word)
+				.html(word)
+				.click(function(event) {
+			event.preventDefault();
+			$searchInput.val($(this).attr('data-suggest')).keyup();
+		});
+
+		if (suggest.percent) {
+			$suggestItem.attr('title', '\'' + suggest.word + '\' same \'' + indexSearch__.getKeyword() + '\' ' + suggest.percent + '%');
+		}
+		
+		$suggestions.append($suggestItem);
+	}
+
+}
+```
