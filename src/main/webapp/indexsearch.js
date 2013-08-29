@@ -431,17 +431,17 @@ var IndexSearch = (function() {
 
     /**
      * constructor of IndexSearch
-     * @param {nodeTemp} node
+     * @param {nodeTemp} node__
      * @param {object} options
      */
-    var constructor = function(node, options) {
-        if (notDefined(node)) {
+    var constructor = function(node__, options) {
+        if (notDefined(node__)) {
             throw new Error('require first parameter is node');
         }
 
         options = options || {};
 
-        var node__ = node || {nodes: []};
+        var node__ = node__ || {nodes: []};
         var indexOnFields__ = options.indexOnFields || [];
 
         var highlighter__ = new Highlighter(options.highlightClass || 'highlighter');
@@ -454,7 +454,7 @@ var IndexSearch = (function() {
         var indexSeparator__ = options.indexSeparator || '/';
         var postfixFieldNameHighlight__ = options.postfixFieldNameHighlight || 'Highlight';
 
-        var result__;
+        var resultNode__;
         var keyword__ = '';
         var duplicated__ = {};
 
@@ -528,8 +528,8 @@ var IndexSearch = (function() {
                 return;
             }
 
-            for (var repoIndex in nodes) {
-                walkRepositoryWriteIndex(level + 1, index + indexSeparator__ + repoIndex, nodes[repoIndex]);
+            for (var nodeIndex in nodes) {
+                walkRepositoryWriteIndex(level + 1, index + indexSeparator__ + nodeIndex, nodes[nodeIndex]);
             }
         }
 
@@ -552,8 +552,8 @@ var IndexSearch = (function() {
             }
         }
 
-        this.reIndex = function(repo) {
-            node__ = repo;
+        this.reIndex = function(node) {
+            node__ = node;
             createIndex();
         };
 
@@ -562,7 +562,7 @@ var IndexSearch = (function() {
         };
 
         this.getRepository = function() {
-            return node;
+            return node__;
         };
 
         this.getIndexs = function() {
@@ -590,13 +590,13 @@ var IndexSearch = (function() {
                 return new ResultSearch({
                     totalHighlight: highlighter__.getTotalHighlight(),
                     totalSentence: highlighter__.getTotalSentence(),
-                    content: result__
+                    content: resultNode__
                 });
             }
 
             //clean results
             highlighter__.resetTotal();
-            result__ = {nodes: []};
+            resultNode__ = {nodes: []};
             //
             keyword__ = keyword;
 
@@ -608,14 +608,14 @@ var IndexSearch = (function() {
             return new ResultSearch({
                 totalHighlight: highlighter__.getTotalHighlight(),
                 totalSentence: highlighter__.getTotalSentence(),
-                content: result__
+                content: resultNode__
             });
         };
 
         function pullNode(index) {
             var indexArray = index.split(indexSeparator__);
             var nodePointer = node__;
-            var resultNodePointer = result__;
+            var resultNodePointer = resultNode__;
 
             for (var idx in indexArray) {
                 var subIndex = indexArray[idx];
