@@ -13,10 +13,9 @@ var node = {
     nodes : [ ] //require this attribute    
 };
 ```
-note : you can define repository as tree that you want<br/><br/>
 example : repositories.js
 ```js
-var node = {
+var rootNode = {
     nodes: [
         {
             name: "AI(Artificial Intelligence)",
@@ -57,13 +56,17 @@ var node = {
 <b>2) create IndexSearch instance and set require settings</b>
 ```js
 var settings = {
-	repository: repository, //require
+	repository: rootNode, //require
 	indexOnFields: ['name'], //require
-	maximumIndexKeySize: 5,
+	maximumIndexKeySize: 5, 
 	additionalDictionaries: additionalDictionaries
 };
 
 var indexSearch__ = new IndexSearch(settings);
 ```
+<b>settings attribute</b>:<br/>
+- <i>repository</i> (require) : the repository that you define following above example.
+- <i>indexOnFields</i> (require) : an array of string for tell IndexSearch that yout need make index on field name in a node.
+- <i>maximumIndexKeySize</i> (optional) : default is 3, for make dictionary keyword an index size follow you define if you define the most IndexSearch can search faster more than 
 
 
