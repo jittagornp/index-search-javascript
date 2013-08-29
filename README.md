@@ -88,13 +88,47 @@ IndexSearch will create dictionary 5 pattern is 'j', 'ja', 'jav', 'java', 'javas
 ];
 ```
 - <i>indexStore</i> (optional) : store of keeping an index, default is MemeryIndexStore<br/>
-you ca custom yor index store by implement an interface IndexStore which define following method :
+you can custom your index store by implement an interface IndexStore which define following method :
 
 ```js
 /**
  * define IndexStore interface
  */
 var IndexStore = new Interface('IndexStore', ['writeIndex', 'readIndex', 'addDictionary', 'getDictionary', 'getIndexs']);
+
+
+var MyIndexStore = function(maximumDictionaryKeySize){
+
+    var indexs__ = [];
+    
+    this.writeIndex = function(index, sentence){
+    
+    };
+    
+    this.readIndex = function(keyword){
+        var indexList = [];
+    
+        //...
+         
+        return indexList;
+    };
+    
+    this.addDictionary = function(){
+    
+    };
+    
+    this.getDictionary = function(keyword) {
+        var dictionary = {};
+        
+        //...
+        
+        return dictionary;
+    };
+    
+    this.getIndexs = function(){
+    	return indexs__;
+    }
+};
 ```
 
 
