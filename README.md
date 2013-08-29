@@ -55,6 +55,14 @@ var node = {
         ...
 }
 ```
-
+2) create IndexSearch instance and set require settings
+```js
+var indexSearch__ = new IndexSearch({
+	repository: repository, //require
+	indexOnFields: ['name'], //require
+	maximumIndexKeySize: 5,
+	additionalDictionaries: additionalDictionaries
+});
+```
 
 
