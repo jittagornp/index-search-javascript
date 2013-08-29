@@ -196,6 +196,7 @@ function walkRepositoryShowResult(parentNode, $parentDOM) {
 ```js
 $suggestions.text('');
 var suggestions = result.getSuggestions();
+
 if (suggestions.length !== 0) {
 	$suggestions.append('suggestions : ');
 	for (var suggestIndex in suggestions) {
