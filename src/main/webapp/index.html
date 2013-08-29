@@ -28,19 +28,32 @@
                     //==========================================================
 
                     var $inputSearch = $('#inputSearch');
-                    var $resultSearch = $('#resultSearch');
+                    var $summary = $('#summary');
+                    var $suggestions = $('#suggestions');
+                    var $repositories = $('#repositories');
 
                     showResult(repository);
                     $inputSearch.keyup(function() {
                         var keyword = $inputSearch.val();
                         var result = indexSearch__.search(keyword);
-                        console.log(indexSearch__.getKeyword() + ' : total => ' + result.getTotalHighlight());
+                        if (result.getTotalPosition() !== 0) {
+                            $summary.text('search : \'' + indexSearch__.getKeyword() + '\' found ' + result.getTotalPosition() + ' positions on ' + result.getTotalSentence() + ' sentences.');
+                        }else{
+                            $summary.text('');
+                        }
+                        
+                        if(result.getSuggestions().length !== 0){
+                            $suggestions.text('suggestions : ' + result.getSuggestions());
+                        }else{
+                            $suggestions.text('');
+                        }
+                        
                         showResult(result.getContent());
                     });
 
                     function showResult(result) {
                         var $parentDOM = $('<ul>');
-                        $resultSearch.html($parentDOM);
+                        $repositories.html($parentDOM);
                         walkRepositoryShowResult(result, $parentDOM);
                     }
 
@@ -65,6 +78,10 @@
         </script>
 
         <input id="inputSearch"/>
-        <div id="resultSearch"></div>
+        <div id="result">
+            <div id="summary"></div>
+            <div id="suggestions"></div>
+            <div id="repositories"></div>
+        </div>
     </body>
 </html>

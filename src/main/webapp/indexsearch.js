@@ -208,13 +208,13 @@ var IndexSearch = (function() {
      * bean for keep result after searching
      */
     var ResultSearch = function(result) {
-        var totalHighlight__ = result.totalHighlight || 0;
+        var totalPosition__ = result.totalPosition || 0;
         var totalSentence__ = result.totalSentence || 0;
         var content__ = result.content || {nodes: {}};
         var suggestions__ = result.suggestions || [];
 
-        this.getTotalHighlight = function() {
-            return totalHighlight__;
+        this.getTotalPosition = function() {
+            return totalPosition__;
         };
 
         this.getTotalSentence = function() {
@@ -341,14 +341,9 @@ var IndexSearch = (function() {
         };
 
         this.readIndex = function(keyword) {
-            var dictionary;
-            var indexList = [];
-            if (keyword.length <= maximumKeySize__) {
-                dictionary = indexs__[keyword.length][keyword];
-            } else {
-                dictionary = indexs__[maximumKeySize__][keyword.substring(0, maximumKeySize__)];
-            }
+            var dictionary = this.getDictionary(keyword);
 
+            var indexList = [];
             for (var dictionaryIndex in dictionary) {
                 if (foundIn(keyword, dictionaryIndex)) {
                     var indexs = dictionary[dictionaryIndex];
@@ -388,7 +383,14 @@ var IndexSearch = (function() {
         };
 
         this.getDictionary = function(keyword) {
+            var dictionary;
+            if (keyword.length <= maximumKeySize__) {
+                dictionary = indexs__[keyword.length][keyword];
+            } else {
+                dictionary = indexs__[maximumKeySize__][keyword.substring(0, maximumKeySize__)];
+            }
 
+            return dictionary;
         };
 
         this.getIndexs = function() {
@@ -443,10 +445,10 @@ var IndexSearch = (function() {
         }
 
         var node__ = settings.repository;
-        if(notDefined(node__)){
+        if (notDefined(node__)) {
             throw new Error('require {repository} settings.repository');
         }
-        
+
         var indexOnFields__ = settings.indexOnFields || [];
 
         var highlighter__ = new Highlighter(settings.highlightClass || 'highlighter');
@@ -463,6 +465,8 @@ var IndexSearch = (function() {
         var keyword__ = '';
         var duplicated__ = {};
         var additionalDictionaries__ = settings.additionalDictionaries || [];
+        var seggestions = [];
+        var suggestionsSize__ = settings.suggestionsSize || 10;
 
         /**
          * function stopword
@@ -597,15 +601,17 @@ var IndexSearch = (function() {
             // return old result
             if (keyword__ === keyword) {
                 return new ResultSearch({
-                    totalHighlight: highlighter__.getTotalHighlight(),
+                    totalPosition: highlighter__.getTotalHighlight(),
                     totalSentence: highlighter__.getTotalSentence(),
-                    content: resultNode__
+                    content: resultNode__,
+                    suggestions: seggestions
                 });
             }
 
             //clean results
             highlighter__.resetTotal();
             resultNode__ = {nodes: []};
+            seggestions = [];
             //
             keyword__ = keyword;
 
@@ -613,13 +619,33 @@ var IndexSearch = (function() {
             for (var idx in indexs) {
                 pullNode(indexs[idx]);
             }
+            
+            seggestions = getSuggestions(indexReader__.getDictionary(keyword__));
 
             return new ResultSearch({
-                totalHighlight: highlighter__.getTotalHighlight(),
+                totalPosition: highlighter__.getTotalHighlight(),
                 totalSentence: highlighter__.getTotalSentence(),
-                content: resultNode__
+                content: resultNode__,
+                suggestions: seggestions
             });
         };
+
+        function getSuggestions(dictionary) {
+            var suggestions = [];
+            for (var dictionaryIndex in dictionary) {
+                suggestions.push(dictionaryIndex);
+
+                if (suggestions.length === suggestionsSize__) {
+                    break;
+                }
+            }
+
+            suggestions = suggestions.sort(function(keyword1, keyword2){
+                return keyword1.length - keyword2.length;
+            });
+
+            return suggestions;
+        }
 
         function pullNode(index) {
             var indexArray = index.split(indexSeparator__);
