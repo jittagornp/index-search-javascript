@@ -552,6 +552,10 @@ var IndexSearch = (function() {
                         word: compareWord,
                         percent: numberFormat(percent)
                     });
+
+                    if (suggestions.length === suggestionsSize__) {
+                        break;
+                    }
                 }
             }
 
