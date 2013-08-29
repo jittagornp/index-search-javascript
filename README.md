@@ -63,7 +63,8 @@ var settings = {
 	maximumDictionaryKeySize: 5, 
 	additionalDictionaries: additionalDictionaries,
 	//indexStore : instance on class which implement interface IndexStore,
-	//postfixFieldNameHighlight : defualt is 'Highlight'
+	//postfixFieldNameHighlight : defualt is 'Highlight',
+	//percentSuggest : default is 60
 };
 
 var indexSearch__ = new IndexSearch(settings);
@@ -132,6 +133,9 @@ var MyIndexStore = function(maximumDictionaryKeySize){
 };
 ```
 - <i>postfixFieldNameHighlight</i> (optional) : postfix of highlight field name which you make index,
-such as you need index on field 'name', 
+such as you need make index on field 'name', 
 when you search you will see field 'nameHighligh' (by default) which is html highlight of 'name'
-
+- <i>percentSuggest</i> (optional) : default is 60, for tell IndexSearch when you search not found, 
+IndexSearch will find other keyword suggestions which same the keyword search following percentSuggest,
+such as you search 'java2' but not found this keyword in dictionary, it's will find other keyword which same 'java2', 
+result is 'java' becase 'java' same 'java2' 75% > 60%  
