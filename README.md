@@ -11,7 +11,7 @@ var node = {
     
     //custom your attributes...
     
-    nodes : [ ] //require this attribute    
+    nodes : [] //require this attribute    
 };
 ```
 example : repositories.js
@@ -19,9 +19,9 @@ example : repositories.js
 var rootNode = {
     nodes: [
         {
-            name: "AI(Artificial Intelligence)",
-            link: "http://na5cent.blogspot.com/search/label/AI%28Artificial%20Intelligence%29",
-            nodes: [
+            name: "AI(Artificial Intelligence)", //custom your attribute
+            link: "http://na5cent.blogspot.com/search/label/AI%28Artificial%20Intelligence%29", //custom your attribute
+            nodes: [ 
                 {
                     name: "Back Propagation Algorithm",
                     link: "http://na5cent.blogspot.com/2011/03/back-propagation-algorithm.html",
@@ -162,4 +162,30 @@ var keyword = indexSearch__.getKeyword();
 var totalPostitionKeywordFound = result.getTotalPosition();
 var totalSentenceKeywordFound = result.getTotalSentence();
 var resultRepository = result.getContent();
+
+showResult(resultRepository);
+
+//use jquery for process DOM
+function showResult(rootNode) {
+	var $rootDOM = $('<ul>');
+	$repositories.html($rootDOM);
+	walkRepositoryShowResult(rootNode, $rootDOM);
+}
+
+function walkRepositoryShowResult(parentNode, $parentDOM) {
+	var nodes = parentNode.nodes;
+	if (!nodes || nodes.length === 0) {
+		return;
+	}
+
+	for (var index in nodes) {
+		var childNode = nodes[index];
+		var $link = $('<a>').attr('href', childNode.link).html(childNode.nameHighlight || childNode.name);
+		var $childDOM = $('<ol>');
+		var $list = $('<li>').attr('class', childNode.level).append($link).append($childDOM);
+		$parentDOM.append($list);
+
+		walkRepositoryShowResult(childNode, $childDOM);
+	}
+}
 ```
