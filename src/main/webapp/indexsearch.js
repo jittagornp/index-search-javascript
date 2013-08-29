@@ -143,20 +143,20 @@ var IndexSearch = (function() {
             }
             ensureConstructorRequire(name, methods);
 
-            var _name = name;
-            var _methods = [];
+            var name__ = name;
+            var methods__ = [];
 
             for (var index = 0; index < methods.length; index++) {
                 var method = ensureMethodType(methods[index], index);
-                _methods.push(method);
+                methods__.push(method);
             }
 
             this.getName = function() {
-                return _name;
+                return name__;
             };
 
             this.getMethods = function() {
-                return _methods;
+                return methods__;
             };
         };
     })();
@@ -179,17 +179,17 @@ var IndexSearch = (function() {
         }
 
         for (var index = 0; index < interfacs.length; index++) {
-            var interface = interfacs[index];
-            if (interface.constructor !== Interface) {
+            var interf = interfacs[index];
+            if (interf.constructor !== Interface) {
                 throw new Error('second argument of Interface.ensureImplements index ' + index + ' is not interface.');
             }
 
-            var methods = interface.getMethods();
+            var methods = interf.getMethods();
             for (var property in methods) {
                 var method = methods[property];
 
                 if (notDefined(clazz[method])) {
-                    throw new Error('implementation class is not define method \'' + method + '\' of Interface \'' + interface.getName() + '\'.');
+                    throw new Error('implementation class is not define method \'' + method + '\' of Interface \'' + interf.getName() + '\'.');
                 }
 
                 if (!isFunction(clazz[method])) {
@@ -431,7 +431,7 @@ var IndexSearch = (function() {
 
     /**
      * constructor of IndexSearch
-     * @param {node} node
+     * @param {nodeTemp} node
      * @param {object} options
      */
     var constructor = function(node, options) {
@@ -625,17 +625,17 @@ var IndexSearch = (function() {
                 }
 
                 nodePointer = nodePointer.nodes[subIndex];
-                var repo = resultNodePointer.nodes[subIndex];
-                if (notDefined(repo)) {
-                    repo = copyNode(nodePointer);
-                    resultNodePointer.nodes[subIndex] = repo;
+                var nodeTemp = resultNodePointer.nodes[subIndex];
+                if (notDefined(nodeTemp)) {
+                    nodeTemp = copyNode(nodePointer);
+                    resultNodePointer.nodes[subIndex] = nodeTemp;
                 }
 
-                if (notDefined(repo.nodes)) {
-                    repo.nodes = [];
+                if (notDefined(nodeTemp.nodes)) {
+                    nodeTemp.nodes = [];
                 }
 
-                resultNodePointer = repo;
+                resultNodePointer = nodeTemp;
             }
         }
 

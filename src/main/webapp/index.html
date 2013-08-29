@@ -32,10 +32,10 @@
                     function showResult(result) {
                         var ul = $('<ul>');
                         resultSearch.html(ul);
-                        walkTreeShowResult(result, ul);
+                        walkRepositoryShowResult(result, ul);
                     }
 
-                    function walkTreeShowResult(node, parentDOM) {
+                    function walkRepositoryShowResult(node, parentDOM) {
                         var nodes = node.nodes;
                         if (!nodes || nodes.length === 0) {
                             return;
@@ -48,7 +48,7 @@
                             var li = $('<li>').attr('class', repo.level).append(link).append(childDOM);
                             parentDOM.append(li);
 
-                            walkTreeShowResult(repo, childDOM);
+                            walkRepositoryShowResult(repo, childDOM);
                         }
                     }
                 });
