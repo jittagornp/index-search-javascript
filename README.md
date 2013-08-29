@@ -2,8 +2,8 @@ index-search-javascript
 =======================
 
 for search repositories tree<br/>
-<h3>Example to use</h3>
-1) <b>define repositories</b> or data for searching<br/>
+<h3>How to use</h3>
+1) <b>define repositories</b> or <b>data</b> for searching<br/>
 node pattern
 ```js
 var node = {
@@ -12,9 +12,9 @@ var node = {
     
     nodes : [ ] //require this attribute    
 };
-note : you can define repository as tree that you want
 ```
-repositories.js
+note : you can define repository as tree that you want<br/><br/>
+example : repositories.js
 ```js
 var node = {
     nodes: [
