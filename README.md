@@ -65,6 +65,7 @@ var settings = {
 	//indexStore : instance on class which implement interface IndexStore,
 	//postfixFieldNameHighlight : defualt is 'Highlight',
 	//percentSuggest : default is 60,
+	//suggestionsSize : default is 10
 	//stopword : function(sentence){  by default use white space for stop word 
 	//    return array of keyword	
 	//}
@@ -142,8 +143,23 @@ var MyIndexStore = function(maximumDictionaryKeySize){
 such as you need make index on field 'name', 
 when you search you will see field 'nameHighligh' (by default) which is html highlight of 'name'
 
-- <i>percentSuggest</i> (optional) : default is 60, for tell IndexSearch when you search not found, 
+- <i>percentSuggest</i> (optional) : default is 60 percent, for tell IndexSearch when you search not found, 
 IndexSearch will find other keyword suggestions which same the keyword search following percentSuggest.
 such as you search 'java2' but not found this keyword in dictionary, it's will find other keyword which same 'java2', 
 result is 'java' because 'java' same 'java2' 75% > 60%(by default)  
+
+- <i>suggestionsSize</i> (optinal) : number of suggestion keyword, default is 10 keyword 
+
 - <i>stopword</i> (optional) : is the function for separate keyword from sentence. by default user white space for stop word.  
+
+3) <b>search</b>
+```js
+var result = indexSearch__.search(keyword);
+```
+4) <b>show result</b>
+```js
+var keyword = indexSearch__.getKeyword();
+var totalPostitionKeywordFound = result.getTotalPosition();
+var totalSentenceKeywordFound = result.getTotalSentence();
+var resultRepository = result.getContent();
+```
