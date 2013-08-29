@@ -51,21 +51,27 @@
                             for (var suggestIndex in suggestions) {
                                 var suggest = suggestions[suggestIndex];
                                 var word = suggest.word;
+
+                                if (suggestIndex !== '0') {
+                                    $suggestions.append(', ');
+                                }
+
                                 if (suggest.percent) {
                                     word = word + '(' + suggest.percent + '%)';
                                 }
 
-                                if (suggestIndex !== 0) {
-                                    $suggestions.append(', ');
-                                }
                                 var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
                                         .attr('data-suggest', suggest.word)
                                         .html(word)
-                                        .click(function() {
+                                        .click(function(event) {
+                                    event.preventDefault();
                                     $searchInput.val($(this).attr('data-suggest')).keyup();
-                                    return false;
                                 });
 
+                                if (suggest.percent) {
+                                    $suggestItem.attr('title', '\'' + suggest.word + '\' same \'' + indexSearch__.getKeyword() + '\' ' + suggest.percent + '%');
+                                }
+                                
                                 $suggestions.append($suggestItem);
                             }
 
@@ -73,8 +79,8 @@
 
                         showResult(result.getContent());
                     });
-                    
-                    $clearButton.click(function(){
+
+                    $clearButton.click(function() {
                         $searchInput.val('');
                         indexSearch__.clear();
                         $summary.text('');

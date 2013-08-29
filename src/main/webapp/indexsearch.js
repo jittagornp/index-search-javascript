@@ -402,10 +402,10 @@ var IndexSearch = (function() {
         };
 
         this.getDictionary = function(keyword) {
-            if(empty(keyword)){
+            if (empty(keyword)) {
                 return {};
             }
-            
+
             var dictionary = {};
             if (keyword.length <= maximumKeySize__) {
                 dictionary = indexs__[keyword.length][keyword];
@@ -413,7 +413,7 @@ var IndexSearch = (function() {
                 dictionary = indexs__[maximumKeySize__][keyword.substring(0, maximumKeySize__)];
             }
 
-            if(notDefined(dictionary)){
+            if (notDefined(dictionary)) {
                 dictionary = {};
             }
 
@@ -526,12 +526,14 @@ var IndexSearch = (function() {
             return 100 * (percentTotal / mapBase);
         }
 
-        this.getSuggestionsWhenSearchFound = function() {
+        this.getSuggestionsWhenSearchFound = function(keyword) {
             var suggestions = [];
             for (var dictionaryIndex in dictionary__) {
-                suggestions.push({
-                    word: dictionaryIndex
-                });
+                if (keyword !== dictionaryIndex) {
+                    suggestions.push({
+                        word: dictionaryIndex
+                    });
+                }
 
                 if (suggestions.length === suggestionsSize__) {
                     break;
@@ -790,7 +792,7 @@ var IndexSearch = (function() {
                     dictionary: indexReader__.getDictionary(keyword__),
                     suggestionsSize: settings.suggestionsSize,
                     samePercent: suggestionSamePercent__
-                }).getSuggestionsWhenSearchFound();
+                }).getSuggestionsWhenSearchFound(keyword__);
             }
         }
 
