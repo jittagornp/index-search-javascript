@@ -69,7 +69,8 @@ var settings = {
 	//suggestionsSize : default is 10,
 	//highlightClass : default is 'keyword-highlgiht', css class for html highlight,
 	//stopword : function(sentence){  by default use white space for stop word 
-	//    return array of keyword	
+	//    return array of keyword such as 
+	//    sentence = 'which implement interface IndexStore' --> ['which', 'implement', 'interface', 'IndexStore']	
 	//}
 };
 
