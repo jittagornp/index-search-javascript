@@ -81,7 +81,7 @@ var indexSearch__ = new IndexSearch(settings);
 
 - <i>indexOnFields</i> (require) : an array of string for tell IndexSearch that you need make index on the field name in your node.
 
-- <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary. following above example define is 5<br/> if keyword you as 'javascript'
+- <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary. following above example define is 5<br/> if keyword your as 'javascript'
 IndexSearch will create dictionary 5 patterns are 'j', 'ja', 'jav', 'java', 'javas'.
 
 - <i>additionalDictionaries</i> (optional) : an arry of string for add additional keywords from external into dictionary
