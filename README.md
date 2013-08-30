@@ -256,7 +256,7 @@ if (suggestions.length !== 0) {
 ﻿<html>
     <head>
         <style>
-            .keyword-highlighter{
+            .keyword-highlight{
                 color : red;
             }
 
