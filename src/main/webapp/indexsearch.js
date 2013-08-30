@@ -612,15 +612,24 @@ var IndexSearch = (function() {
         if (notDefined(node__)) {
             throw new Error('require {repository} settings.repository');
         }
+        
+        if(!isObject(node__)){
+            throw new Error('require {repository} settings.repository is root node object');
+        }
 
         var indexOnFields__ = settings.indexOnFields || [];
+        if (empty(indexOnFields__)) {
+            throw new Error('require index field on {string[]} : settings.indexOnFields');
+        } else if (foundIn('nodes', indexOnFields__)) {
+            throw new Error('field name \'nodes\' in {string[]} : settings.indexOnFields is reserved word');
+        }
 
         var highlighter__ = new Highlighter(settings.highlightClass || 'keyword-highlight');
-        var indexStoreImplmentation__ = settings.indexStore || new MemoryIndexStore(settings.maximumDictionaryKeySize || 3);
-        Interface.ensureImplements(indexStoreImplmentation__, [IndexStore]);
+        var indexStoreImpl__ = settings.indexStore || new MemoryIndexStore(settings.maximumDictionaryKeySize || 3);
+        Interface.ensureImplements(indexStoreImpl__, [IndexStore]);
 
-        var indexWriter__ = new IndexWriter(indexStoreImplmentation__);
-        var indexReader__ = new IndexReader(indexStoreImplmentation__);
+        var indexWriter__ = new IndexWriter(indexStoreImpl__);
+        var indexReader__ = new IndexReader(indexStoreImpl__);
 
         var indexSeparator__ = settings.indexSeparator || '/';
         var postfixFieldNameHighlight__ = settings.postfixFieldNameHighlight || 'Highlight';
@@ -641,12 +650,6 @@ var IndexSearch = (function() {
         var stopword__ = settings.stopword || function(text) {
             return replaceNotation(text).split(' ');
         };
-
-        if (empty(indexOnFields__)) {
-            throw new Error('require index field on {string[]} : settings.indexOnFields');
-        } else if (foundIn('nodes', indexOnFields__)) {
-            throw new Error('field name \'nodes\' in {string[]} : settings.indexOnFields is reserved word');
-        }
 
         //----------------------------------------------------------------------
         createIndex();
