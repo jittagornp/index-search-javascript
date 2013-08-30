@@ -469,7 +469,7 @@ var IndexSearch = (function() {
         var dictionary__ = settings.dictionary;
         var percentSuggest__ = settings.percentSuggest || 60;
         var suggestionsSize__ = settings.suggestionsSize || 10;
-        var highlightClass__ = settings.highlightClass || 'keyword-highlighter';
+        var highlightClass__ = settings.highlightClass || 'keyword-highlight';
 
         /**
          * for find total character map of string
@@ -615,7 +615,7 @@ var IndexSearch = (function() {
 
         var indexOnFields__ = settings.indexOnFields || [];
 
-        var highlighter__ = new Highlighter(settings.highlightClass || 'keyword-highlighter');
+        var highlighter__ = new Highlighter(settings.highlightClass || 'keyword-highlight');
         var indexStoreImplmentation__ = settings.indexStore || new MemoryIndexStore(settings.maximumDictionaryKeySize || 3);
         Interface.ensureImplements(indexStoreImplmentation__, [IndexStore]);
 
