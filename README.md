@@ -63,7 +63,7 @@ var settings = {
 	indexOnFields: ['name'], //require
 	maximumDictionaryKeySize: 5, 
 	additionalDictionaries: additionalDictionaries,
-	//indexStore : instance of class which implement interface IndexStore,
+	//indexStore : instance of class which implement an interface IndexStore,
 	//postfixFieldNameHighlight : defualt is 'Highlight',
 	//percentSuggest : default is 60,
 	//suggestionsSize : default is 10,
