@@ -211,17 +211,13 @@ $suggestions.text('');
 var suggestions = result.getSuggestions();
 
 if (suggestions.length !== 0) {
-	$suggestions.append('suggestions : ');
+	$suggestions.append('คุณอาจหมายถึง ');
 	for (var suggestIndex in suggestions) {
 		var suggest = suggestions[suggestIndex];
 		var highlight = suggest.highlight;
 
 		if (suggestIndex != 0) {
 			$suggestions.append(', ');
-		}
-
-		if (suggest.percent) {
-			highlight = highlight + '(' + suggest.percent + '%)';
 		}
 
 		var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
@@ -232,10 +228,6 @@ if (suggestions.length !== 0) {
 			$searchInput.val($(this).attr('data-suggest')).keyup();
 		});
 
-		if (suggest.percent) {
-			$suggestItem.attr('title', '\'' + suggest.word + '\' same \'' + indexSearch__.getKeyword() + '\' ' + suggest.percent + '%');
-		}
-		
 		$suggestions.append($suggestItem);
 	}
 
