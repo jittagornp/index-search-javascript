@@ -205,20 +205,20 @@ function walkRepositoryShowResult(parentNode, $parentDOM) {
 	}
 }
 ```
-6) <b>show search detail</b>
+6) <b>show search summary</b>
 ```js
 $summary.text('');
 if (result.getTotalPosition() !== 0) {
 	$summary.append('ผลลัพธ์จากการค้นหา \'')
-			.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'detail-search-highlight'))
+			.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
 			.append('\' พบ ')
-			.append($('<span>').text(result.getTotalPosition()).attr('class', 'detail-search-highlight'))
+			.append($('<span>').text(result.getTotalPosition()).attr('class', 'summary-highlight'))
 			.append(' ตำแหน่ง บน ')
-			.append($('<span>').text(result.getTotalSentence()).attr('class', 'detail-search-highlight'))
+			.append($('<span>').text(result.getTotalSentence()).attr('class', 'summary-highlight'))
 			.append(' ประโยค.');
 } else if (keyword !== '') {
 	$summary.append('ผลลัพธ์จากการค้นหา \'')
-			.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'detail-search-highlight'))
+			.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
 			.append('\' ไม่พบข้อมูล');
 }
 ```
