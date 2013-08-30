@@ -251,7 +251,7 @@ if (suggestions.length !== 0) {
 }
 ```
 
-<b>full code</b>
+<b>full code html</b>
 ```html
 ﻿<html>
     <head>
