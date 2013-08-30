@@ -63,7 +63,7 @@ var settings = {
 	indexOnFields: ['name'], //require
 	maximumDictionaryKeySize: 5, 
 	additionalDictionaries: additionalDictionaries,
-	//indexStore : instance on class which implement interface IndexStore,
+	//indexStore : instance of class which implement interface IndexStore,
 	//postfixFieldNameHighlight : defualt is 'Highlight',
 	//percentSuggest : default is 60,
 	//suggestionsSize : default is 10,
@@ -147,7 +147,7 @@ when you search you will see field 'nameHighligh' (by default) which is html hig
 
 - <i>percentSuggest</i> (optional) : default is 60 percent, for tell IndexSearch when you search not found, 
 IndexSearch will find other keyword suggestions which same the keyword search following percentSuggest.
-such as you search 'java2' but not found this keyword in dictionary, it's will find other keyword which same 'java2', 
+such as you search for 'java2' but not found this keyword in dictionary, it's will find other keyword which same 'java2', 
 result is 'java' because 'java' same 'java2' 75% > 60%(by default).
 algorithm for compute the same percent of 2 strings can see in http://na5cent.blogspot.com/2013/02/algorithm-for-find-difference.html. 
 
