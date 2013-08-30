@@ -114,9 +114,9 @@ var IndexSearch = (function() {
     }
 
     function numberFormat(number) {
-        var flotNumber = parseFloat(number);
+        var floatNumber = parseFloat(number);
         var integerNumber = parseInt(number);
-        if ((flotNumber - integerNumber) === 0) {
+        if ((floatNumber - integerNumber) === 0) {
             return integerNumber;
         } else {
             return new Number(number).toFixed(2);
@@ -638,7 +638,7 @@ var IndexSearch = (function() {
          * function stopword
          * use for separate keyword from sentence
          */
-        var stopword_ = settings.stopword || function(text) {
+        var stopword__ = settings.stopword || function(text) {
             return replaceNotation(text).split(' ');
         };
 
@@ -671,7 +671,7 @@ var IndexSearch = (function() {
                 return;
             }
 
-            var keywords = stopword_(sentence);
+            var keywords = stopword__(sentence);
             for (var keywordIndex in keywords) {
                 indexWriter__.addDictionary(keywords[keywordIndex]);
             }
