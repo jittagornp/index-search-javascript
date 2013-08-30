@@ -8,6 +8,10 @@
             .level-0 > a{
                 font-weight: bold; 
             }
+
+            .detail-search-highlight{
+                color : red;
+            }
         </style>
     </head>
     <body>
@@ -40,19 +44,29 @@
 
                         $summary.text('');
                         if (result.getTotalPosition() !== 0) {
-                            $summary.text('search : \'' + indexSearch__.getKeyword() + '\' found ' + result.getTotalPosition() + ' positions on ' + result.getTotalSentence() + ' sentences.');
+                            $summary.append('ผลลัพธ์จากการค้นหา \'')
+                                    .append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'detail-search-highlight'))
+                                    .append('\' พบ ')
+                                    .append($('<span>').text(result.getTotalPosition()).attr('class', 'detail-search-highlight'))
+                                    .append(' ตำแหน่ง บน ')
+                                    .append($('<span>').text(result.getTotalSentence()).attr('class', 'detail-search-highlight'))
+                                    .append(' ประโยค.');
+                        } else if (keyword !== '') {
+                            $summary.append('ผลลัพธ์จากการค้นหา \'')
+                                    .append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'detail-search-highlight'))
+                                    .append('\' ไม่พบข้อมูล');
                         }
 
 
                         $suggestions.text('');
                         var suggestions = result.getSuggestions();
                         if (suggestions.length !== 0) {
-                            $suggestions.append('suggestions : ');
+                            $suggestions.append('คุณอาจหมายถึง ');
                             for (var suggestIndex in suggestions) {
                                 var suggest = suggestions[suggestIndex];
                                 var highlight = suggest.highlight;
 
-                                if (suggestIndex !== '0') {
+                                if (suggestIndex != 0) {
                                     $suggestions.append(', ');
                                 }
 
@@ -71,7 +85,7 @@
                                 if (suggest.percent) {
                                     $suggestItem.attr('title', '\'' + suggest.word + '\' same \'' + indexSearch__.getKeyword() + '\' ' + suggest.percent + '%');
                                 }
-                                
+
                                 $suggestions.append($suggestItem);
                             }
 

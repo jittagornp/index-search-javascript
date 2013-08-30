@@ -593,7 +593,7 @@ var IndexSearch = (function() {
 
     /**
      * constructor of IndexSearch
-     * @param {object} settings__
+     * @param {object} settings
      */
     var constructor = function(settings) {
         if (notDefined(settings)) {
