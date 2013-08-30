@@ -270,6 +270,15 @@ if (suggestions.length !== 0) {
         </style>
     </head>
     <body>
+    
+        <!--
+            example code for use IndexSearch.js
+        
+            author : redcrow (jittagorn pitakmetagoon) developer Thailand
+            website : na5cent.blogspot.com
+            create : 26/08/2013
+        -->
+        
         <script src="jquery.js"></script>
         <script src="repository.js"></script>
         <script src="additionalDictionaries.js"></script>
