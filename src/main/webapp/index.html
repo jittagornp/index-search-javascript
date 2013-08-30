@@ -69,11 +69,7 @@
                                 if (suggestIndex != 0) {
                                     $suggestions.append(', ');
                                 }
-
-                                if (suggest.percent) {
-                                    highlight = highlight + '(' + suggest.percent + '%)';
-                                }
-
+                                
                                 var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
                                         .attr('data-suggest', suggest.word)
                                         .html(highlight)

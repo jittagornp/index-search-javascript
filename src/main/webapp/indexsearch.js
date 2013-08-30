@@ -469,7 +469,7 @@ var IndexSearch = (function() {
         var dictionary__ = settings.dictionary;
         var percentSuggest__ = settings.percentSuggest || 60;
         var suggestionsSize__ = settings.suggestionsSize || 10;
-        var highlighter = new Highlighter(settings.highlightClass || 'keyword-highlighter');
+        var highlightClass__ = settings.highlightClass || 'keyword-highlighter';
 
         /**
          * for find total character map of string
@@ -527,57 +527,32 @@ var IndexSearch = (function() {
             return 100 * (percentTotal / mapBase);
         }
 
-        this.getSuggestionsWhenSearchFound = function(keyword) {
-            var suggestions = [];
-            for (var dictionaryIndex in dictionary__) {
-                if (keyword !== dictionaryIndex) {
-                    var highlightText = highlighter.highlight(keyword, dictionaryIndex);
-                    if (empty(highlightText)) {
-                        highlightText = dictionaryIndex;
-                    }
-
-                    suggestions.push({
-                        word: dictionaryIndex,
-                        highlight: highlightText
-                    });
-                }
-
-                if (suggestions.length === suggestionsSize__) {
-                    break;
-                }
-            }
-
-            suggestions = suggestions.sort(function(keyword1, keyword2) {
-                return keyword1.length - keyword2.length;
-            });
-
-            return suggestions;
-        };
-
-        this.getSuggestionsWhenSearchNotFound = function(keyword) {
+        function getSuggestions(keyword, percentSuggest) {
             var suggestions = [];
 
             for (var dictionaryIndex in dictionary__) {
                 var compareWord = dictionaryIndex;
+                if (keyword !== dictionaryIndex) {
 
-                var keywordMap = reduceKeywordAndTransformToMap(keyword);
-                var compareMap = reduceKeywordAndTransformToMap(compareWord);
-                var percent = computePercentage(keywordMap, compareMap);
+                    var keywordMap = reduceKeywordAndTransformToMap(keyword);
+                    var compareMap = reduceKeywordAndTransformToMap(compareWord);
+                    var percent = computePercentage(keywordMap, compareMap);
 
-                if (percent >= percentSuggest__) {
-                    var highlightText = highlighter.highlight(compareWord, keyword);
-                    if (empty(highlightText)) {
-                        highlightText = compareWord;
-                    }
+                    if (percent >= percentSuggest) {
+                        var highlightText = hightlight(keyword, compareWord);
+                        if (empty(highlightText)) {
+                            highlightText = compareWord;
+                        }
 
-                    suggestions.push({
-                        word: compareWord,
-                        highlight: highlightText,
-                        percent: numberFormat(percent)
-                    });
+                        suggestions.push({
+                            word: compareWord,
+                            highlight: highlightText,
+                            percent: numberFormat(percent)
+                        });
 
-                    if (suggestions.length === suggestionsSize__) {
-                        break;
+                        if (suggestions.length === suggestionsSize__) {
+                            break;
+                        }
                     }
                 }
             }
@@ -587,7 +562,40 @@ var IndexSearch = (function() {
             });
 
             return suggestions;
+        }
+
+        this.getSuggestionsWhenSearchFound = function(keyword) {
+            return getSuggestions(keyword, 0);
         };
+
+        this.getSuggestionsWhenSearchNotFound = function(keyword) {
+            return getSuggestions(keyword, percentSuggest__);
+        };
+
+        function hightlight(keyWord, suggest) {
+            var result = '';
+            for (var suggestIndex = 0; suggestIndex < suggest.length; suggestIndex++) {
+                var suggestCharacterAt = suggest.charAt(suggestIndex);
+
+                var found = false;
+                for (var j = 0; j < keyWord.length; j++) {
+                    var keyWordCharacterAt = keyWord.charAt(j);
+
+                    if (keyWordCharacterAt === suggestCharacterAt) {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found) {
+                    result = result + '<span class=' + highlightClass__ + '>' + suggestCharacterAt + '</span>';
+                } else {
+                    result = result + suggestCharacterAt;
+                }
+            }
+
+            return result;
+        }
     };
 
 
