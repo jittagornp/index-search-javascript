@@ -1,16 +1,13 @@
 /**
- * class IndexSearch
- * @author redcrow (jittagorn pitakmetagoon)
- * @create on 26/08/2013
- * @website na5cent.blogspot.com
- * @version 1.0
+ * IndexSearch.js
+ *
+ * author     -->  redcrow (jittagorn pitakmetagoon)
+ * create on  -->  26/08/2013
+ * website    -->  na5cent.blogspot.com
+ * version    -->  1.0
  * 
- * License
- * Apache License
- * Version 2.0, January 2004
- * http://www.apache.org/licenses/
- * 
- * can see on https://github.com/jittagornp/index-search-javascript/blob/master/LICENSE
+ * License    ---> Apache License
+ * Version 2.0, January 2004 (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
 var IndexSearch=function(){function r(a){return g(a)||0===a.length}function m(a,b){p(b,"String")&&(a=a.toLowerCase(),b=b.toLowerCase());return b.indexOf(a)}function w(a){return a=a.replace(/&/g,"&amp;").replace(/>/g,"&gt;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}function p(a,b){return Object.prototype.toString.call(a)==="[object "+b+"]"}function g(a){return p(a,"Undefined")}function y(a){var b=0,c;for(c in a)b+=1;return b}function C(a){var b=parseFloat(a),c=parseInt(a);return 0===b-c?c:(new Number(a)).toFixed(2)}
