@@ -462,13 +462,14 @@ var IndexSearch = (function() {
     };
 
     /**
-     * class Suggession
-     * 
+     * class Suggession 
+     * @description http://na5cent.blogspot.com/2013/02/algorithm-for-find-difference.html
      */
     var Suggestion = function(settings) {
         var dictionary__ = settings.dictionary;
         var percentSuggest__ = settings.percentSuggest || 60;
         var suggestionsSize__ = settings.suggestionsSize || 10;
+        var highlighter = new Highlighter(settings.highlightClass || 'keyword-highlighter');
 
         /**
          * for find total character map of string
@@ -507,16 +508,16 @@ var IndexSearch = (function() {
                 var keywordObj = keywordMap[keywordProperty];
                 var compareObj = compareMap[keywordProperty];
 
-                var keyWordPropertyValue = keywordObj.duplicate + keywordObj.position;
+                var keywordPropertyValue = keywordObj.duplicate + keywordObj.position;
                 var comparePropertyValue = compareObj.duplicate + compareObj.position;
 
-                if (keyWordPropertyValue !== 0 && comparePropertyValue !== 0) {
+                if (keywordPropertyValue !== 0 && comparePropertyValue !== 0) {
 
-                    var propertyBase = (comparePropertyValue + keyWordPropertyValue) / 2;
-                    if (keyWordPropertyValue >= comparePropertyValue) {
+                    var propertyBase = (comparePropertyValue + keywordPropertyValue) / 2;
+                    if (keywordPropertyValue >= comparePropertyValue) {
                         percentTotal = percentTotal + (comparePropertyValue / propertyBase);
                     } else {
-                        percentTotal = percentTotal + (keyWordPropertyValue / propertyBase);
+                        percentTotal = percentTotal + (keywordPropertyValue / propertyBase);
                     }
                 }
             }
@@ -530,8 +531,14 @@ var IndexSearch = (function() {
             var suggestions = [];
             for (var dictionaryIndex in dictionary__) {
                 if (keyword !== dictionaryIndex) {
+                    var highlightText = highlighter.highlight(keyword, dictionaryIndex);
+                    if (empty(highlightText)) {
+                        highlightText = dictionaryIndex;
+                    }
+
                     suggestions.push({
-                        word: dictionaryIndex
+                        word: dictionaryIndex,
+                        highlight: highlightText
                     });
                 }
 
@@ -551,15 +558,21 @@ var IndexSearch = (function() {
             var suggestions = [];
 
             for (var dictionaryIndex in dictionary__) {
-                var compareWord = dictionaryIndex.toLowerCase();
+                var compareWord = dictionaryIndex;
 
                 var keywordMap = reduceKeywordAndTransformToMap(keyword);
                 var compareMap = reduceKeywordAndTransformToMap(compareWord);
                 var percent = computePercentage(keywordMap, compareMap);
 
                 if (percent >= percentSuggest__) {
+                    var highlightText = highlighter.highlight(compareWord, keyword);
+                    if (empty(highlightText)) {
+                        highlightText = compareWord;
+                    }
+
                     suggestions.push({
                         word: compareWord,
+                        highlight: highlightText,
                         percent: numberFormat(percent)
                     });
 
@@ -594,7 +607,7 @@ var IndexSearch = (function() {
 
         var indexOnFields__ = settings.indexOnFields || [];
 
-        var highlighter__ = new Highlighter(settings.highlightClass || 'highlighter');
+        var highlighter__ = new Highlighter(settings.highlightClass || 'keyword-highlighter');
         var indexStoreImplmentation__ = settings.indexStore || new MemoryIndexStore(settings.maximumDictionaryKeySize || 3);
         Interface.ensureImplements(indexStoreImplmentation__, [IndexStore]);
 

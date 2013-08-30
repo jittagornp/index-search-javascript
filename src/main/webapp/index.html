@@ -1,7 +1,7 @@
 ﻿<html>
     <head>
         <style>
-            .highlighter{
+            .keyword-highlighter{
                 color : red;
             }
 
@@ -62,7 +62,7 @@
 
                                 var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
                                         .attr('data-suggest', suggest.word)
-                                        .html(word)
+                                        .html(suggest.highlight)
                                         .click(function(event) {
                                     event.preventDefault();
                                     $searchInput.val($(this).attr('data-suggest')).keyup();
