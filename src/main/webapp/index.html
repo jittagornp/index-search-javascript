@@ -57,7 +57,7 @@
                                     .append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
                                     .append('\' พบ ')
                                     .append($('<span>').text(result.getTotalPosition()).attr('class', 'summary-highlight'))
-                                    .append(' ตำแหน่ง บน ')
+                                    .append(' รายการ บน ')
                                     .append($('<span>').text(result.getTotalSentence()).attr('class', 'summary-highlight'))
                                     .append(' ประโยค.');
                         } else if (keyword !== '') {
@@ -89,7 +89,8 @@
 
                                 $suggestions.append($suggestItem);
                             }
-
+                            
+                             $suggestions.append(' ').append('?');
                         }
 
                         showResult(result.getContent());

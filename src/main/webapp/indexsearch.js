@@ -4,7 +4,15 @@
  * @create on 26/08/2013
  * @website na5cent.blogspot.com
  * @version 1.0
+ * 
+ * License
+ * Apache License
+ * Version 2.0, January 2004
+ * http://www.apache.org/licenses/
+ * 
+ * can see on https://github.com/jittagornp/index-search-javascript/blob/master/LICENSE
  */
+
 var IndexSearch = (function() {
 
     function defined(object) {
