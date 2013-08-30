@@ -66,7 +66,8 @@ var settings = {
 	//indexStore : instance on class which implement interface IndexStore,
 	//postfixFieldNameHighlight : defualt is 'Highlight',
 	//percentSuggest : default is 60,
-	//suggestionsSize : default is 10
+	//suggestionsSize : default is 10,
+	//highlightClass : default is 'keyword-highlgiht', css class for html highlight,
 	//stopword : function(sentence){  by default use white space for stop word 
 	//    return array of keyword	
 	//}
@@ -151,6 +152,8 @@ result is 'java' because 'java' same 'java2' 75% > 60%(by default).
 algorithm for compute the same percent of 2 strings can see in http://na5cent.blogspot.com/2013/02/algorithm-for-find-difference.html. 
 
 - <i>suggestionsSize</i> (optinal) : number of suggestion keyword, default is 10 keywords 
+
+- <i>highlightClass</i> (optional) : default is 'keyword-highlight', is css class for keyword highlight
 
 - <i>stopword</i> (optional) : is the function for separate keyword from sentence. by default use white space for stop word.  
 
