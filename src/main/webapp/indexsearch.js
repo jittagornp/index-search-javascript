@@ -593,7 +593,7 @@ var IndexSearch = (function() {
 
     /**
      * constructor of IndexSearch
-     * @param {object} settings
+     * @param {object} settings__
      */
     var constructor = function(settings) {
         if (notDefined(settings)) {
@@ -623,6 +623,8 @@ var IndexSearch = (function() {
         var additionalDictionaries__ = settings.additionalDictionaries || [];
         var suggestionList__ = [];
         var notFoundTimes__ = 0;
+        var suggestionsSize__ = settings.suggestionsSize;
+        var percentSuggest__ = settings.percentSuggest;
 
         /**
          * function stopword
@@ -794,16 +796,16 @@ var IndexSearch = (function() {
 
                 suggestionList__ = new Suggestion({
                     dictionary: indexReader__.getDictionary(key),
-                    suggestionsSize: settings.suggestionsSize,
-                    percentSuggest: settings.percentSuggest
+                    suggestionsSize: suggestionsSize__,
+                    percentSuggest: percentSuggest__
                 }).getSuggestionsWhenSearchNotFound(keyword__);
             } else {
                 notFoundTimes__ = 0;
 
                 suggestionList__ = new Suggestion({
                     dictionary: indexReader__.getDictionary(keyword__),
-                    suggestionsSize: settings.suggestionsSize,
-                    percentSuggest: settings.percentSuggest
+                    suggestionsSize: suggestionsSize__,
+                    percentSuggest: percentSuggest__
                 }).getSuggestionsWhenSearchFound(keyword__);
             }
         }
