@@ -213,7 +213,7 @@ if (suggestions.length !== 0) {
 		var suggest = suggestions[suggestIndex];
 		var highlight = suggest.highlight;
 
-		if (suggestIndex !== '0') {
+		if (suggestIndex != 0) {
 			$suggestions.append(', ');
 		}
 
