@@ -66,7 +66,8 @@ var settings = {
 	//indexStore : instance on class which implement interface IndexStore,
 	//postfixFieldNameHighlight : defualt is 'Highlight',
 	//percentSuggest : default is 60,
-	//suggestionsSize : default is 10
+	//suggestionsSize : default is 10,
+	//highlightClass : default is 'keyword-highlgiht', css class for html highlight,
 	//stopword : function(sentence){  by default use white space for stop word 
 	//    return array of keyword	
 	//}
@@ -152,6 +153,8 @@ algorithm for compute the same percent of 2 strings can see in http://na5cent.bl
 
 - <i>suggestionsSize</i> (optinal) : number of suggestion keyword, default is 10 keywords 
 
+- <i>highlightClass</i> (optional) : default is 'keyword-highlight', is css class for keyword highlight
+
 - <i>stopword</i> (optional) : is the function for separate keyword from sentence. by default use white space for stop word.  
 
 3) <b>search</b>
@@ -211,19 +214,19 @@ if (suggestions.length !== 0) {
 	$suggestions.append('suggestions : ');
 	for (var suggestIndex in suggestions) {
 		var suggest = suggestions[suggestIndex];
-		var word = suggest.word;
+		var highlight = suggest.highlight;
 
-		if (suggestIndex !== '0') {
+		if (suggestIndex != 0) {
 			$suggestions.append(', ');
 		}
 
 		if (suggest.percent) {
-			word = word + '(' + suggest.percent + '%)';
+			highlight = highlight + '(' + suggest.percent + '%)';
 		}
 
 		var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
 				.attr('data-suggest', suggest.word)
-				.html(word)
+				.html(highlight)
 				.click(function(event) {
 			event.preventDefault();
 			$searchInput.val($(this).attr('data-suggest')).keyup();
