@@ -142,7 +142,7 @@ var MyIndexStore = function(maximumDictionaryKeySize){
     }
 };
 ```
-- <i>postfixFieldNameHighlight</i> (optional) : default is 'Highlight', postfix of highlight field name which you make an index.
+- <i>postfixFieldNameHighlight</i> (optional) : postfix of highlight field name which you make an index, default is 'Highlight'.
 such as you need make index on the field 'name', 
 when search you will see field 'nameHighligh' (by default) which is html highlight of 'name'.
 
@@ -154,7 +154,7 @@ algorithm for compute the same percent of 2 strings can see in http://na5cent.bl
 
 - <i>suggestionsSize</i> (optinal) : number of suggestion keywords, default is 10 keywords.
 
-- <i>highlightClass</i> (optional) : default is 'keyword-highlight', is css class for keyword highlight.
+- <i>highlightClass</i> (optional) : css class for keyword highlight, default is 'keyword-highlight'.
 
 - <i>stopword</i> (optional) : the function for separate keyword from sentence. by default use white space for stop word.  
 
