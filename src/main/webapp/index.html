@@ -50,19 +50,19 @@
                             $suggestions.append('suggestions : ');
                             for (var suggestIndex in suggestions) {
                                 var suggest = suggestions[suggestIndex];
-                                var word = suggest.word;
+                                var highlight = suggest.highlight;
 
                                 if (suggestIndex !== '0') {
                                     $suggestions.append(', ');
                                 }
 
                                 if (suggest.percent) {
-                                    word = word + '(' + suggest.percent + '%)';
+                                    highlight = highlight + '(' + suggest.percent + '%)';
                                 }
 
                                 var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
                                         .attr('data-suggest', suggest.word)
-                                        .html(suggest.highlight)
+                                        .html(highlight)
                                         .click(function(event) {
                                     event.preventDefault();
                                     $searchInput.val($(this).attr('data-suggest')).keyup();
