@@ -205,7 +205,24 @@ function walkRepositoryShowResult(parentNode, $parentDOM) {
 	}
 }
 ```
-6) <b>get and show suggestions</b>
+6) <b>show search detail</b>
+```js
+$summary.text('');
+if (result.getTotalPosition() !== 0) {
+	$summary.append('ผลลัพธ์จากการค้นหา \'')
+			.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'detail-search-highlight'))
+			.append('\' พบ ')
+			.append($('<span>').text(result.getTotalPosition()).attr('class', 'detail-search-highlight'))
+			.append(' ตำแหน่ง บน ')
+			.append($('<span>').text(result.getTotalSentence()).attr('class', 'detail-search-highlight'))
+			.append(' ประโยค.');
+} else if (keyword !== '') {
+	$summary.append('ผลลัพธ์จากการค้นหา \'')
+			.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'detail-search-highlight'))
+			.append('\' ไม่พบข้อมูล');
+}
+```
+7) <b>get and show suggestions</b>
 ```js
 $suggestions.text('');
 var suggestions = result.getSuggestions();
