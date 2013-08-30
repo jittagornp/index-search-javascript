@@ -205,7 +205,7 @@ function walkRepositoryShowResult(parentNode, $parentDOM) {
 	}
 }
 ```
-6) show search detail
+6) <b>show search detail</b>
 ```js
 $summary.text('');
 if (result.getTotalPosition() !== 0) {
