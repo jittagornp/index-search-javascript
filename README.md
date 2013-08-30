@@ -209,17 +209,17 @@ function walkRepositoryShowResult(parentNode, $parentDOM) {
 ```js
 $summary.text('');
 if (result.getTotalPosition() !== 0) {
-	$summary.append('ผลลัพธ์จากการค้นหา \'')
+	$summary.append('result search \'')
 			.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
-			.append('\' พบ ')
+			.append('\' found ')
 			.append($('<span>').text(result.getTotalPosition()).attr('class', 'summary-highlight'))
-			.append(' ตำแหน่ง บน ')
+			.append(' position on ')
 			.append($('<span>').text(result.getTotalSentence()).attr('class', 'summary-highlight'))
-			.append(' ประโยค.');
+			.append(' sentence.');
 } else if (keyword !== '') {
-	$summary.append('ผลลัพธ์จากการค้นหา \'')
+	$summary.append('result search \'')
 			.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
-			.append('\' ไม่พบข้อมูล');
+			.append('\' not found.');
 }
 ```
 7) <b>get and show suggestions</b>
@@ -228,7 +228,7 @@ $suggestions.text('');
 var suggestions = result.getSuggestions();
 
 if (suggestions.length !== 0) {
-	$suggestions.append('คุณอาจหมายถึง ');
+	$suggestions.append('do you mean ');
 	for (var suggestIndex in suggestions) {
 		var suggest = suggestions[suggestIndex];
 		var highlight = suggest.highlight;
@@ -251,104 +251,136 @@ if (suggestions.length !== 0) {
 }
 ```
 
-full code
-```js
-(function($, repository) {
-	$(function() {
-		//==========================================================
-		var indexSearch__ = new IndexSearch({
-			repository: repository, //require
-			indexOnFields: ['name'], //require
-			maximumIndexKeySize: 5,
-			additionalDictionaries: additionalDictionaries
-		});
-		//==========================================================
+<b>full code</b>
+```html
+﻿<html>
+    <head>
+        <style>
+            .keyword-highlighter{
+                color : red;
+            }
 
-		var $searchInput = $('#searchInput');
-		var $clearButton = $('#clearButton');
-		var $summary = $('#summary');
-		var $suggestions = $('#suggestions');
-		var $repositories = $('#repositories');
+            .level-0 > a{
+                font-weight: bold; 
+            }
 
-		showResult(repository);
-		$searchInput.keyup(function() {
-			var keyword = $searchInput.val();
-			var result = indexSearch__.search(keyword);
+            .summary-highlight{
+                color : red;
+            }
+        </style>
+    </head>
+    <body>
+        <script src="jquery.js"></script>
+        <script src="repository.js"></script>
+        <script src="additionalDictionaries.js"></script>
+        <script src="indexsearch.js"></script>
+        <script>
+            (function($, repository) {
+                $(function() {
+                    //==========================================================
+                    var indexSearch__ = new IndexSearch({
+                        repository: repository, //require
+                        indexOnFields: ['name'], //require
+                        maximumIndexKeySize: 5,
+                        additionalDictionaries: additionalDictionaries
+                    });
+                    //==========================================================
 
-			$summary.text('');
-			if (result.getTotalPosition() !== 0) {
-				$summary.append('ผลลัพธ์จากการค้นหา \'')
-						.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
-						.append('\' พบ ')
-						.append($('<span>').text(result.getTotalPosition()).attr('class', 'summary-highlight'))
-						.append(' ตำแหน่ง บน ')
-						.append($('<span>').text(result.getTotalSentence()).attr('class', 'summary-highlight'))
-						.append(' ประโยค.');
-			} else if (keyword !== '') {
-				$summary.append('ผลลัพธ์จากการค้นหา \'')
-						.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
-						.append('\' ไม่พบข้อมูล');
-			}
+                    var $searchInput = $('#searchInput');
+                    var $clearButton = $('#clearButton');
+                    var $summary = $('#summary');
+                    var $suggestions = $('#suggestions');
+                    var $repositories = $('#repositories');
+
+                    showResult(repository);
+                    $searchInput.keyup(function() {
+                        var keyword = $searchInput.val();
+                        var result = indexSearch__.search(keyword);
+
+                        $summary.text('');
+                        if (result.getTotalPosition() !== 0) {
+                            $summary.append('ผลลัพธ์จากการค้นหา \'')
+                                    .append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
+                                    .append('\' พบ ')
+                                    .append($('<span>').text(result.getTotalPosition()).attr('class', 'summary-highlight'))
+                                    .append(' ตำแหน่ง บน ')
+                                    .append($('<span>').text(result.getTotalSentence()).attr('class', 'summary-highlight'))
+                                    .append(' ประโยค.');
+                        } else if (keyword !== '') {
+                            $summary.append('ผลลัพธ์จากการค้นหา \'')
+                                    .append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
+                                    .append('\' ไม่พบข้อมูล');
+                        }
 
 
-			$suggestions.text('');
-			var suggestions = result.getSuggestions();
-			if (suggestions.length !== 0) {
-				$suggestions.append('คุณอาจหมายถึง ');
-				for (var suggestIndex in suggestions) {
-					var suggest = suggestions[suggestIndex];
-					var highlight = suggest.highlight;
+                        $suggestions.text('');
+                        var suggestions = result.getSuggestions();
+                        if (suggestions.length !== 0) {
+                            $suggestions.append('คุณอาจหมายถึง ');
+                            for (var suggestIndex in suggestions) {
+                                var suggest = suggestions[suggestIndex];
+                                var highlight = suggest.highlight;
 
-					if (suggestIndex != 0) {
-						$suggestions.append(', ');
-					}
+                                if (suggestIndex != 0) {
+                                    $suggestions.append(', ');
+                                }
 
-					var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
-							.attr('data-suggest', suggest.word)
-							.html(highlight)
-							.click(function(event) {
-						event.preventDefault();
-						$searchInput.val($(this).attr('data-suggest')).keyup();
-					});
+                                var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
+                                        .attr('data-suggest', suggest.word)
+                                        .html(highlight)
+                                        .click(function(event) {
+                                    event.preventDefault();
+                                    $searchInput.val($(this).attr('data-suggest')).keyup();
+                                });
 
-					$suggestions.append($suggestItem);
-				}
+                                $suggestions.append($suggestItem);
+                            }
 
-			}
+                        }
 
-			showResult(result.getContent());
-		});
+                        showResult(result.getContent());
+                    });
 
-		$clearButton.click(function() {
-			$searchInput.val('');
-			indexSearch__.clear();
-			$summary.text('');
-			$suggestions.text('');
-			showResult(repository);
-		});
+                    $clearButton.click(function() {
+                        $searchInput.val('');
+                        indexSearch__.clear();
+                        $summary.text('');
+                        $suggestions.text('');
+                        showResult(repository);
+                    });
 
-		function showResult(rootNode) {
-			var $rootDOM = $('<ul>');
-			$repositories.html($rootDOM);
-			walkRepositoryShowResult(rootNode, $rootDOM);
-		}
+                    function showResult(rootNode) {
+                        var $rootDOM = $('<ul>');
+                        $repositories.html($rootDOM);
+                        walkRepositoryShowResult(rootNode, $rootDOM);
+                    }
 
-		function walkRepositoryShowResult(parentNode, $parentDOM) {
-			var nodes = parentNode.nodes;
-			if (!nodes || nodes.length === 0) {
-				return;
-			}
+                    function walkRepositoryShowResult(parentNode, $parentDOM) {
+                        var nodes = parentNode.nodes;
+                        if (!nodes || nodes.length === 0) {
+                            return;
+                        }
 
-			for (var index in nodes) {
-				var childNode = nodes[index];
-				var $link = $('<a>').attr('href', childNode.link).html(childNode.nameHighlight || childNode.name);
-				var $childDOM = $('<ol>');
-				var $list = $('<li>').attr('class', childNode.level).append($link).append($childDOM);
-				$parentDOM.append($list);
+                        for (var index in nodes) {
+                            var childNode = nodes[index];
+                            var $link = $('<a>').attr('href', childNode.link).html(childNode.nameHighlight || childNode.name);
+                            var $childDOM = $('<ol>');
+                            var $list = $('<li>').attr('class', childNode.level).append($link).append($childDOM);
+                            $parentDOM.append($list);
 
-				walkRepositoryShowResult(childNode, $childDOM);
-			}
-		}
-	});
-})(jQuery, node);
+                            walkRepositoryShowResult(childNode, $childDOM);
+                        }
+                    }
+                });
+            })(jQuery, node);
+        </script>
+
+        <input id="searchInput"/><button id="clearButton">clear</button>
+        <div id="result">
+            <div id="summary"></div>
+            <div id="suggestions"></div>
+            <div id="repositories"></div>
+        </div>
+    </body>
+</html>
 ```		
