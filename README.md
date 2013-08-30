@@ -89,14 +89,14 @@ var indexSearch__ = new IndexSearch(settings);
 
 ```js
 ﻿var additionalDictionaries = [
-    'หลาย',
-    'ดูแล',
-    'ระยะ',
-    'วงกลม',
-    'ปัญหา',
-    'ระดับ',
-    'แชร์',
-    'เหมาะ'
+    'circle',
+    'system',
+    'time',
+    'problem',
+    'level',
+    'share',
+    'plus',
+    'additional'
 ];
 ```
 - <i>indexStore</i> (optional) : store for keeping an index, default is <i>MemeryIndexStore</i><br/>
@@ -214,9 +214,9 @@ if (result.getTotalPosition() !== 0) {
 			.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
 			.append('\' found ')
 			.append($('<span>').text(result.getTotalPosition()).attr('class', 'summary-highlight'))
-			.append(' position on ')
+			.append(' positions on ')
 			.append($('<span>').text(result.getTotalSentence()).attr('class', 'summary-highlight'))
-			.append(' sentence.');
+			.append(' sentences.');
 } else if (keyword !== '') {
 	$summary.append('result search \'')
 			.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
@@ -309,24 +309,24 @@ if (suggestions.length !== 0) {
 
                         $summary.text('');
                         if (result.getTotalPosition() !== 0) {
-                            $summary.append('ผลลัพธ์จากการค้นหา \'')
+                            $summary.append('search \'')
                                     .append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
-                                    .append('\' พบ ')
+                                    .append('\' found ')
                                     .append($('<span>').text(result.getTotalPosition()).attr('class', 'summary-highlight'))
-                                    .append(' ตำแหน่ง บน ')
+                                    .append(' positions on ')
                                     .append($('<span>').text(result.getTotalSentence()).attr('class', 'summary-highlight'))
-                                    .append(' ประโยค.');
+                                    .append(' sentences.');
                         } else if (keyword !== '') {
-                            $summary.append('ผลลัพธ์จากการค้นหา \'')
+                            $summary.append('search \'')
                                     .append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
-                                    .append('\' ไม่พบข้อมูล');
+                                    .append('\' not found.');
                         }
 
 
                         $suggestions.text('');
                         var suggestions = result.getSuggestions();
                         if (suggestions.length !== 0) {
-                            $suggestions.append('คุณอาจหมายถึง ');
+                            $suggestions.append('do you mean ');
                             for (var suggestIndex in suggestions) {
                                 var suggest = suggestions[suggestIndex];
                                 var highlight = suggest.highlight;
