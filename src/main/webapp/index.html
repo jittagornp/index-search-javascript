@@ -69,7 +69,7 @@
                                 if (suggestIndex != 0) {
                                     $suggestions.append(', ');
                                 }
-                                
+
                                 var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
                                         .attr('data-suggest', suggest.word)
                                         .html(highlight)
@@ -77,10 +77,6 @@
                                     event.preventDefault();
                                     $searchInput.val($(this).attr('data-suggest')).keyup();
                                 });
-
-                                if (suggest.percent) {
-                                    $suggestItem.attr('title', '\'' + suggest.word + '\' same \'' + indexSearch__.getKeyword() + '\' ' + suggest.percent + '%');
-                                }
 
                                 $suggestions.append($suggestItem);
                             }
