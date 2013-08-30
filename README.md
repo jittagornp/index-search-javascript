@@ -250,3 +250,105 @@ if (suggestions.length !== 0) {
 
 }
 ```
+
+full code
+```js
+(function($, repository) {
+	$(function() {
+		//==========================================================
+		var indexSearch__ = new IndexSearch({
+			repository: repository, //require
+			indexOnFields: ['name'], //require
+			maximumIndexKeySize: 5,
+			additionalDictionaries: additionalDictionaries
+		});
+		//==========================================================
+
+		var $searchInput = $('#searchInput');
+		var $clearButton = $('#clearButton');
+		var $summary = $('#summary');
+		var $suggestions = $('#suggestions');
+		var $repositories = $('#repositories');
+
+		showResult(repository);
+		$searchInput.keyup(function() {
+			var keyword = $searchInput.val();
+			var result = indexSearch__.search(keyword);
+
+			$summary.text('');
+			if (result.getTotalPosition() !== 0) {
+				$summary.append('ผลลัพธ์จากการค้นหา \'')
+						.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
+						.append('\' พบ ')
+						.append($('<span>').text(result.getTotalPosition()).attr('class', 'summary-highlight'))
+						.append(' ตำแหน่ง บน ')
+						.append($('<span>').text(result.getTotalSentence()).attr('class', 'summary-highlight'))
+						.append(' ประโยค.');
+			} else if (keyword !== '') {
+				$summary.append('ผลลัพธ์จากการค้นหา \'')
+						.append($('<span>').text(indexSearch__.getKeyword()).attr('class', 'summary-highlight'))
+						.append('\' ไม่พบข้อมูล');
+			}
+
+
+			$suggestions.text('');
+			var suggestions = result.getSuggestions();
+			if (suggestions.length !== 0) {
+				$suggestions.append('คุณอาจหมายถึง ');
+				for (var suggestIndex in suggestions) {
+					var suggest = suggestions[suggestIndex];
+					var highlight = suggest.highlight;
+
+					if (suggestIndex != 0) {
+						$suggestions.append(', ');
+					}
+
+					var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
+							.attr('data-suggest', suggest.word)
+							.html(highlight)
+							.click(function(event) {
+						event.preventDefault();
+						$searchInput.val($(this).attr('data-suggest')).keyup();
+					});
+
+					$suggestions.append($suggestItem);
+				}
+
+			}
+
+			showResult(result.getContent());
+		});
+
+		$clearButton.click(function() {
+			$searchInput.val('');
+			indexSearch__.clear();
+			$summary.text('');
+			$suggestions.text('');
+			showResult(repository);
+		});
+
+		function showResult(rootNode) {
+			var $rootDOM = $('<ul>');
+			$repositories.html($rootDOM);
+			walkRepositoryShowResult(rootNode, $rootDOM);
+		}
+
+		function walkRepositoryShowResult(parentNode, $parentDOM) {
+			var nodes = parentNode.nodes;
+			if (!nodes || nodes.length === 0) {
+				return;
+			}
+
+			for (var index in nodes) {
+				var childNode = nodes[index];
+				var $link = $('<a>').attr('href', childNode.link).html(childNode.nameHighlight || childNode.name);
+				var $childDOM = $('<ol>');
+				var $list = $('<li>').attr('class', childNode.level).append($link).append($childDOM);
+				$parentDOM.append($list);
+
+				walkRepositoryShowResult(childNode, $childDOM);
+			}
+		}
+	});
+})(jQuery, node);
+```		
