@@ -79,12 +79,12 @@ var indexSearch__ = new IndexSearch(settings);
 <b>settings attribute</b>:<br/>
 - <i>repository</i> (require) : the repository that you define following above example.
 
-- <i>indexOnFields</i> (require) : an array of string for tell <i>IndexSearch</i> that you need make index on the field name in your node.
+- <i>indexOnFields</i> (require) : an array of strings for tell <i>IndexSearch</i> that you need make index on the field name in your node.
 
 - <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary. following above example define is 5<br/> if keyword your as 'javascript'
 <i>IndexSearch</i> will create dictionary 5 patterns are 'j', 'ja', 'jav', 'java', 'javas'.
 
-- <i>additionalDictionaries</i> (optional) : an arry of string for add additional keywords from external into dictionary
+- <i>additionalDictionaries</i> (optional) : an arry of strings for add additional keywords from external into dictionary
 <br/>you can define following as : <br/>
 
 ```js
