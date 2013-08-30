@@ -100,7 +100,7 @@ var indexSearch__ = new IndexSearch(settings);
 ];
 ```
 - <i>indexStore</i> (optional) : store for keeping an index, default is <i>MemeryIndexStore</i><br/>
-you can custom your index store by implement an interface <i>IndexStore</i> which define following method :
+you can custom your index store by implement an interface <i>IndexStore</i> which define the following methods :
 
 ```js
 /**
@@ -144,7 +144,7 @@ var MyIndexStore = function(maximumDictionaryKeySize){
 ```
 - <i>postfixFieldNameHighlight</i> (optional) : default is 'Highlight', postfix of highlight field name which you make an index.
 such as you need make index on the field 'name', 
-when you search you will see field 'nameHighligh' (by default) which is html highlight of 'name'.
+when search you will see field 'nameHighligh' (by default) which is html highlight of 'name'.
 
 - <i>percentSuggest</i> (optional) : default is 60 percent, for tell <i>IndexSearch</i> when you search not found, 
 <i>IndexSearch</i> will find other suggestion keywords which same the keyword search following <i>percentSuggest</i>.
@@ -156,7 +156,7 @@ algorithm for compute the same percent of 2 strings can see in http://na5cent.bl
 
 - <i>highlightClass</i> (optional) : default is 'keyword-highlight', is css class for keyword highlight.
 
-- <i>stopword</i> (optional) : is the function for separate keyword from sentence. by default use white space for stop word.  
+- <i>stopword</i> (optional) : the function for separate keyword from sentence. by default use white space for stop word.  
 
 3) <b>search</b>
 ```js
