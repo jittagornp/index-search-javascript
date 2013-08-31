@@ -152,7 +152,7 @@ such as you search for 'java2' but not found this keyword in dictionary, it's wi
 result is 'java' because 'java' same 'java2' 75% > 60%(by default).
 algorithm for compute the same percent of 2 strings can see in http://na5cent.blogspot.com/2013/02/algorithm-for-find-difference.html. 
 
-- <i>suggestionsSize</i> (optinal) : number of suggestion keywords, default is 10 keywords.
+- <i>suggestionsSize</i> (optinal) : number of suggest keywords, default is 10 keywords.
 
 - <i>highlightClass</i> (optional) : css class for keyword highlight, default is 'keyword-highlight'.
 
