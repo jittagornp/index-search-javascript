@@ -70,7 +70,7 @@ var settings = {
 	//highlightClass : default is 'keyword-highlgiht', css class for html highlight,
 	//stopword : function(sentence){  by default use white space for stop word 
 	//    return array of keyword such as 
-	//    sentence = 'which implement interface IndexStore' --> ['which', 'implement', 'interface', 'IndexStore']	
+	//    sentence = 'which implement an interface IndexStore' --> ['which', 'implement', 'an', 'interface', 'IndexStore']	
 	//}
 };
 
