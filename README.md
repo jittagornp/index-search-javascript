@@ -146,7 +146,7 @@ var MyIndexStore = function(maximumDictionaryKeySize){
 such as you need make index on the field 'name', 
 when search you will see field 'nameHighligh' (by default) which is html highlight of 'name'.
 
-- <i>percentSuggest</i> (optional) : default is 60 percent, for tell <i>IndexSearch</i> when you search not found, 
+- <i>percentSuggest</i> (optional) : default is 60 percent, for tell <i>IndexSearch</i> when search not found, 
 <i>IndexSearch</i> will find other suggest keywords which same the keyword search following <i>percentSuggest</i>.
 such as you search for 'java2' but not found this keyword in dictionary, it's will find other keyword which same 'java2', 
 result is 'java' because 'java' same 'java2' 75% > 60%(by default).
