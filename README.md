@@ -79,9 +79,9 @@ var indexSearch__ = new IndexSearch(settings);
 <b>settings attribute</b>:<br/>
 - <i>repository</i> (require) : the repository that you define following above example.
 
-- <i>indexOnFields</i> (require) : an array of strings for tell <i>IndexSearch</i> that you need make index on the field name in your node.
+- <i>indexOnFields</i> (require) : an array of strings for tell <i>IndexSearch</i> that you need make an index on the field name in your node.
 
-- <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary. following above example define is 5<br/> if keyword your as 'javascript'
+- <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary. following above example define is 5, if keyword your as 'javascript'
 <i>IndexSearch</i> will create dictionary 5 patterns are 'j', 'ja', 'jav', 'java', 'javas'.
 
 - <i>additionalDictionaries</i> (optional) : an arry of strings for add additional keywords from external into dictionary
@@ -147,7 +147,7 @@ such as you need make index on the field 'name',
 when search you will see field 'nameHighligh' (by default) which is html highlight of 'name'.
 
 - <i>percentSuggest</i> (optional) : default is 60 percent, for tell <i>IndexSearch</i> when you search not found, 
-<i>IndexSearch</i> will find other suggestion keywords which same the keyword search following <i>percentSuggest</i>.
+<i>IndexSearch</i> will find other suggest keywords which same the keyword search following <i>percentSuggest</i>.
 such as you search for 'java2' but not found this keyword in dictionary, it's will find other keyword which same 'java2', 
 result is 'java' because 'java' same 'java2' 75% > 60%(by default).
 algorithm for compute the same percent of 2 strings can see in http://na5cent.blogspot.com/2013/02/algorithm-for-find-difference.html. 
