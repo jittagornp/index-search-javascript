@@ -63,6 +63,7 @@ var settings = {
 	indexOnFields: ['name'], //require
 	maximumDictionaryKeySize: 5, 
 	additionalDictionaries: additionalDictionaries,
+	//indexSeparator : default is '/'
 	//indexStore : instance of class which implement an interface IndexStore,
 	//postfixFieldNameHighlight : defualt is 'Highlight',
 	//percentSuggest : default is 60,
@@ -99,6 +100,8 @@ var indexSearch__ = new IndexSearch(settings);
     'additional'
 ];
 ```
+- <i>indexSeparator</i> (optionary) : notation for separate an index level like path file system, default is '/'. 
+
 - <i>indexStore</i> (optional) : store for keeping an index, default is <i>MemeryIndexStore</i><br/>
 you can custom your index store by implement an interface <i>IndexStore</i> which define the following methods :
 
