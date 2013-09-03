@@ -2,9 +2,31 @@ index-search-javascript
 =======================
 
 for search repositories tree by index search methodology.<br/><br/>
-<b>Demo</b> : left slide search on this web site http://na5cent.blogspot.com/
+<b>Demo</b> : left slide search on the web site http://na5cent.blogspot.com/ <br/><br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="http://1.bp.blogspot.com/-U9y8IUerUu0/UiEklzrzrqI/AAAAAAAAGTE/XbvXBGGZC2A/s640/8-31-2013+5-58-09+AM.png"/>
+<h3>How it work</h3>
+
+<b>indexing</b><br/>
+
+1. when page loaded.
+2. <i>IndexSearch</i> will bring your information to create an index then keep into <i>IndexStore</i>, by default is <i>InMemoryIndexStore</i>.
+3. which it will separate keywords from sentence that you needed make an index (you can define by yourself), 
+by default use the white space for separate keywords (you can custom it).
+4. it will create dictionary from separate keywords of 3. for keep position of sentence.
+5. put position of sentence into dictionary, which called <i>index</i>.
+
+<b>searching</b><br/>
+
+1. when you type a keyword into input box. 
+2. <i>IndexSearch</i> will find dictionary in <i>IndexStore</i> follow you typed.
+3. then get index list of that dictionary. 
+4. next, it will retrieve information by index position that it found. 
+5. then show results.
+
+
 <h3>How to use</h3>
-1) <b>define repositories or data for searching</b><br/>
+1) <b>define repositories or information for searching</b><br/>
 
 node pattern
 ```js
@@ -83,10 +105,10 @@ var indexSearch__ = new IndexSearch(settings);
 - <i>indexOnFields</i> (require) : an array of strings for tell <i>IndexSearch</i> that you need make an index on the field name in your node.
 
 - <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary. following above example define is 5, if keyword your as 'javascript'
-<i>IndexSearch</i> will create dictionary 5 patterns are 'j', 'ja', 'jav', 'java', 'javas'.
+<i>IndexSearch</i> will create dictionary 5 patterns are 'j' 'ja' 'jav', 'java' and 'javas' for keep an index.
 
-- <i>additionalDictionaries</i> (optional) : an array of strings for add additional keywords from external into dictionary
-<br/>you can define following as : <br/>
+- <i>additionalDictionaries</i> (optional) : an array of strings for add additional keywords from external into dictionary. 
+you can define following as : <br/>
 
 ```js
 ﻿var additionalDictionaries = [
@@ -102,7 +124,22 @@ var indexSearch__ = new IndexSearch(settings);
 ```
 - <i>indexSeparator</i> (optionary) : notation for separate an index level like path file system, default is '/'. 
 
-- <i>indexStore</i> (optional) : store for keeping an index, default is <i>InMemeryIndexStore</i><br/>
+```js
+{
+    ...
+    /*
+        pattern for keep an index
+        dictionary keyword : [array of index which are the position of keyword, default pattern is 'node-level-0/node-level1/node-level2/..' ]
+    */
+    
+    java : ['1/2', '1/3', '4/16/2', '30/1', ...],
+    javasc : ['4/2', '4/5', '4/10/1', ...]
+    javase : ['5/15', '5/20', '6/5', '6/10', ...]
+    
+    ...
+}
+```
+- <i>indexStore</i> (optional) : store for keep an index, default is <i>InMemeryIndexStore</i><br/>
 you can custom your index store by implement an interface <i>IndexStore</i> which define the following methods :
 
 ```js
