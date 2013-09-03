@@ -3,8 +3,25 @@ index-search-javascript
 
 for search repositories tree by index search methodology.<br/><br/>
 <b>Demo</b> : left slide search on the web site http://na5cent.blogspot.com/
+<h3>Concept</h3>
+<!--
+<b>create an index</b><br/>
+
+1. when page loaded.
+2. <i>IndexSearch</i> will bring your repository or information to create an index.
+3. which it will separate keyword 
+-->
+<b>searching</b><br/>
+
+1. when you type the keyword into input box. 
+2. <i>IndexSearch</i> will find the dictionary keywords in <i>IndexStore</i> follow you type.
+3. then get index list of that dictionary. 
+4. next, it will retrieve information by index position that it found. 
+5. then show result search for you.
+
+
 <h3>How to use</h3>
-1) <b>define repositories or data for searching</b><br/>
+1) <b>define repositories or information for searching</b><br/>
 
 node pattern
 ```js
