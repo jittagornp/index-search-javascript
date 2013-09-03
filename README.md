@@ -13,7 +13,7 @@ for search repositories tree by index search methodology.<br/><br/>
 2. <i>IndexSearch</i> will bring your information to create an index.
 3. which it will separate keywords from sentence that you needed make an index (you can define by yourself), default use white space for separate keywords (you can custom it).
 4. it will create dictionary keyword from separate keywords of 3. for keep an index position.
-5. put index position of information into dictionary.
+5. put index position of information into dictionary, which called <i>index</i>.
 
 <b>searching</b><br/>
 
