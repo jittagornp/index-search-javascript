@@ -6,13 +6,15 @@ for search repositories tree by index search methodology.<br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="http://1.bp.blogspot.com/-U9y8IUerUu0/UiEklzrzrqI/AAAAAAAAGTE/XbvXBGGZC2A/s640/8-31-2013+5-58-09+AM.png"/>
 <h3>How to work</h3>
-<!--
-<b>create an index</b><br/>
+
+<b>indexing</b><br/>
 
 1. when page loaded.
-2. <i>IndexSearch</i> will bring your repository or information to create an index.
-3. which it will separate keyword 
--->
+2. <i>IndexSearch</i> will bring your information to create an index.
+3. which it will separate keywords from sentence that you needed make an index (you can define by yourself), default use white space for separate keywords (you can custom it).
+4. it will create dictionary keyword from separate keywords of 3. for keep an index position.
+5. put index position of information into dictionary.
+
 <b>searching</b><br/>
 
 1. when you type a keyword into input box. 
