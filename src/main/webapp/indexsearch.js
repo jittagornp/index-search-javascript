@@ -329,10 +329,10 @@ var IndexSearch = (function() {
     var IndexStore = new Interface('IndexStore', ['writeIndex', 'readIndex', 'addDictionary', 'getDictionary', 'getIndexs']);
 
     /**
-     * class MemoryIndexStore
+     * class InMemoryIndexStore
      * for store index in memory
      */
-    var MemoryIndexStore = function(maximumDictionaryKeySize) {
+    var InMemoryIndexStore = function(maximumDictionaryKeySize) {
         var maximumDictionaryKeySize__ = maximumDictionaryKeySize;
 
         if (notDefined(maximumDictionaryKeySize__) || maximumDictionaryKeySize__ < 1) {
@@ -630,7 +630,7 @@ var IndexSearch = (function() {
         }
 
         var highlighter__ = new Highlighter(settings.highlightClass || 'keyword-highlight');
-        var indexStoreImpl__ = settings.indexStore || new MemoryIndexStore(settings.maximumDictionaryKeySize || 3);
+        var indexStoreImpl__ = settings.indexStore || new InMemoryIndexStore(settings.maximumDictionaryKeySize || 3);
         Interface.ensureImplements(indexStoreImpl__, [IndexStore]);
 
         var indexWriter__ = new IndexWriter(indexStoreImpl__);
