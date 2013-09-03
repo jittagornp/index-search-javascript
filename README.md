@@ -5,7 +5,7 @@ for search repositories tree by index search methodology.<br/><br/>
 <b>Demo</b> : left slide search on the web site http://na5cent.blogspot.com/ <br/><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <img src="http://1.bp.blogspot.com/-U9y8IUerUu0/UiEklzrzrqI/AAAAAAAAGTE/XbvXBGGZC2A/s640/8-31-2013+5-58-09+AM.png"/>
-<h3>Concept</h3>
+<h3>How to work</h3>
 <!--
 <b>create an index</b><br/>
 
