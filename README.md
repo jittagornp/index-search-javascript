@@ -17,7 +17,7 @@ for search repositories tree by index search methodology.<br/><br/>
 2. <i>IndexSearch</i> will find the dictionary keywords in <i>IndexStore</i> follow you typed.
 3. then get index list of that dictionary. 
 4. next, it will retrieve information by index position that it found. 
-5. then show result search for you.
+5. then show results.
 
 
 <h3>How to use</h3>
