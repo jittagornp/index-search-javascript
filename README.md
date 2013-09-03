@@ -14,7 +14,7 @@ for search repositories tree by index search methodology.<br/><br/>
 3. which it will separate keywords from sentence that you needed make an index (you can define by yourself), 
 by default use the white space for separate keywords (you can custom it).
 4. it will create dictionary keyword from separate keywords of 3. for keep an position of sentence.
-5. put position of information into dictionary, which called <i>index</i>.
+5. put position of sentence into dictionary, which called <i>index</i>.
 
 <b>searching</b><br/>
 
