@@ -2,7 +2,7 @@ index-search-javascript
 =======================
 
 for search repositories tree by index search methodology.<br/><br/>
-<b>Demo</b> : left slide search on this web site http://na5cent.blogspot.com/
+<b>Demo</b> : left slide search on the web site http://na5cent.blogspot.com/
 <h3>How to use</h3>
 1) <b>define repositories or data for searching</b><br/>
 
