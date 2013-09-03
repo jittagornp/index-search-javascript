@@ -85,7 +85,7 @@ var indexSearch__ = new IndexSearch(settings);
 - <i>maximumDictionaryKeySize</i> (optional) : default is 3, for define key size of dictionary. following above example define is 5, if keyword your as 'javascript'
 <i>IndexSearch</i> will create dictionary 5 patterns are 'j', 'ja', 'jav', 'java', 'javas'.
 
-- <i>additionalDictionaries</i> (optional) : an arry of strings for add additional keywords from external into dictionary
+- <i>additionalDictionaries</i> (optional) : an array of strings for add additional keywords from external into dictionary
 <br/>you can define following as : <br/>
 
 ```js
@@ -102,7 +102,7 @@ var indexSearch__ = new IndexSearch(settings);
 ```
 - <i>indexSeparator</i> (optionary) : notation for separate an index level like path file system, default is '/'. 
 
-- <i>indexStore</i> (optional) : store for keeping an index, default is <i>MemeryIndexStore</i><br/>
+- <i>indexStore</i> (optional) : store for keeping an index, default is <i>InMemeryIndexStore</i><br/>
 you can custom your index store by implement an interface <i>IndexStore</i> which define the following methods :
 
 ```js
