@@ -10,7 +10,7 @@
  * Version 2.0, January 2004 (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-var IndexSearch = (function() {
+window.IndexSearch = window.IndexSearch || (function() {
 
     function defined(object) {
         return !isUndefined(object);
