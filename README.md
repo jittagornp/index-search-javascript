@@ -13,13 +13,13 @@ for search repositories tree by index search methodology.<br/><br/>
 2. <i>IndexSearch</i> will bring your information to create an index then keep into <i>IndexStore</i>, by default is <i>InMemoryIndexStore</i>.
 3. which it will separate keywords from sentence that you needed make an index (you can define by yourself), 
 by default use the white space for separate keywords (you can custom it).
-4. it will create dictionary keyword from separate keywords of 3. for keep position of sentence.
+4. it will create dictionary from separate keywords of 3. for keep position of sentence.
 5. put position of sentence into dictionary, which called <i>index</i>.
 
 <b>searching</b><br/>
 
 1. when you type a keyword into input box. 
-2. <i>IndexSearch</i> will find the dictionary keywords in <i>IndexStore</i> follow you typed.
+2. <i>IndexSearch</i> will find dictionarys in <i>IndexStore</i> follow you typed.
 3. then get index list of that dictionary. 
 4. next, it will retrieve information by index position that it found. 
 5. then show results.
