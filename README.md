@@ -19,7 +19,7 @@ by default use the white space for separate keywords (you can custom it).
 <b>searching</b><br/>
 
 1. when you type a keyword into input box. 
-2. <i>IndexSearch</i> will find dictionarys in <i>IndexStore</i> follow you typed.
+2. <i>IndexSearch</i> will find dictionary in <i>IndexStore</i> follow you typed.
 3. then get index list of that dictionary. 
 4. next, it will retrieve information by index position that it found. 
 5. then show results.
