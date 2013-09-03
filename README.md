@@ -102,7 +102,22 @@ you can define following as : <br/>
 ```
 - <i>indexSeparator</i> (optionary) : notation for separate an index level like path file system, default is '/'. 
 
-- <i>indexStore</i> (optional) : store for keeping an index, default is <i>InMemeryIndexStore</i><br/>
+```js
+{
+    ...
+    /*
+        pattern for keep an index
+        dictionary keyword : [array of index which are the position of keyword, default pattern is 'node-level-0/node-level1/node-level2/..' ]
+    */
+    
+    java : ['1/2', '1/3', '4/16/2', '30/1', ...],
+    javasc : ['4/2', '4/5', '4/10/1', ...]
+    javase : ['5/15', '5/20', '6/5', '6/10', ...]
+    
+    ...
+}
+```
+- <i>indexStore</i> (optional) : store for keep an index, default is <i>InMemeryIndexStore</i><br/>
 you can custom your index store by implement an interface <i>IndexStore</i> which define the following methods :
 
 ```js
