@@ -10,7 +10,7 @@ for search repositories tree by index search methodology.<br/><br/>
 <b>indexing</b><br/>
 
 1. when page loaded.
-2. <i>IndexSearch</i> will bring your information to create an index.
+2. <i>IndexSearch</i> will bring your information to create an index, keep in <i>IndexStore</i>, by default is <i>InMemoryIndexStore</i>.
 3. which it will separate keywords from sentence that you needed make an index (you can define by yourself), by default use the white space (you can custom it).
 4. it will create dictionary keyword from separate keywords of 3. for keep an index position.
 5. put index position of information into dictionary, which called <i>index</i>.
