@@ -617,8 +617,8 @@ window.IndexSearch = window.IndexSearch || (function() {
         if (notDefined(node__)) {
             throw new Error('require {repository} settings.repository');
         }
-        
-        if(!isObject(node__)){
+
+        if (!isObject(node__)) {
             throw new Error('require {repository} settings.repository is root node object');
         }
 
@@ -881,3 +881,120 @@ window.IndexSearch = window.IndexSearch || (function() {
     return constructor;
 
 })();
+
+
+
+
+
+
+
+
+
+
+/**
+ * Blogger
+ * for pull repository from blogger
+ * 
+ * @author redcrow (jittagorn pitakmetagoon)
+ */
+
+window.Blogger = window.Blogger || {};
+window.Blogger.pullRepositoryFromBlog = function(blogUrl, callback) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = blogUrl + '/feeds/posts/default?max-results=10000&alt=json-in-script&callback=blogFeedCallback';
+    script.onload = function() {
+        callback(window.blogFeedRepository);
+    };
+
+    document.getElementsByTagName('head')[0].appendChild(script);
+};
+
+
+function blogFeedCallback(xml) {
+    var blogFeedRepository__ = {nodes: []};
+    var feed = xml.feed;
+    var categories = feed.category;
+    for (var index in categories) {
+        var category = categories[index];
+        blogFeedRepository__.nodes.push({
+            name: category.term,
+            link: '/search/label/' + encodeURIComponent(category.term)
+        });
+    }
+
+    var entries = feed.entry;
+    for (var index in entries) {
+        var entry = entries[index];
+        entry.title.$t;
+        var entryCategories = entry.category;
+        for (var categoryIndex in entryCategories) {
+            var entryCategory = entryCategories[categoryIndex];
+            var category = getCategory(entryCategory.term);
+
+            var nodes = category.nodes;
+            if (!nodes) {
+                nodes = [];
+            }
+
+            var node = {
+                name: entry.title.$t,
+                published: new Date(entry.published.$t),
+                link: getPostLink(entry),
+                nodes: []
+            };
+
+            if(index < 5){
+                node.new = true;
+            }
+
+            nodes.push(node);
+
+            category.nodes = nodes;
+        }
+    }
+
+    sortNodesByName(blogFeedRepository__.nodes);
+    for (var index in blogFeedRepository__.nodes) {
+        var node = blogFeedRepository__.nodes[index];
+        sortByPublished(node.nodes);
+    }
+
+    function sortNodesByName(nodes) {
+        nodes = nodes.sort(function(node1, node2) {
+            return node1.name.localeCompare(node2.name);
+        });
+    }
+
+    function sortByPublished(nodes) {
+        nodes = nodes.sort(function(node1, node2) {
+            return node1.published > node2.published;
+        });
+    }
+
+    function getCategory(name) {
+        var nodes = blogFeedRepository__.nodes;
+        for (var index in nodes) {
+            var node = nodes[index];
+            if (node.name === name) {
+                return node;
+            }
+        }
+
+        return null;
+    }
+
+    function getPostLink(entry) {
+        var links = entry.link;
+        for (var index in links) {
+            if (links[index].rel === 'alternate') {
+                return links[index].href;
+            }
+        }
+
+        return '';
+    }
+
+    window.blogFeedRepository = blogFeedRepository__;
+}
+;

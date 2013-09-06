@@ -15,7 +15,7 @@
         </style>
     </head>
     <body>
-        
+
         <!--
             example code for use IndexSearch.js
         
@@ -23,7 +23,7 @@
             website : na5cent.blogspot.com
             create : 26/08/2013
         -->
-        
+
         <script src="jquery.js"></script>
         <script src="repository.js"></script>
         <script src="additionalDictionaries.js"></script>
@@ -39,6 +39,7 @@
                         additionalDictionaries: additionalDictionaries
                     });
                     //==========================================================
+
 
                     var $searchInput = $('#searchInput');
                     var $clearButton = $('#clearButton');
@@ -89,8 +90,8 @@
 
                                 $suggestions.append($suggestItem);
                             }
-                            
-                             $suggestions.append(' ').append('?');
+
+                            $suggestions.append(' ').append('?');
                         }
 
                         showResult(result.getContent());
@@ -127,6 +128,7 @@
                         }
                     }
                 });
+
             })(jQuery, node);
         </script>
 
