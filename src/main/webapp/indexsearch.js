@@ -945,7 +945,7 @@ function blogFeedCallback(xml) {
             };
 
             if(index < 5){
-                node.new = true;
+                node.newPost = true;
             }
 
             nodes.push(node);

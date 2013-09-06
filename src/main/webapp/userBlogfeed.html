@@ -130,7 +130,7 @@
                             for (var index in nodes) {
                                 var childNode = nodes[index];
                                 var $childLink = $('<a>').attr('href', childNode.link).html(childNode.nameHighlight || childNode.name);
-                                var $newPost = childNode.new ? $('<span>').text('New!').addClass('index-search-new-post') : '';
+                                var $newPost = childNode.newPost ? $('<span>').text('New!').addClass('index-search-new-post') : '';
                                 var $childDOM = $('<ol>');
                                 var $list = $('<li>').attr('class', childNode.level)
                                         .append($childLink)
