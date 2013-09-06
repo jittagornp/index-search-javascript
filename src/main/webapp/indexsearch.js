@@ -660,10 +660,10 @@ window.IndexSearch = window.IndexSearch || (function() {
         createIndex();
 
         function createIndex() {
-            walkRepositoryReadKeyword(node__);
             for (var dictionaryIndex in additionalDictionaries__) {
                 indexWriter__.addDictionary(additionalDictionaries__[dictionaryIndex]);
             }
+            walkRepositoryReadKeyword(node__);
 
             for (var nodeIndex in node__.nodes) {
                 walkRepositoryWriteIndex(0, nodeIndex, node__.nodes[nodeIndex]);
@@ -944,7 +944,7 @@ function blogFeedCallback(xml) {
                 nodes: []
             };
 
-            if(index < 5){
+            if (index < 5) {
                 node.newPost = true;
             }
 
