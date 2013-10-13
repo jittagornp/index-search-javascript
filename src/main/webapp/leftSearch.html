@@ -132,12 +132,6 @@
                 "height": $window.height() - 30 + "px"
             });
 
-            $window.resize(function() {
-                $leftSlider.css({
-                    "height": $window.height() - 30 + "px"
-                });
-            });
-
 
 
             var speedAnimation = 300;
@@ -202,6 +196,10 @@
             });
             //
             $window.resize(function() {
+                $leftSlider.css({
+                    "height": $window.height() - 30 + "px"
+                });
+
                 $sliderContent.data('jsp').reinitialise();
             });
         });
