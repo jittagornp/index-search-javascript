@@ -2,38 +2,39 @@
 <html>
     <head>
         <script type="text/javascript">
-            /**
-             * blogspot search plugin
-             * by index methodology
-             * url : https://github.com/jittagornp/index-search-javascript
-             * 
-             * @author jittagorn pitakmetagoon
-             * create 10/12/2013
-             * 
-             * @param {string} blogspotURL - url of your blogspot
-             * @param {string} targetElementId - target html element id for search box
-             * @param {object} languages - language for show in search box
-             */
-            (function(blogspotURL, targetElementId, languages) {
-                var script = document.createElement('script');
-                script.type = 'text/javascript';
-                script.setAttribute('class', 'ns-blogsearch-script');
-                script.setAttribute('data-blogspot-url', blogspotURL);
-                script.setAttribute('data-element-id', targetElementId);
-                script.setAttribute('data-languages', JSON.stringify(languages));
-                script.async = true;
+/**
+ * blogspot search plugin
+ * by index methodology
+ * url : https://github.com/jittagornp/index-search-javascript
+ * 
+ * @author jittagorn pitakmetagoon
+ * create 10/12/2013
+ */
+(function(settings) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.setAttribute('class', 'ns-blogsearch-script');
+    script.setAttribute('data-blogspot-url', settings.blogspotURL);
+    script.setAttribute('data-element-id', settings.targetElementId);
+    script.setAttribute('data-languages', JSON.stringify(settings.languages));
+    script.async = true;
 
-                script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
-                document.getElementsByTagName('head')[0].appendChild(script);
-            })('http://na5cent.blogspot.com', 'mySearch', {
-                SEARCH: 'search',
-                FOUND: 'found',
-                NOT_FOUND: 'not found',
-                POSITIONS: 'positions on',
-                SENTENCES: 'sentences',
-                DO_YOU_MEAN: 'do you mean',
-                CLEAR: 'clear'
-            });
+    script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
+    document.getElementsByTagName('head')[0].appendChild(script);
+})({
+    //settings
+    blogspotURL: 'http://na5cent.blogspot.com',  //url of your blogspot
+    targetElementId: 'mySearch', //target html element id for search box
+    languages: { //language for show in search box
+        SEARCH: 'search',
+        FOUND: 'found',
+        NOT_FOUND: 'not found',
+        POSITIONS: 'positions on',
+        SENTENCES: 'sentences',
+        DO_YOU_MEAN: 'do you mean',
+        CLEAR: 'clear'
+    }
+});
         </script>    
     </head>
     <body>
