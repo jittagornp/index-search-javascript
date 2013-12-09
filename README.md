@@ -476,6 +476,7 @@ insert this code into your blogspot
     script.setAttribute('data-blogspot-url', blogspotURL);
     script.setAttribute('data-element-id', targetElementId);
     script.setAttribute('data-languages', JSON.stringify(languages));
+    script.async = true; 
 
     script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
     document.getElementsByTagName('head')[0].appendChild(script);
