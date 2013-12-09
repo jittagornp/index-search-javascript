@@ -466,7 +466,7 @@ insert this code into your blogspot
  * create 10/12/2013
  * 
  * @param {string} blogspotURL - url of your blogspot
- * @param {string} targetElementId - target element id for search box
+ * @param {string} targetElementId - target html element id for search box
  * @param {object} languages - language for show in search box
  */
 (function(blogspotURL, targetElementId, languages) {
