@@ -38,6 +38,8 @@
             (function($) {
                 $(function() {
                     Blogger.pullRepositoryFromBlog('http://na5cent.blogspot.com', function(repository) {
+						document.write(JSON.stringify(repository));
+						/*
                         var settings = {
                             repository: repository, //require
                             indexOnFields: ['name'], //require
@@ -147,7 +149,7 @@
 
                         function dateFormat(date) {
                             return moment(date).format('MMMM Do YYYY, h:mm:ss a');
-                        }
+                        }*/
                     });
                 });
             })(jQuery);

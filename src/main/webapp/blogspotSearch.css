@@ -1,0 +1,81 @@
+.keyword-highlight{
+    color : yellow;
+    background : #5C5C5C;        
+}
+
+.level-0{
+    list-style-type : none;
+}
+
+.level-0 > a{
+    font-weight: bold; 
+}
+
+.summary-highlight{
+    color : yellow;
+}
+
+#repositories{
+    width : 550px;
+    margin-top : 20px;
+}
+
+#repositories li{
+    color : #fff;
+}
+
+#suggestions a{
+    color : yellow;
+    text-decoration : none;        
+}
+
+#repositories a{
+    color : #444;
+    text-decoration : none;        
+}
+
+#repositories a:hover,
+#suggestions a:hover{
+    text-decoration : underline;
+}
+
+#searchInput{
+    width : 400px;
+    padding : 5px;
+    border : solid 2px #0078da;
+    outline : none;
+}
+
+#suggestions{
+    color : #fff;
+    width : 550px;
+    margin-left : 0px;        
+}
+
+#suggestions .keyword-highlight{
+    color : #fff;
+    background : #636363;
+}
+
+#summary{
+    color : #fff;
+    margin-top : 10px;        
+}
+
+#clearButton{
+    background : #0078da;
+    padding : 5px;
+    border : 2px #0078da solid;
+    color : #fff;
+    margin-left : 10px;
+}
+
+#clearButton:hover{
+    background-color : #FF1F1F;
+    border-color : #FF1F1F;
+    cursor : default;
+}
+
+#repositories > ul{
+    padding-left : 10px;
+}
