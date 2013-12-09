@@ -436,7 +436,7 @@ if (suggestions.length !== 0) {
 ```		
 
 <h1>Google Blog Search plug-in</h1>
-when you use this library with google blog you don't need define repository by yourself.
+when you use this library with google blog (blogspot.com) you don't need define repository by yourself.
 you can use <i>Blogger</i> class for pull repository from target blog.
 <h3>Example</h3>
 
@@ -452,5 +452,5 @@ Blogger.pullRepositoryFromBlog('http://na5cent.blogspot.com', function(repositor
 	};
 
 	var indexSearch__ = new IndexSearch(settings);
-}	
+});	
 ```
