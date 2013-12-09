@@ -28,7 +28,7 @@
 
         for (var index in resourceJS) {
             loadScript(resourceJS[index], function() {
-                if (index == 2) {
+                if (index == 3) {
                     initController(getNsScriptAttribute('data-blogspot-url'));
                 }
             });
