@@ -468,7 +468,7 @@ insert this code into your blogspot and change parameters<br/>
  * @author jittagorn pitakmetagoon
  * create 10/12/2013
  */
-(function(settings) {
+(function(document, JSON, settings) {
     var script = document.createElement('script');
     script.type = 'text/javascript';
     script.setAttribute('class', 'ns-blogsearch-script');
@@ -479,11 +479,11 @@ insert this code into your blogspot and change parameters<br/>
 
     script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
     document.getElementsByTagName('head')[0].appendChild(script);
-})({
+})(document, JSON, {
     //settings
-    blogspotURL: 'http://na5cent.blogspot.com',  //url of your blogspot
+    blogspotURL: 'http://na5cent.blogspot.com', //url of your blogspot
     targetElementId: 'mySearch', //target html element id for search box
-    languages: { //language for show in search box
+    languages: {//language for show in search box
         SEARCH: 'search',
         FOUND: 'found',
         NOT_FOUND: 'not found',
