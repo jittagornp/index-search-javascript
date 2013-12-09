@@ -2,6 +2,18 @@
 <html>
     <head>
         <script type="text/javascript">
+            /**
+             * blogspot search plugin
+             * by index methodology
+             * url : https://github.com/jittagornp/index-search-javascript
+             * 
+             * @author jittagorn pitakmetagoon
+             * create 10/12/2013
+             * 
+             * @param {type} blogspotURL 
+             * @param {type} targetElementId
+             * @param {type} languages
+             */
             (function(blogspotURL, targetElementId, languages) {
                 var script = document.createElement('script');
                 script.type = 'text/javascript';
@@ -15,7 +27,7 @@
             })('http://na5cent.blogspot.com', 'mySearch', {
                 SEARCH: 'search',
                 FOUND: 'found',
-                NOT_FOUND : 'not found',
+                NOT_FOUND: 'not found',
                 POSITIONS: 'positions on',
                 SENTENCES: 'sentences',
                 DO_YOU_MEAN: 'do you mean',
