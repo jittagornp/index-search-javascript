@@ -1,6 +1,5 @@
 .keyword-highlight{
-    color : yellow;
-    background : #5C5C5C;        
+    background : #FFF1BB;        
 }
 
 .level-0{
@@ -12,70 +11,81 @@
 }
 
 .summary-highlight{
-    color : yellow;
+    color : #3297fd;
 }
 
 #repositories{
-    width : 550px;
     margin-top : 20px;
 }
 
-#repositories li{
-    color : #fff;
+#na5centRepositories li{
+    color : #4e4e4e;
 }
 
-#suggestions a{
-    color : yellow;
+#na5centSuggestions a{
+    color : #4e4e4e;
     text-decoration : none;        
 }
 
-#repositories a{
-    color : #444;
+#na5centRepositories a{
+    color : #4e4e4e;
     text-decoration : none;        
 }
 
-#repositories a:hover,
-#suggestions a:hover{
+#na5centRepositories a:hover,
+#na5centSuggestions a:hover{
     text-decoration : underline;
 }
 
-#searchInput{
+#na5centSearchInput{
     width : 400px;
     padding : 5px;
-    border : solid 2px #0078da;
+    border : solid 1px #C2C2C2;
     outline : none;
 }
 
-#suggestions{
-    color : #fff;
-    width : 550px;
-    margin-left : 0px;        
-}
-
-#suggestions .keyword-highlight{
-    color : #fff;
-    background : #636363;
-}
-
-#summary{
-    color : #fff;
-    margin-top : 10px;        
-}
-
-#clearButton{
-    background : #0078da;
+#na5centSuggestions{
+    color : #4e4e4e;
+    margin-left : 0px;    
     padding : 5px;
-    border : 2px #0078da solid;
+    display: none;
+}
+
+#na5centSuggestions .keyword-highlight{
+    background : #DAE7FF;
+}
+
+#na5centSummary{
+    margin-top : 10px; 
+    padding : 5px; 
+    display: none;
+}
+
+#na5centClearButton{
+    background : #3297fd;
+    padding : 4px 10px;
+    border : 2px #3297fd solid;
     color : #fff;
     margin-left : 10px;
 }
 
-#clearButton:hover{
-    background-color : #FF1F1F;
-    border-color : #FF1F1F;
+#na5centClearButton:hover{
+    background-color : #E00E0E;
+    border-color : #E00E0E;
     cursor : default;
 }
 
-#repositories > ul{
+#na5centRepositories > ul{
     padding-left : 10px;
+}
+
+.index-search-new-post{
+    color : rgb(231, 41, 41);
+    margin-left : 5px;
+    font-weight: bold;
+    font-style: italic;
+}
+
+ol li{
+    list-style-type: decimal;
 }
