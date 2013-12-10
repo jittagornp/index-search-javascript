@@ -458,7 +458,8 @@ Blogger.pullRepositoryFromBlog('http://na5cent.blogspot.com', function(repositor
 insert this code into your blogspot and change parameters<br/>
 <i>{string}</i> <b>blogspotURL</b> - url of your blogspot<br/>
 <i>{string}</i> <b>targetElementId</b> - target html element id for search box<br/>
-<i>{object}</i> <b>languages</b> - language for show in search box
+<i>{object}</i> <b>languages</b> - language for show in search box<br/>
+<i>{array}</i> <b>additionalDictionaries</b> - additional keywords from external 
 ```js
 /**
  * blogspot search plugin
@@ -492,6 +493,9 @@ insert this code into your blogspot and change parameters<br/>
         DO_YOU_MEAN: 'do you mean',
         CLEAR: 'clear',
         PLACE_HOLDER : 'search...'
-    }
+    },
+    additionalDictionaries : [
+	//
+    ]
 });
 ```
