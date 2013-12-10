@@ -490,7 +490,8 @@ insert this code into your blogspot and change parameters<br/>
         POSITIONS: 'positions on',
         SENTENCES: 'sentences',
         DO_YOU_MEAN: 'do you mean',
-        CLEAR: 'clear'
+        CLEAR: 'clear',
+        PLACE_HOLDER : 'search...'
     }
 });
 ```
