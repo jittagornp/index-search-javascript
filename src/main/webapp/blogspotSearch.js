@@ -82,7 +82,7 @@
             repository: repository, //require
             indexOnFields: ['name'], //require
             maximumIndexKeySize: 5,
-            additionalDictionaries: additionalDictionaries || window.additionalDictionaries || []
+            additionalDictionaries: (additionalDictionaries && additionalDictionaries.split(',')) || window.additionalDictionaries
         };
 
         var indexSearch__ = new IndexSearch(settings);
