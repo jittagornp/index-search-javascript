@@ -476,6 +476,7 @@ insert this code into your blogspot and change parameters<br/>
     script.setAttribute('data-blogspot-url', settings.blogspotURL);
     script.setAttribute('data-element-id', settings.targetElementId);
     script.setAttribute('data-languages', JSON.stringify(settings.languages));
+    script.setAttribute('data-additionalDictionaries', settings.additionalDictionaries.join(','));
     script.async = true;
 
     script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
