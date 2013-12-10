@@ -333,6 +333,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         this.highlight = function(keyword, sentence) {
             sentence = escapseString(sentence);
+            totalSentence__  = totalSentence__  + 1;
 
             var highlightList = [];
             var keywordSplit = keyword.split(' ');
@@ -382,6 +383,8 @@ window.IndexSearch = window.IndexSearch || (function() {
                     
                     additionalSize = additionalSize + highlighted.length - (highlightString.length);
                     sentence = infront + highlighted + behind;
+                    
+                    totalHighlight__ = totalHighlight__ + 1;
                 }
             }
 
@@ -903,7 +906,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                 pullNode(indexs[idx]);
             }
 
-            //pullSuggestions();
+            pullSuggestions();
 
             return new ResultSearch({
                 totalPosition: highlighter__.getTotalHighlight(),
