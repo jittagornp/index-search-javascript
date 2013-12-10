@@ -333,7 +333,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         this.highlight = function(keyword, sentence) {
             sentence = escapseString(sentence);
-            totalSentence__  = totalSentence__  + 1;
+            totalSentence__ = totalSentence__ + 1;
 
             var highlightList = [];
             var keywordSplit = keyword.split(' ');
@@ -352,7 +352,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                     if (indexOf === -1) {
                         break;
                     }
-                    
+
                     start = indexOf;
                     end = indexOf + currentWordLength;
 
@@ -366,24 +366,24 @@ window.IndexSearch = window.IndexSearch || (function() {
             highlightList = sortByStart(highlightList);
             removeOverlapStream(highlightList);
             var streamMap = filterStream(highlightList);
-            var additionalSize = 0;
+
+            var highlightStringSize = 0;
             for (var index in streamMap) {
                 var stream = streamMap[index];
-                if (defined(stream.start) && defined(stream.end)){
+                if (defined(stream.start) && defined(stream.end)) {
 
-                    var start = stream.start + additionalSize;
-                    var end = stream.end + additionalSize;
+                    var start = stream.start + highlightStringSize;
+                    var end = stream.end + highlightStringSize;
 
                     var infront = sentence.substring(0, start);
                     var highlightString = sentence.substring(start, end);
-                    
+
                     var highlighted = highlightKeyword(highlightString);
                     var behind = sentence.substring(end);
-                    //console.log(infront + ' + ' + highlighted + ' + ' + behind);
-                    
-                    additionalSize = additionalSize + highlighted.length - (highlightString.length);
+
+                    highlightStringSize = highlightStringSize + highlighted.length - (highlightString.length);
                     sentence = infront + highlighted + behind;
-                    
+
                     totalHighlight__ = totalHighlight__ + 1;
                 }
             }
@@ -645,29 +645,39 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         function getSuggestions(keyword, percentSuggest) {
             var suggestions = [];
+            var full = false;
 
-            for (var dictionaryIndex in dictionary__) {
-                var compareWord = dictionaryIndex;
-                if (keyword !== dictionaryIndex) {
+            var keywordSplit = keyword.split(' ');
+            for (var index in keywordSplit) {
+                var currentKeyword = keywordSplit[index];
+                if(full){
+                    break;
+                }
 
-                    var keywordMap = reduceKeywordAndTransformToMap(keyword);
-                    var compareMap = reduceKeywordAndTransformToMap(compareWord);
-                    var percent = computePercentage(keywordMap, compareMap);
+                for (var dictionaryIndex in dictionary__) {
+                    var compareWord = dictionaryIndex;
+                    if (currentKeyword !== dictionaryIndex) {
 
-                    if (percent >= percentSuggest) {
-                        var highlightText = hightlight(keyword, compareWord);
-                        if (empty(highlightText)) {
-                            highlightText = compareWord;
-                        }
+                        var keywordMap = reduceKeywordAndTransformToMap(currentKeyword);
+                        var compareMap = reduceKeywordAndTransformToMap(compareWord);
+                        var percent = computePercentage(keywordMap, compareMap);
 
-                        suggestions.push({
-                            word: compareWord,
-                            highlight: highlightText,
-                            percent: numberFormat(percent)
-                        });
+                        if (percent >= percentSuggest) {
+                            var highlightText = hightlight(currentKeyword, compareWord);
+                            if (empty(highlightText)) {
+                                highlightText = compareWord;
+                            }
 
-                        if (suggestions.length === suggestionsSize__) {
-                            break;
+                            suggestions.push({
+                                word: compareWord,
+                                highlight: highlightText,
+                                percent: numberFormat(percent)
+                            });
+
+                            if (suggestions.length === suggestionsSize__) {
+                                full = true;
+                                break;
+                            }
                         }
                     }
                 }
