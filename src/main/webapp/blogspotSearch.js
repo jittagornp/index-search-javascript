@@ -26,7 +26,7 @@
         var languages = JSON.parse(na5centScript.getAttribute('data-languages'));
         var targetElementId = na5centScript.getAttribute('data-element-id');
 
-        var html = ['<input id="na5centSearchInput"/><button id="na5centClearButton">' + languages.CLEAR + '</button>',
+        var html = ['<input id="na5centSearchInput" placeholder="' + languages.PLACE_HOLDER + '"/><button id="na5centClearButton">' + languages.CLEAR + '</button>',
             '<div id="na5centResult">',
             '<div id="na5centSummary"></div>',
             '<div id="na5centSuggestions"></div>',
