@@ -28,13 +28,17 @@ window.IndexSearch = window.IndexSearch || (function() {
         return !empty(list);
     }
 
-    function findIndex(element, list) {
+    function findIndex(element, list, start) {
+        if (notDefined(element)) {
+            return -1;
+        }
+
         if (isString(list)) {
             element = element.toLowerCase();
             list = list.toLowerCase();
         }
 
-        return list.indexOf(element);
+        return list.indexOf(element, start || 0);
     }
 
     function foundIn(element, list) {
@@ -52,6 +56,12 @@ window.IndexSearch = window.IndexSearch || (function() {
                 .replace(/"/g, '&quot;');
 
         return text;
+    }
+
+    function copyObject(source, destination) {
+        for (var index in source) {
+            destination[index] = source[index];
+        }
     }
 
     function replaceNotation(text) {
@@ -264,7 +274,7 @@ window.IndexSearch = window.IndexSearch || (function() {
         var totalHighlight__ = 0;
 
         function highlightKeyword(keyword) {
-            return '<span class=' + cssClass__ + '>' + escapseString(keyword) + '</span>';
+            return '<span class="' + cssClass__ + '">' + keyword + '</span>';
         }
 
         this.getTotalSentence = function() {
@@ -288,38 +298,94 @@ window.IndexSearch = window.IndexSearch || (function() {
             totalSentence__ = 0;
         };
 
-        this.highlight = function(keyword, sentence) {
-            var sentenceHighlighted = '';
-            var keywordLength = keyword.length;
+        function sortByStart(list) {
+            return list.sort(function(obj1, obj2) {
+                return obj1.start - obj2.start;
+            });
+        }
 
-            var index = findIndex(keyword, sentence);
-            if (index === -1) {
-                return sentenceHighlighted;
+        function removeOverlapStream(list) {
+            for (var i = 0; i < list.length; i++) {
+                var current = list[i];
+                var before = list[i - 1];
+                if (defined(before) && current.start < before.end) {
+                    current.start = before.end;
+                }
+            }
+        }
+
+        function filterStream(list) {
+            var map = {};
+            for (var index in list) {
+                var start = list[index].start;
+                var end = list[index].end;
+                map[start + ':' + end] = list[index];
             }
 
-            totalSentence__ = totalSentence__ + 1;
-            while (true) {
-                totalHighlight__ = totalHighlight__ + 1;
-
-                var lastIndex = index + keywordLength;
-                var infront = escapseString(sentence.substring(0, index));
-                var highlighted = highlightKeyword(sentence.substring(index, lastIndex));
-
-                //concatenation 
-                sentenceHighlighted = sentenceHighlighted + infront + highlighted;
-
-                //re text
-                sentence = sentence.substring(lastIndex);
-                //
-                index = findIndex(keyword, sentence);
-                if (index === -1) {
-                    sentenceHighlighted = sentenceHighlighted + escapseString(sentence);
-                    break;
+            for (var index in map) {
+                if (map[index].end <= map[index].start) {
+                    delete map[index];
                 }
             }
 
+            return map;
+        }
 
-            return sentenceHighlighted;
+        this.highlight = function(keyword, sentence) {
+            sentence = escapseString(sentence);
+
+            var highlightList = [];
+            var keywordSplit = keyword.split(' ');
+            for (var index in keywordSplit) {
+                var currentWord = keywordSplit[index];
+                if (empty(currentWord)) {
+                    continue;
+                }
+
+                var currentWordLength = currentWord.length;
+
+                var start = 0;
+                var end = 0;
+                while (true) {
+                    var indexOf = findIndex(currentWord, sentence, end);
+                    if (indexOf === -1) {
+                        break;
+                    }
+                    
+                    start = indexOf;
+                    end = indexOf + currentWordLength;
+
+                    highlightList.push({
+                        start: start,
+                        end: end
+                    });
+                }
+            }
+
+            highlightList = sortByStart(highlightList);
+            removeOverlapStream(highlightList);
+            var streamMap = filterStream(highlightList);
+            var additionalSize = 0;
+            for (var index in streamMap) {
+                var stream = streamMap[index];
+                if (defined(stream.start) && defined(stream.end)){
+
+                    var start = stream.start + additionalSize;
+                    var end = stream.end + additionalSize;
+
+                    var infront = sentence.substring(0, start);
+                    var highlightString = sentence.substring(start, end);
+                    
+                    var highlighted = highlightKeyword(highlightString);
+                    var behind = sentence.substring(end);
+                    //console.log(infront + ' + ' + highlighted + ' + ' + behind);
+                    
+                    additionalSize = additionalSize + highlighted.length - (highlightString.length);
+                    sentence = infront + highlighted + behind;
+                }
+            }
+
+            return sentence;
         };
     };
 
@@ -365,22 +431,59 @@ window.IndexSearch = window.IndexSearch || (function() {
         };
 
         this.readIndex = function(keyword) {
-            var dictionary = this.getDictionary(keyword);
+            var keywordIndexMap = {};
 
-            var indexList = [];
-            for (var dictionaryIndex in dictionary) {
-                if (foundIn(keyword, dictionaryIndex)) {
-                    var indexs = dictionary[dictionaryIndex];
-                    for (var idx in indexs) {
-                        if (notFoundIn(indexs[idx], indexList)) {
-                            indexList.push(indexs[idx]);
+            var keywordSplit = keyword.split(' ');
+            for (var index in keywordSplit) {
+                var currentWord = keywordSplit[index];
+                if (empty(currentWord)) {
+                    continue;
+                }
+
+                var dictionaryObject = this.getDictionary(currentWord);
+                if (defined(dictionaryObject)) {
+                    for (var dictionaryKeyword in dictionaryObject) {
+                        if (foundIn(currentWord, dictionaryKeyword)) {
+                            if (notDefined(keywordIndexMap[currentWord])) {
+                                keywordIndexMap[currentWord] = {};
+                            }
+
+                            var indexs = dictionaryObject[dictionaryKeyword];
+                            for (var idx in indexs) {
+                                var key = indexs[idx];
+                                keywordIndexMap[currentWord][key] = key;
+                            }
                         }
                     }
                 }
             }
 
-            return indexList;
+            return intersecIndex(keywordIndexMap, keywordSplit.length);
         };
+
+        function intersecIndex(keywordIndexMap, searchSize) {
+            var keywordSearchMap = {};
+            for (var keyword in keywordIndexMap) {
+                var indexList = keywordIndexMap[keyword];
+                for (var index in indexList) {
+                    var indexKey = indexList[index];
+                    if (notDefined(keywordSearchMap[indexKey])) {
+                        keywordSearchMap[indexKey] = 0;
+                    }
+
+                    keywordSearchMap[indexKey] = keywordSearchMap[indexKey] + 1;
+                }
+            }
+
+            var resultList = [];
+            for (var index in keywordSearchMap) {
+                if (keywordSearchMap[index] >= searchSize) {
+                    resultList.push(index);
+                }
+            }
+
+            return resultList;
+        }
 
         this.addDictionary = function(keyword) {
             keyword = keyword.trim().toLowerCase();
@@ -406,16 +509,21 @@ window.IndexSearch = window.IndexSearch || (function() {
             }
         };
 
-        this.getDictionary = function(keyword) {
-            if (empty(keyword)) {
+        this.getDictionary = function(keywords) {
+            if (empty(keywords)) {
                 return {};
             }
 
             var dictionary = {};
-            if (keyword.length <= maximumDictionaryKeySize__) {
-                dictionary = indexs__[keyword.length][keyword];
-            } else {
-                dictionary = indexs__[maximumDictionaryKeySize__][keyword.substring(0, maximumDictionaryKeySize__)];
+            var keyword = keywords.split(' ');
+            for (var index in keyword) {
+                if (notEmpty(keyword[index])) {
+                    if (keyword[index].length <= maximumDictionaryKeySize__) {
+                        copyObject(indexs__[keyword[index].length][keyword[index]], dictionary);
+                    } else {
+                        copyObject(indexs__[maximumDictionaryKeySize__][keyword[index].substring(0, maximumDictionaryKeySize__)], dictionary);
+                    }
+                }
             }
 
             if (notDefined(dictionary)) {
@@ -795,7 +903,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                 pullNode(indexs[idx]);
             }
 
-            pullSuggestions();
+            //pullSuggestions();
 
             return new ResultSearch({
                 totalPosition: highlighter__.getTotalHighlight(),
