@@ -496,7 +496,7 @@ insert this code into your blogspot and change parameters<br/>
         PLACE_HOLDER : 'search...'
     },
     additionalDictionaries : [
-	//
+	//array of string (keywords)
     ]
 });
 ```
