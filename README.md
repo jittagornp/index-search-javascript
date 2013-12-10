@@ -459,7 +459,34 @@ insert this code into your blogspot and change parameters<br/>
 <i>{string}</i> <b>blogspotURL</b> (require) - url of your blogspot<br/>
 <i>{string}</i> <b>targetElementId</b> (require) - target html element id for search box<br/>
 <i>{object}</i> <b>languages</b> - language for show in search box<br/>
-<i>{array}</i> <b>additionalDictionaries</b> - additional keywords from external 
+<i>{array}</i> <b>additionalDictionaries</b> - additional keywords from external<br/><br/>
+<b>basic</b>
+```js
+/**
+ * blogspot search plugin
+ * by index methodology
+ * url : https://github.com/jittagornp/index-search-javascript
+ * 
+ * @author jittagorn pitakmetagoon
+ * create 10/12/2013
+ */
+(function(document, JSON, settings) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.setAttribute('class', 'ns-blogsearch-script');
+    script.setAttribute('data-blogspot-url', settings.blogspotURL);
+    script.setAttribute('data-element-id', settings.targetElementId);
+    script.async = true;
+ 
+    script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
+    document.getElementsByTagName('head')[0].appendChild(script);
+})(document, JSON, {
+    //settings
+    blogspotURL: 'http://na5cent.blogspot.com', //url of your blogspot
+    targetElementId: 'mySearch' //target html element id for search box
+});
+```
+<b>additional</b>
 ```js
 /**
  * blogspot search plugin
