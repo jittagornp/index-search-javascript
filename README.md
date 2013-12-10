@@ -462,7 +462,7 @@ insert this code into your blogspot and change parameters<br/>
 ```js
 /**
  * blogspot search plugin
- * by index methodology
+ * by index search methodology
  * url : https://github.com/jittagornp/index-search-javascript
  * 
  * @author jittagorn pitakmetagoon
