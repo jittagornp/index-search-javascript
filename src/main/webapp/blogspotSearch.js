@@ -25,6 +25,7 @@
         var blogspotURL = na5centScript.getAttribute('data-blogspot-url');
         var languages = JSON.parse(na5centScript.getAttribute('data-languages'));
         var targetElementId = na5centScript.getAttribute('data-element-id');
+        var additionalDictionaries = na5centScript.getAttribute('data-additionalDictionaries');
 
         var html = ['<input id="na5centSearchInput" placeholder="' + languages.PLACE_HOLDER + '"/><button id="na5centClearButton">' + languages.CLEAR + '</button>',
             '<div id="na5centResult">',
@@ -44,7 +45,7 @@
             loadScript(resourceJS[index], function() {
                 if (index == 3) {
                     if (controller) {
-                        controller(blogspotURL, languages, window.jQuery);
+                        controller(blogspotURL, languages, additionalDictionaries, window.jQuery);
                     }
                 }
             });
@@ -71,7 +72,7 @@
 
         getHeadElement().appendChild(script);
     }
-})(window, document, function(blogspotURL, languages, $) {
+})(window, document, function(blogspotURL, languages, additionalDictionaries, $) {
     if (!window.Blogger || !$) {
         return;
     }
@@ -81,7 +82,7 @@
             repository: repository, //require
             indexOnFields: ['name'], //require
             maximumIndexKeySize: 5,
-            additionalDictionaries: additionalDictionaries
+            additionalDictionaries: additionalDictionaries || window.additionalDictionaries || []
         };
 
         var indexSearch__ = new IndexSearch(settings);
