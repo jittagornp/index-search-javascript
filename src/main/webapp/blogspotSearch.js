@@ -27,7 +27,7 @@
         var targetElementId = na5centScript.getAttribute('data-element-id');
         var additionalDictionaries = na5centScript.getAttribute('data-additionalDictionaries');
 
-        var html = ['<input id="na5centSearchInput" placeholder="' + languages.PLACE_HOLDER + '"/><button id="na5centClearButton">' + languages.CLEAR + '</button>',
+        var html = ['<input id="na5centSearchInput" placeholder="' + (languages.PLACE_HOLDER || 'search...') + '"/><button id="na5centClearButton">' + (languages.CLEAR || 'clear') + '</button>',
             '<div id="na5centResult">',
             '<div id="na5centSummary"></div>',
             '<div id="na5centSuggestions"></div>',
@@ -102,18 +102,18 @@
 
             $summary.text('').hide();
             if (result.getTotalPosition() !== 0) {
-                $summary.append(languages.SEARCH + ' \'')
+                $summary.append((languages.SEARCH || 'search') + ' \'')
                         .append($('<span>').text(indexSearch__.getKeyword()).addClass('summary-highlight'))
-                        .append('\' ' + languages.FOUND + ' ')
+                        .append('\' ' + (languages.FOUND || 'not found') + ' ')
                         .append($('<span>').text(result.getTotalPosition()).addClass('summary-highlight'))
-                        .append(' ' + languages.POSITIONS + ' ')
+                        .append(' ' + (languages.POSITIONS || 'positions on') + ' ')
                         .append($('<span>').text(result.getTotalSentence()).addClass('summary-highlight'))
-                        .append(' ' + languages.SENTENCES)
+                        .append(' ' + (languages.SENTENCES || 'sentences.'))
                         .show();
             } else if (keyword !== '') {
-                $summary.append(languages.SEARCH + ' \'')
+                $summary.append((languages.SEARCH || 'search') + ' \'')
                         .append($('<span>').text(indexSearch__.getKeyword()).addClass('summary-highlight'))
-                        .append('\' ' + languages.NOT_FOUND)
+                        .append('\' ' + (languages.NOT_FOUND || 'not found'))
                         .show();
             }
 
@@ -121,7 +121,7 @@
             $suggestions.text('').hide();
             var suggestions = result.getSuggestions();
             if (suggestions.length !== 0) {
-                $suggestions.append(languages.DO_YOU_MEAN + ' ');
+                $suggestions.append((languages.DO_YOU_MEAN || 'do you mean') + ' ');
                 for (var suggestIndex in suggestions) {
                     var suggest = suggestions[suggestIndex];
                     var highlight = suggest.highlight;
