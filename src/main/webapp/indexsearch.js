@@ -28,7 +28,7 @@ window.IndexSearch = window.IndexSearch || (function() {
         return !empty(list);
     }
 
-    function findIndex(element, list, start) {
+    function findIndex(element, list, startPoint) {
         if (notDefined(element)) {
             return -1;
         }
@@ -38,7 +38,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             list = list.toLowerCase();
         }
 
-        return list.indexOf(element, start || 0);
+        return list.indexOf(element, defined(startPoint) ? startPoint : 0);
     }
 
     function foundIn(element, list) {
@@ -62,6 +62,15 @@ window.IndexSearch = window.IndexSearch || (function() {
         for (var index in source) {
             destination[index] = source[index];
         }
+    }
+    
+    function convertMapKeyToList(map){
+        var list = [];
+        for(var key in map){
+            list.push(key);
+        }
+        
+        return list;
     }
 
     function replaceNotation(text) {
@@ -408,9 +417,9 @@ window.IndexSearch = window.IndexSearch || (function() {
             maximumDictionaryKeySize__ = 1;
         }
 
-        var indexs__ = [];
+        var indexes__ = [];
         for (var keySizeIndex = 1; keySizeIndex <= maximumDictionaryKeySize__; keySizeIndex++) {
-            indexs__[keySizeIndex] = {};
+            indexes__[keySizeIndex] = {};
         }
 
         this.writeIndex = function(index, sentence) {
@@ -418,15 +427,15 @@ window.IndexSearch = window.IndexSearch || (function() {
                 return;
             }
 
-            for (var keySizeIndex in indexs__) {
-                for (var dictionryIndex in indexs__[keySizeIndex]) {
-                    var keywordList = indexs__[keySizeIndex][dictionryIndex];
+            for (var keySizeIndex in indexes__) {
+                for (var dictionryIndex in indexes__[keySizeIndex]) {
+                    var keywordList = indexes__[keySizeIndex][dictionryIndex];
 
                     for (var keywordIndex in keywordList) {
-                        var indexs = keywordList[keywordIndex];
+                        var indexes = keywordList[keywordIndex];
 
-                        if (foundIn(keywordIndex, sentence) && notFoundIn(index, indexs)) {
-                            indexs.push(index);
+                        if (foundIn(keywordIndex, sentence) && notFoundIn(index, indexes)) {
+                            indexes.push(index);
                         }
                     }
                 }
@@ -451,9 +460,9 @@ window.IndexSearch = window.IndexSearch || (function() {
                                 keywordIndexMap[currentWord] = {};
                             }
 
-                            var indexs = dictionaryObject[dictionaryKeyword];
-                            for (var idx in indexs) {
-                                var key = indexs[idx];
+                            var indexes = dictionaryObject[dictionaryKeyword];
+                            for (var idx in indexes) {
+                                var key = indexes[idx];
                                 keywordIndexMap[currentWord][key] = key;
                             }
                         }
@@ -464,10 +473,11 @@ window.IndexSearch = window.IndexSearch || (function() {
             return intersecIndex(keywordIndexMap, keywordSplit.length);
         };
 
-        function intersecIndex(keywordIndexMap, searchSize) {
+        function intersecIndex(keywordIndexMap, keywordSearchSize) {
             var keywordSearchMap = {};
             for (var keyword in keywordIndexMap) {
                 var indexList = keywordIndexMap[keyword];
+                
                 for (var index in indexList) {
                     var indexKey = indexList[index];
                     if (notDefined(keywordSearchMap[indexKey])) {
@@ -478,14 +488,14 @@ window.IndexSearch = window.IndexSearch || (function() {
                 }
             }
 
-            var resultList = [];
+            var indexes = [];
             for (var index in keywordSearchMap) {
-                if (keywordSearchMap[index] >= searchSize) {
-                    resultList.push(index);
+                if (keywordSearchMap[index] >= keywordSearchSize) {
+                    indexes.push(index);
                 }
             }
 
-            return resultList;
+            return indexes;
         }
 
         this.addDictionary = function(keyword) {
@@ -495,14 +505,14 @@ window.IndexSearch = window.IndexSearch || (function() {
                 return;
             }
 
-            for (var keySizeIndex in indexs__) {
+            for (var keySizeIndex in indexes__) {
                 if (keyword.length >= keySizeIndex) {
                     var dictionary = keyword.substring(0, keySizeIndex);
-                    var dictionaryList = indexs__[keySizeIndex][dictionary];
+                    var dictionaryList = indexes__[keySizeIndex][dictionary];
 
                     if (notDefined(dictionaryList)) {
-                        indexs__[keySizeIndex][dictionary] = {};
-                        dictionaryList = indexs__[keySizeIndex][dictionary];
+                        indexes__[keySizeIndex][dictionary] = {};
+                        dictionaryList = indexes__[keySizeIndex][dictionary];
                     }
 
                     if (notDefined(dictionaryList[keyword])) {
@@ -518,13 +528,15 @@ window.IndexSearch = window.IndexSearch || (function() {
             }
 
             var dictionary = {};
-            var keyword = keywords.split(' ');
-            for (var index in keyword) {
-                if (notEmpty(keyword[index])) {
-                    if (keyword[index].length <= maximumDictionaryKeySize__) {
-                        copyObject(indexs__[keyword[index].length][keyword[index]], dictionary);
+            var keywordSplit = keywords.split(' ');
+            for (var index in keywordSplit) {
+                var currentKeyword = keywordSplit[index];
+                
+                if (notEmpty(currentKeyword)) {
+                    if (currentKeyword.length <= maximumDictionaryKeySize__) {
+                        copyObject(indexes__[currentKeyword.length][currentKeyword], dictionary);
                     } else {
-                        copyObject(indexs__[maximumDictionaryKeySize__][keyword[index].substring(0, maximumDictionaryKeySize__)], dictionary);
+                        copyObject(indexes__[maximumDictionaryKeySize__][currentKeyword.substring(0, maximumDictionaryKeySize__)], dictionary);
                     }
                 }
             }
@@ -537,7 +549,7 @@ window.IndexSearch = window.IndexSearch || (function() {
         };
 
         this.getIndexs = function() {
-            return indexs__;
+            return indexes__;
         };
     };
 
@@ -645,12 +657,12 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         function getSuggestions(keyword, percentSuggest) {
             var suggestions = [];
-            var full = false;
+            var fullSize = false;
 
             var keywordSplit = keyword.split(' ');
             for (var index in keywordSplit) {
                 var currentKeyword = keywordSplit[index];
-                if(full){
+                if(fullSize){
                     break;
                 }
 
@@ -675,7 +687,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                             });
 
                             if (suggestions.length === suggestionsSize__) {
-                                full = true;
+                                fullSize = true;
                                 break;
                             }
                         }
@@ -704,8 +716,8 @@ window.IndexSearch = window.IndexSearch || (function() {
                 var suggestCharacterAt = suggest.charAt(suggestIndex);
 
                 var found = false;
-                for (var j = 0; j < keyWord.length; j++) {
-                    var keyWordCharacterAt = keyWord.charAt(j);
+                for (var characterIndex = 0; characterIndex < keyWord.length; characterIndex++) {
+                    var keyWordCharacterAt = keyWord.charAt(characterIndex);
 
                     if (keyWordCharacterAt === suggestCharacterAt) {
                         found = true;
@@ -911,9 +923,9 @@ window.IndexSearch = window.IndexSearch || (function() {
             //
             keyword__ = keyword;
 
-            var indexs = indexReader__.readIndex(keyword__);
-            for (var idx in indexs) {
-                pullNode(indexs[idx]);
+            var indexes = indexReader__.readIndex(keyword__);
+            for (var idx in indexes) {
+                pullNode(indexes[idx]);
             }
 
             pullSuggestions();
