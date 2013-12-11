@@ -5,6 +5,7 @@
  * 
  * @author jittagorn pitakmetagoon
  * create 10/12/2013
+ * update 11/12/2013 protect laguages and additionalDictionaries is null
  */
 (function(window, document, controller) {
 
