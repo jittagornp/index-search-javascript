@@ -23,7 +23,7 @@
         var na5centScript = document.getElementsByClassName('ns-blogsearch-script')[0];
         //
         var blogspotURL = na5centScript.getAttribute('data-blogspot-url');
-        var languages = JSON.parse(na5centScript.getAttribute('data-languages') || {});
+        var languages = JSON.parse(na5centScript.getAttribute('data-languages') || '{}');
         var targetElementId = na5centScript.getAttribute('data-element-id');
         var additionalDictionaries = na5centScript.getAttribute('data-additionalDictionaries') || [];
 
