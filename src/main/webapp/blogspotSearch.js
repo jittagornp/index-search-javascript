@@ -105,7 +105,7 @@
             if (result.getTotalPosition() !== 0) {
                 $summary.append((languages.SEARCH || 'search') + ' \'')
                         .append($('<span>').text(indexSearch__.getKeyword()).addClass('summary-highlight'))
-                        .append('\' ' + (languages.FOUND || 'not found') + ' ')
+                        .append('\' ' + (languages.FOUND || 'found') + ' ')
                         .append($('<span>').text(result.getTotalPosition()).addClass('summary-highlight'))
                         .append(' ' + (languages.POSITIONS || 'positions on') + ' ')
                         .append($('<span>').text(result.getTotalSentence()).addClass('summary-highlight'))
