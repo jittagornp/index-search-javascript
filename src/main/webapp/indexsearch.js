@@ -314,7 +314,7 @@ window.IndexSearch = window.IndexSearch || (function() {
      * class PeriodIntegrator
      * for integrate period in timeline
      * 
-     * link : http://na5cent.blogspot.com/2013/12/integrate-period-algorithm-java.html
+     * document : http://na5cent.blogspot.com/2013/12/integrate-period-algorithm-java.html
      */
     var PeriodIntegrator = function() {
 
