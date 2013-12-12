@@ -1,0 +1,26 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>integrate period algorithm</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="periodIntegrator.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            new PeriodIntegrator()
+                    .addPeriod(new Period(5, 30))
+                    .addPeriod(new Period(15, 40))
+                    .addPeriod(new Period(50, 65))
+                    .addPeriod(new Period(50, 55))
+                    .addPeriod(new Period(0, 20))
+                    .addPeriod(new Period(70, 100))
+                    .addPeriod(new Period(80, 85))
+                    .addPeriod(new Period(85, 90))
+                    .integrate();
+        </script>
+    </body>
+</html>

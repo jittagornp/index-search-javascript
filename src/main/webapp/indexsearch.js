@@ -63,13 +63,13 @@ window.IndexSearch = window.IndexSearch || (function() {
             destination[index] = source[index];
         }
     }
-    
-    function convertMapKeyToList(map){
+
+    function convertMapKeyToList(map) {
         var list = [];
-        for(var key in map){
+        for (var key in map) {
             list.push(key);
         }
-        
+
         return list;
     }
 
@@ -273,6 +273,157 @@ window.IndexSearch = window.IndexSearch || (function() {
         };
     };
 
+
+    var Period = function(start, end) {
+        var start__ = start;
+        var end__ = end;
+
+        this.getStart = function() {
+            return start__;
+        };
+
+        this.getEnd = function() {
+            return end__;
+        };
+
+        this.setStart = function(start) {
+            start__ = start;
+        };
+
+        this.setEnd = function(end) {
+            end__ = end;
+        };
+
+        this.equals = function(object) {
+            if (object.getStart() === start__ && object.getEnd() === end__) {
+                return true;
+            }
+
+            return false;
+        };
+
+        this.toString = function() {
+            return 'period {' + start__ + ', ' + end__ + '}';
+        };
+    };
+
+    var PeriodIntegrator = function() {
+
+        var periodSet__ = {};
+        var periodList__;
+
+        function getPeriodKey(period) {
+            return period.getStart() + ':' + period.getEnd();
+        }
+
+        this.addPeriod = function(period) {
+            var periodKey = getPeriodKey(period);
+            if (notDefined(periodSet__[periodKey])) {
+                periodSet__[periodKey] = period;
+            }
+
+            return this;
+        };
+
+        this.addAllPeriods = function(periodList) {
+            if (notEmpty(periodList)) {
+                for (var index in periodList) {
+                    this.addPeriod(periodList[index]);
+                }
+            }
+
+            return this;
+        };
+
+        function toPeriodList() {
+            var list = [];
+            for (var index in periodSet__) {
+                list.push(periodSet__[index]);
+            }
+
+            return list;
+        }
+
+        function sortPeriods() {
+            periodList__ = toPeriodList();
+            periodList__ = periodList__.sort(function(period1, period2) {
+                if (period1.getStart() === period2.getStart()) {
+                    return period1.getEnd() - period2.getEnd();
+                }
+
+                return period1.getStart() - period2.getStart();
+            });
+        }
+
+        function changeOverlap() {
+            if (periodList__.length > 1) {
+                for (var i = 1; i < periodList__.length; i++) {
+                    var before = periodList__[i - 1];
+                    var current = periodList__[i];
+
+                    if (current.getStart() < before.getEnd()) {
+                        current.setStart(before.getEnd());
+                    }
+                }
+            }
+        }
+
+        function removePeriod(period) {
+            for (var index in periodList__) {
+                if (periodList__[index].equals(period)) {
+                    delete periodList__[index];
+                }
+            }
+        }
+
+        function removeIncorrect() {
+            if (periodList__.length > 1) {
+                for (var i = 1; i < periodList__.length; i++) {
+                    var periodI = periodList__[i];
+                    for (var j = i + 1; j < periodList__.length; j++) {
+                        var periodJ = periodList__[j];
+
+                        if (defined(periodI) && defined(periodJ) && (isIncorrect(periodJ) || isSubPeriod(periodJ, periodI))) {
+                            removePeriod(periodJ);
+                            j--;
+                        }
+                    }
+                }
+            }
+        }
+
+        function isIncorrect(period) {
+            return period.getStart() >= period.getEnd();
+        }
+
+        function isSubPeriod(period1, period2) {
+            return period1.getStart() >= period2.getStart() && period1.getEnd() <= period2.getEnd();
+        }
+
+        function integratePeriods() {
+            if (periodList__.length > 1) {
+                for (var i = 1; i < periodList__.length; i++) {
+                    var before = periodList__[i - 1];
+                    var current = periodList__[i];
+
+                    if (defined(current) && defined(before) && current.getStart() === before.getEnd()) {
+                        current.setStart(before.getStart());
+                        removePeriod(before);
+                        i--;
+                    }
+                }
+            }
+        }
+
+        this.integrate = function() {
+            sortPeriods();
+            changeOverlap();
+            removeIncorrect();
+            integratePeriods();
+
+            return periodList__;
+        };
+    };
     /**
      * class Highlighter
      * for make html highlight result search    				
@@ -307,44 +458,11 @@ window.IndexSearch = window.IndexSearch || (function() {
             totalSentence__ = 0;
         };
 
-        function sortByStart(list) {
-            return list.sort(function(obj1, obj2) {
-                return obj1.start - obj2.start;
-            });
-        }
-
-        function removeOverlapStream(list) {
-            for (var i = 0; i < list.length; i++) {
-                var current = list[i];
-                var before = list[i - 1];
-                if (defined(before) && current.start < before.end) {
-                    current.start = before.end;
-                }
-            }
-        }
-
-        function filterStream(list) {
-            var map = {};
-            for (var index in list) {
-                var start = list[index].start;
-                var end = list[index].end;
-                map[start + ':' + end] = list[index];
-            }
-
-            for (var index in map) {
-                if (map[index].end <= map[index].start) {
-                    delete map[index];
-                }
-            }
-
-            return map;
-        }
-
         this.highlight = function(keyword, sentence) {
             sentence = escapseString(sentence);
             totalSentence__ = totalSentence__ + 1;
 
-            var highlightList = [];
+            var periodIntegrator = new PeriodIntegrator();
             var keywordSplit = keyword.split(' ');
             for (var index in keywordSplit) {
                 var currentWord = keywordSplit[index];
@@ -365,36 +483,28 @@ window.IndexSearch = window.IndexSearch || (function() {
                     start = indexOf;
                     end = indexOf + currentWordLength;
 
-                    highlightList.push({
-                        start: start,
-                        end: end
-                    });
+                    periodIntegrator.addPeriod(new Period(start, end));
                 }
             }
 
-            highlightList = sortByStart(highlightList);
-            removeOverlapStream(highlightList);
-            var streamMap = filterStream(highlightList);
+            var periodList = periodIntegrator.integrate();
 
             var highlightStringSize = 0;
-            for (var index in streamMap) {
-                var stream = streamMap[index];
-                if (defined(stream.start) && defined(stream.end)) {
+            for (var index in periodList) {
+                var period = periodList[index];
+                var start = period.getStart() + highlightStringSize;
+                var end = period.getEnd() + highlightStringSize;
 
-                    var start = stream.start + highlightStringSize;
-                    var end = stream.end + highlightStringSize;
+                var infront = sentence.substring(0, start);
+                var highlightString = sentence.substring(start, end);
 
-                    var infront = sentence.substring(0, start);
-                    var highlightString = sentence.substring(start, end);
+                var highlighted = highlightKeyword(highlightString);
+                var behind = sentence.substring(end);
 
-                    var highlighted = highlightKeyword(highlightString);
-                    var behind = sentence.substring(end);
+                highlightStringSize = highlightStringSize + highlighted.length - (highlightString.length);
+                sentence = infront + highlighted + behind;
 
-                    highlightStringSize = highlightStringSize + highlighted.length - (highlightString.length);
-                    sentence = infront + highlighted + behind;
-
-                    totalHighlight__ = totalHighlight__ + 1;
-                }
+                totalHighlight__ = totalHighlight__ + 1;
             }
 
             return sentence;
@@ -477,7 +587,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             var keywordSearchMap = {};
             for (var keyword in keywordIndexMap) {
                 var indexList = keywordIndexMap[keyword];
-                
+
                 for (var index in indexList) {
                     var indexKey = indexList[index];
                     if (notDefined(keywordSearchMap[indexKey])) {
@@ -531,7 +641,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             var keywordSplit = keywords.split(' ');
             for (var index in keywordSplit) {
                 var currentKeyword = keywordSplit[index];
-                
+
                 if (notEmpty(currentKeyword)) {
                     if (currentKeyword.length <= maximumDictionaryKeySize__) {
                         copyObject(indexes__[currentKeyword.length][currentKeyword], dictionary);
@@ -662,7 +772,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             var keywordSplit = keyword.split(' ');
             for (var index in keywordSplit) {
                 var currentKeyword = keywordSplit[index];
-                if(fullSize){
+                if (fullSize) {
                     break;
                 }
 
