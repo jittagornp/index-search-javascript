@@ -8,6 +8,10 @@
  * 
  * License    ---> Apache License
  * Version 2.0, January 2004 (http://www.apache.org/licenses/LICENSE-2.0)
+ * 
+ * 
+ * 
+ * update 13/12/2013 : add integrate period algorithm (document : http://na5cent.blogspot.com/2013/12/integrate-period-algorithm-javascript.html)
  */
 
 window.IndexSearch = window.IndexSearch || (function() {
@@ -787,7 +791,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
                 for (var dictionaryIndex in dictionary__) {
                     var compareWord = dictionaryIndex;
-                    if (currentKeyword !== dictionaryIndex) {
+                    if (currentKeyword !== dictionaryIndex && !foundSuggest(compareWord, suggestions)) {
 
                         var keywordMap = reduceKeywordAndTransformToMap(currentKeyword);
                         var compareMap = reduceKeywordAndTransformToMap(compareWord);
@@ -819,6 +823,16 @@ window.IndexSearch = window.IndexSearch || (function() {
             });
 
             return suggestions;
+        }
+        
+        function foundSuggest(word, list){
+            for(var index in list){
+                if(list[index].word === word){
+                    return true;
+                }
+            }
+            
+            return false;
         }
 
         this.getSuggestionsWhenSearchFound = function(keyword) {

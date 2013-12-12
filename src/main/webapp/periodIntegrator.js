@@ -139,7 +139,7 @@ var PeriodIntegrator = function() {
                 for (var j = i + 1; j < periodList__.length; j++) {
                     var periodJ = periodList__[j];
                     
-                    if (defined(periodJ) && (isIncorrect(periodJ) || isSubPeriod(periodJ, periodI))) {
+                    if (defined(periodI) && defined(periodJ) && (isIncorrect(periodJ) || isSubPeriod(periodJ, periodI))) {
                         removePeriod(periodJ);
                         j--;
                     }
