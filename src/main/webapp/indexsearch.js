@@ -273,7 +273,10 @@ window.IndexSearch = window.IndexSearch || (function() {
         };
     };
 
-
+    /**
+     * class Period
+     * for keep period information
+     */
     var Period = function(start, end) {
         var start__ = start;
         var end__ = end;
@@ -307,6 +310,12 @@ window.IndexSearch = window.IndexSearch || (function() {
         };
     };
 
+    /**
+     * class PeriodIntegrator
+     * for integrate period in timeline
+     * 
+     * link : http://na5cent.blogspot.com/2013/12/integrate-period-algorithm-java.html
+     */
     var PeriodIntegrator = function() {
 
         var periodSet__ = {};
@@ -424,6 +433,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             return periodList__;
         };
     };
+    
     /**
      * class Highlighter
      * for make html highlight result search    				
