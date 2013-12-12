@@ -354,8 +354,7 @@ window.IndexSearch = window.IndexSearch || (function() {
         }
 
         function sortPeriods() {
-            periodList__ = toPeriodList();
-            periodList__ = periodList__.sort(function(period1, period2) {
+            periodList__ = toPeriodList().sort(function(period1, period2) {
                 if (period1.getStart() === period2.getStart()) {
                     return period1.getEnd() - period2.getEnd();
                 }

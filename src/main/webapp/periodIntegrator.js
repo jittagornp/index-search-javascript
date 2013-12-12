@@ -53,7 +53,7 @@ function defined(object) {
     return !isUndefined(object);
 }
 
-function notDefoned(object) {
+function notDefined(object) {
     return isUndefined(object);
 }
 
@@ -68,7 +68,7 @@ var PeriodIntegrator = function() {
 
     this.addPeriod = function(period) {
         var periodKey = getPeriodKey(period);
-        if (notDefoned(periodSet__[periodKey])) {
+        if (notDefined(periodSet__[periodKey])) {
             periodSet__[periodKey] = period;
         }
 
