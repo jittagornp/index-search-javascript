@@ -1,3 +1,9 @@
+/**
+ * @author jittagorn pitakmetagoon
+ * create 12/12/2013
+ * 
+ * link : http://na5cent.blogspot.com/2013/12/integrate-period-algorithm-java.html
+ */
 var Period = function(start, end) {
     var start__ = start;
     var end__ = end;
