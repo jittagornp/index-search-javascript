@@ -191,5 +191,7 @@ var PeriodIntegrator = function() {
         changeOverlap();
         removeIncorrect();
         integratePeriods();
+        
+        return periodList__;
     };
 };
