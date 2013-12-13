@@ -397,7 +397,6 @@ window.IndexSearch = window.IndexSearch || (function() {
 
                         if (defined(periodI) && defined(periodJ) && (isIncorrect(periodJ) || isSubPeriod(periodJ, periodI))) {
                             removePeriod(periodJ);
-                            j--;
                         }
                     }
                 }
