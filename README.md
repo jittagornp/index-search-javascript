@@ -467,6 +467,7 @@ html
         type="text/javascript" 
         data-blogspot-url="http://na5cent.blogspot.com" 
         data-element-id="mySearch"
+        data-slide-search="true"
         class="ns-blogsearch-script"   
         src="https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js">
 </script>
