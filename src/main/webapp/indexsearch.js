@@ -450,9 +450,17 @@ window.IndexSearch = window.IndexSearch || (function() {
 
     var InputSearchSplitor = function(input) {
         var input__ = input || '';
+        var keywordSize__ = 0;
 
         this.split = function() {
-            return input__.split(' ');
+            var keywordList = input__.split(' ');
+            keywordSize__ = keywordList.length;
+            
+            return keywordList;
+        };
+
+        this.getKeywordSize = function() {
+            return keywordSize__;
         };
     };
 
@@ -605,8 +613,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             var keywordMap = {};
 
             var splitor = new InputSearchSplitor(keywordString);
-            var keywordList = splitor.split();
-            each(keywordList, function(keyword) {
+            each(splitor.split(), function(keyword) {
                 if (empty(keyword)) {
                     return false;
                 }
@@ -624,7 +631,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                 });
             }, this);
 
-            return intersecIndexesByKeywordSize(keywordMap, keywordList.length);
+            return intersecIndexesByKeywordSize(keywordMap, splitor.getKeywordSize());
         };
 
         function intersecIndexesByKeywordSize(keywordMap, keywordSearchSize) {
@@ -1105,7 +1112,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                     dictionary: indexReader__.getDictionaries(key),
                     suggestionsSize: suggestionsSize__,
                     percentSuggest: percentSuggest__,
-                    highlighter : highlighter__
+                    highlighter: highlighter__
                 }).getSuggestionsWhenSearchNotFound(keyword__);
             } else {
                 notFoundTimes__ = 0;
@@ -1114,7 +1121,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                     dictionary: indexReader__.getDictionaries(keyword__),
                     suggestionsSize: suggestionsSize__,
                     percentSuggest: percentSuggest__,
-                    highlighter : highlighter__
+                    highlighter: highlighter__
                 }).getSuggestionsWhenSearchFound(keyword__);
             }
         }
