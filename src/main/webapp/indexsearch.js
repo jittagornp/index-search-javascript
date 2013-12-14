@@ -69,7 +69,7 @@ window.IndexSearch = window.IndexSearch || (function() {
     }
 
     function each(list, callback, context) {
-        if (isFunction(callback)) {
+        if (defined(list) && isFunction(callback)) {
             for (var index in list) {
                 callback.call(context, list[index], index);
             }
@@ -534,11 +534,11 @@ window.IndexSearch = window.IndexSearch || (function() {
     /**
      * define IndexStore interface
      */
-    var IndexStore = new Interface('IndexStore', ['writeIndex', 'readIndex', 'addDictionary', 'getDictionary', 'getIndexs']);
+    var IndexStore = new Interface('IndexStore', ['writeIndex', 'readIndex', 'addDictionary', 'getDictionaries', 'getIndexs']);
 
     /**
      * class InMemoryIndexStore
-     * for store index in memory
+     * for store index in memory (array)
      */
     var InMemoryIndexStore = function(maximumDictionaryKeySize) {
         var maximumDictionaryKeySize__ = maximumDictionaryKeySize;
@@ -547,46 +547,51 @@ window.IndexSearch = window.IndexSearch || (function() {
             maximumDictionaryKeySize__ = 1;
         }
 
-        var indexes__ = [];
+        var indexStore__ = [];
         for (var index = 1; index <= maximumDictionaryKeySize__; index++) {
-            indexes__[index] = {};
+            indexStore__[index] = {};
         }
 
+        /**
+         * for write an index into IndexStore
+         * pattern : IndexStore --> stores --> dictionaries --> indexes
+         * 
+         * @param {string} index
+         * @param {string} sentence
+         */
         this.writeIndex = function(index, sentence) {
             if (notDefined(sentence)) {
                 return;
             }
 
-            for (var keySizeIndex in indexes__) {
-                for (var dictionryIndex in indexes__[keySizeIndex]) {
-                    var keywordList = indexes__[keySizeIndex][dictionryIndex];
-
-                    for (var keywordIndex in keywordList) {
-                        var indexes = keywordList[keywordIndex];
-
-                        if (foundIn(keywordIndex, sentence) && notFoundIn(index, indexes)) {
+            each(indexStore__, function(store) {
+                each(store, function(dictionaries) {
+                    each(dictionaries, function(indexes, keyword) {
+                        if (foundIn(keyword, sentence) && notFoundIn(index, indexes)) {
                             indexes.push(index);
                         }
-                    }
-                }
-            }
+                    });
+                });
+            });
         };
 
-        this.readIndex = function(keywords) {
+        /**
+         * for read indexes from IndexStore by keyword search parameter
+         * 
+         * @param {string} keywordString
+         * @returns {array} indexs
+         */
+        this.readIndex = function(keywordString) {
+            keywordString = keywordString + ''; //protect keyword is not string
             var keywordMap = {};
 
-            var keywordList = keywords.split(' ');
+            var keywordList = keywordString.split(' ');
             each(keywordList, function(keyword) {
                 if (empty(keyword)) {
                     return false;
                 }
 
-                var dictionary = this.getDictionary(keyword);
-                if (notDefined(dictionary)) {
-                    return false;
-                }
-
-                each(dictionary, function(indexes, dictionaryKey) {
+                each(this.getDictionaries(keyword), function(indexes, dictionaryKey) {
                     if (foundIn(keyword, dictionaryKey)) {
                         if (notDefined(keywordMap[keyword])) {
                             keywordMap[keyword] = {};
@@ -640,14 +645,14 @@ window.IndexSearch = window.IndexSearch || (function() {
                 return;
             }
 
-            each(indexes__, function(value, index) {
-                if (keyword.length >= index) {
-                    var dictionaryKeyword = keyword.substring(0, index);
-                    var dictionaryList = value[dictionaryKeyword];
+            each(indexStore__, function(store, storeSize) {
+                if (keyword.length >= storeSize) {
+                    var dictionaryKeyword = keyword.substring(0, storeSize);
+                    var dictionaryList = store[dictionaryKeyword];
 
                     if (notDefined(dictionaryList)) {
-                        value[dictionaryKeyword] = {};
-                        dictionaryList = value[dictionaryKeyword];
+                        store[dictionaryKeyword] = {};
+                        dictionaryList = store[dictionaryKeyword];
                     }
 
                     if (notDefined(dictionaryList[keyword])) {
@@ -657,38 +662,46 @@ window.IndexSearch = window.IndexSearch || (function() {
             });
         };
 
-        this.getDictionary = function(keywords) {
-            if (empty(keywords)) {
+        /**
+         * for read dictionaries from IndexStore which match by keyword search parameter
+         * 
+         * @param {string} keywordString
+         * @returns {object} dictionaries
+         */
+        this.getDictionaries = function(keywordString) {
+            keywordString = keywordString + '';
+            if (empty(keywordString)) {
                 return {};
             }
 
-            var dictionary = {};
-            each(keywords.split(' '), function(keword) {
-                if (notEmpty(keword)) {
-                    var source;
-                    var destination = dictionary;
-
-                    if (keword.length <= maximumDictionaryKeySize__) {
-                        source = indexes__[keword.length][keword];
-                    } else {
-                        var patialKeyword = keword.substring(0, maximumDictionaryKeySize__);
-                        source = indexes__[maximumDictionaryKeySize__][patialKeyword];
-                    }
-
-                    copyObject(source, destination);
+            var dictionaries = {};
+            each(keywordString.split(' '), function(keword) {
+                if (empty(keword)) {
+                    return false;
                 }
+                var source;
+                var destination = dictionaries;
+
+                if (keword.length <= maximumDictionaryKeySize__) {
+                    source = indexStore__[keword.length][keword];
+                } else {
+                    var patialKeyword = keword.substring(0, maximumDictionaryKeySize__);
+                    source = indexStore__[maximumDictionaryKeySize__][patialKeyword];
+                }
+
+                copyObject(source, destination);
             });
 
 
-            if (notDefined(dictionary)) {
-                dictionary = {};
+            if (notDefined(dictionaries)) {
+                dictionaries = {};
             }
 
-            return dictionary;
+            return dictionaries;
         };
 
         this.getIndexs = function() {
-            return indexes__;
+            return indexStore__;
         };
     };
 
@@ -719,8 +732,8 @@ window.IndexSearch = window.IndexSearch || (function() {
             return indexStore__.readIndex(keyword);
         };
 
-        this.getDictionary = function(keyword) {
-            return indexStore__.getDictionary(keyword);
+        this.getDictionaries = function(keyword) {
+            return indexStore__.getDictionaries(keyword);
         };
 
         this.getIndexs = function() {
@@ -1093,7 +1106,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                 var key = keyword__.substring(0, keyword__.length - notFoundTimes__);
 
                 suggestionList__ = new Suggestion({
-                    dictionary: indexReader__.getDictionary(key),
+                    dictionary: indexReader__.getDictionaries(key),
                     suggestionsSize: suggestionsSize__,
                     percentSuggest: percentSuggest__
                 }).getSuggestionsWhenSearchNotFound(keyword__);
@@ -1101,7 +1114,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                 notFoundTimes__ = 0;
 
                 suggestionList__ = new Suggestion({
-                    dictionary: indexReader__.getDictionary(keyword__),
+                    dictionary: indexReader__.getDictionaries(keyword__),
                     suggestionsSize: suggestionsSize__,
                     percentSuggest: percentSuggest__
                 }).getSuggestionsWhenSearchFound(keyword__);
