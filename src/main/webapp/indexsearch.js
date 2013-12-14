@@ -458,8 +458,8 @@ window.IndexSearch = window.IndexSearch || (function() {
         this.split = function() {
             var result = [];
             var keywordList = input__.split(' ');
-            each(keywordList, function(keyword){
-                if(notEmpty(keyword)){
+            each(keywordList, function(keyword) {
+                if (notEmpty(keyword)) {
                     result.push(keyword);
                     keywordSize__ = keywordSize__ + 1;
                 }
@@ -776,9 +776,9 @@ window.IndexSearch = window.IndexSearch || (function() {
      */
     var Suggestion = function(settings) {
         //require
-        var dictionary__ = settings.dictionary;
+        var dictionaries__ = settings.dictionary;
         var highlighter__ = settings.highlighter;
-        
+
         //optional
         var percentSuggest__ = settings.percentSuggest || 60;
         var suggestionsSize__ = settings.suggestionsSize || 10;
@@ -844,41 +844,36 @@ window.IndexSearch = window.IndexSearch || (function() {
             var fullSize = false;
 
             var splitor = new InputSearchSplitor(keywordString);
-            var keywordSplit = splitor.split();
-            for (var index in keywordSplit) {
-                var currentKeyword = keywordSplit[index];
-                if (fullSize) {
-                    break;
-                }
+            each(splitor.split(), function(keyword) {
+                each(dictionaries__, function(indexes, dictionaryKeyword) {
+                    if (keyword !== dictionaryKeyword && !foundSuggest(dictionaryKeyword, suggestions)) {
 
-                for (var dictionaryIndex in dictionary__) {
-                    var compareWord = dictionaryIndex;
-                    if (currentKeyword !== dictionaryIndex && !foundSuggest(compareWord, suggestions)) {
-
-                        var keywordMap = reduceKeywordAndTransformToMap(currentKeyword);
-                        var compareMap = reduceKeywordAndTransformToMap(compareWord);
-                        var percent = computePercentage(keywordMap, compareMap);
+                        var keywordMap = reduceKeywordAndTransformToMap(keyword);
+                        var dictionaryMap = reduceKeywordAndTransformToMap(dictionaryKeyword);
+                        var percent = computePercentage(keywordMap, dictionaryMap);
 
                         if (percent >= percentSuggest) {
-                            var highlightText = highlighter__.highlight(keywordString, compareWord);
+                            var highlightText = highlighter__.highlight(keywordString, dictionaryKeyword);
                             if (empty(highlightText)) {
-                                highlightText = compareWord;
+                                highlightText = dictionaryKeyword;
                             }
 
                             suggestions.push({
-                                word: compareWord,
+                                word: dictionaryKeyword,
                                 highlight: highlightText,
                                 percent: numberFormat(percent)
                             });
 
                             if (suggestions.length === suggestionsSize__) {
                                 fullSize = true;
-                                break;
+                                return !fullSize;
                             }
                         }
                     }
-                }
-            }
+                });
+
+                return !fullSize;
+            });
 
             suggestions = suggestions.sort(function(keyword1, keyword2) {
                 return keyword2.percent - keyword1.percent;
