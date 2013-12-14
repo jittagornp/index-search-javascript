@@ -71,7 +71,10 @@ window.IndexSearch = window.IndexSearch || (function() {
     function each(list, callback, context) {
         if (defined(list) && isFunction(callback)) {
             for (var index in list) {
-                callback.call(context, list[index], index);
+                var returnBoolean = callback.call(context, list[index], index);
+                if (returnBoolean === false) {
+                    break;
+                }
             }
         }
     }
@@ -453,10 +456,16 @@ window.IndexSearch = window.IndexSearch || (function() {
         var keywordSize__ = 0;
 
         this.split = function() {
+            var result = [];
             var keywordList = input__.split(' ');
-            keywordSize__ = keywordList.length;
-            
-            return keywordList;
+            each(keywordList, function(keyword){
+                if(notEmpty(keyword)){
+                    result.push(keyword);
+                    keywordSize__ = keywordSize__ + 1;
+                }
+            });
+
+            return result;
         };
 
         this.getKeywordSize = function() {
@@ -504,7 +513,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
             each(splitor.split(), function(keyword) {
                 if (empty(keyword)) {
-                    return false;
+                    return true;
                 }
 
                 var keywordLength = keyword.length;
@@ -614,10 +623,6 @@ window.IndexSearch = window.IndexSearch || (function() {
 
             var splitor = new InputSearchSplitor(keywordString);
             each(splitor.split(), function(keyword) {
-                if (empty(keyword)) {
-                    return false;
-                }
-
                 each(this.getDictionaries(keyword), function(indexes, dictionaryKey) {
                     if (foundIn(keyword, dictionaryKey)) {
                         if (notDefined(keywordMap[keyword])) {
@@ -703,9 +708,6 @@ window.IndexSearch = window.IndexSearch || (function() {
             var splitor = new InputSearchSplitor(keywordString);
             var dictionaries = {};
             each(splitor.split(), function(keword) {
-                if (empty(keword)) {
-                    return false;
-                }
                 var source;
                 var destination = dictionaries;
 
@@ -773,10 +775,13 @@ window.IndexSearch = window.IndexSearch || (function() {
      * @description http://na5cent.blogspot.com/2013/02/algorithm-for-find-difference.html
      */
     var Suggestion = function(settings) {
+        //require
         var dictionary__ = settings.dictionary;
+        var highlighter__ = settings.highlighter;
+        
+        //optional
         var percentSuggest__ = settings.percentSuggest || 60;
         var suggestionsSize__ = settings.suggestionsSize || 10;
-        var highlighter__ = settings.highlighter;
 
         /**
          * for find total character map of string
