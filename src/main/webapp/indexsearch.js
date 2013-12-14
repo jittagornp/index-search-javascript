@@ -847,7 +847,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
             each(keywordList, function(keyword) {
                 return each(dictionaries__, function(indexes, dictionaryKeyword) {
-                    if (!hasKeyword(dictionaryKeyword, keywordList) && !hasSuggest(dictionaryKeyword, suggestions)) {
+                    if (/*!hasKeyword(dictionaryKeyword, keywordList) && */!hasSuggest(dictionaryKeyword, suggestions)) {
 
                         var keywordMap = reduceKeywordAndTransformToMap(keyword);
                         var dictionaryMap = reduceKeywordAndTransformToMap(dictionaryKeyword);
@@ -1090,14 +1090,11 @@ window.IndexSearch = window.IndexSearch || (function() {
             suggestionList__ = [];
             //
             keyword__ = keyword;
-            search();
             pullSuggestions();
-
-            if (empty(resultNode__.nodes) && notEmpty(suggestionList__)) {
-                keyword__ = generateNewKeywrod();
-                search();
-            }
-
+            keyword__ = generateNewKeywrod();
+            search();
+            keyword__ = keyword;
+            
             return getResultSearch();
         };
 
@@ -1115,20 +1112,46 @@ window.IndexSearch = window.IndexSearch || (function() {
 
             var splitor = new InputSearchSplitor(keyword__);
             var keywordList = splitor.split();
-            each(suggestMap, function(keywords) {
-                getKeyword(keywords[0], keywordList);
+            each(suggestMap, function(suggests) {
+                getKeyword(suggests[0], keywordList);
             });
 
-            return keywordList.join(' ');
+            removeSomeSuggests(keywordList);
+            return reduceKeyword(keywordList);
+        }
+
+        function removeSomeSuggests(keywordList) {
+            var newSuggets = [];
+            each(keywordList, function(keyword){
+                each(suggestionList__, function(suggest){
+                    if (keyword !== suggest.word && notFoundIn(suggest, newSuggets)) {
+                       newSuggets.push(suggest);
+                    }
+                });
+            });
+            
+            suggestionList__ = newSuggets;
+        }
+
+        function reduceKeyword(keywordList) {
+            var keywordMap = {};
+            for (var index in keywordList) {
+                keywordMap[keywordList[index]] = keywordList[index];
+            }
+
+            return convertMapKeyToList(keywordMap).join(' ');
         }
 
         function getKeyword(word, list) {
             for (var index in list) {
-                if (list[index][0] === word[0] && (word.length < list[index].length || notFoundIn(list[index], word))) {
+                if (matchWord(list[index], word)) {
                     list[index] = word;
-                    break;
                 }
             }
+        }
+
+        function matchWord(word1, word2) {
+            return word1[0] === word2[0] && (word2.length < word1.length || notFoundIn(word1, word2));
         }
 
         function getResultSearch() {
