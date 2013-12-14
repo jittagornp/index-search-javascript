@@ -25,6 +25,10 @@
     width : 470px !important;
 }
 
+#na5centRepositories{
+    margin-top: 10px !important; 
+}
+
 .ns-plugin-search-scroll .jspVerticalBar{
     left : 0px;
 }
