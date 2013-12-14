@@ -487,6 +487,7 @@ javascript
     script.setAttribute('class', 'ns-blogsearch-script');
     script.setAttribute('data-blogspot-url', settings.blogspotURL);
     script.setAttribute('data-element-id', settings.targetElementId);
+    script.setAttribute('data-slide-search', settings.slideSearch);
     script.async = true;
  
     script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
@@ -494,7 +495,8 @@ javascript
 })(document, {
     //settings
     blogspotURL: 'http://na5cent.blogspot.com', //url of your blogspot
-    targetElementId: 'mySearch' //target html element id for search box
+    targetElementId: 'mySearch', //target html element id for search box
+    slideSearch : true //for make left slide search
 });
 ```
 <b>additional</b>
@@ -515,6 +517,7 @@ javascript
     script.setAttribute('data-element-id', settings.targetElementId);
     script.setAttribute('data-languages', JSON.stringify(settings.languages || {}));
     script.setAttribute('data-additionalDictionaries', (settings.additionalDictionaries || []).join(','));
+    script.setAttribute('data-slide-search', settings.slideSearch);
     script.async = true;
 
     script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
@@ -523,6 +526,7 @@ javascript
     //settings
     blogspotURL: 'http://na5cent.blogspot.com', //url of your blogspot
     targetElementId: 'mySearch', //target html element id for search box
+    slideSearch : true, //for make left slide search
     languages: {//language for show in search box
         SEARCH: 'search',
         FOUND: 'found',
