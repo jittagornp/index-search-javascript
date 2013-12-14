@@ -18,14 +18,16 @@
                 script.setAttribute('data-element-id', settings.targetElementId);
                 script.setAttribute('data-languages', JSON.stringify(settings.languages || {}));
                 script.setAttribute('data-additionalDictionaries', (settings.additionalDictionaries || []).join(','));
+                script.setAttribute('data-slide-search', settings.slideSearch);
                 script.async = true;
 
-                script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
+                script.src = 'blogspotSearch.js';
                 document.getElementsByTagName('head')[0].appendChild(script);
             })(document, JSON, {
                 //settings
                 blogspotURL: 'http://na5cent.blogspot.com', //url of your blogspot
                 targetElementId: 'mySearch', //target html element id for search box
+                slideSearch : true,
                 languages: {//language for show in search box
                     SEARCH: 'search',
                     FOUND: 'found',

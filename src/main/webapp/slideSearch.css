@@ -3,11 +3,18 @@
     top : 0px;
     left : 0px;
     bottom : 0px;
+    width : 600px;
     z-index: 1000; 
-    background : #fafafa;
+    background : #fcfcfc;
     border-right: 1px #ddd solid;
+    font-size: 11pt;
+    
 }
 
 .ns-plugin-search-box{
     padding : 10px;
+}
+
+#na5centSearchInput{
+    width : 470px !important;
 }

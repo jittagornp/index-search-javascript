@@ -26,10 +26,13 @@
         var languages = na5centScript.getAttribute('data-languages') ? JSON.parse(na5centScript.getAttribute('data-languages')) : {};
         var targetElementId = na5centScript.getAttribute('data-element-id');
         var additionalDictionaries = na5centScript.getAttribute('data-additionalDictionaries') || [];
-        var slideSearch = na5centScript.getAttribute('data-slide-search');
-
+        var slideSearch = na5centScript.getAttribute('data-slide-search') || false;
         if (slideSearch) {
+            resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/jscrollpane/MouseWheel.js');
+            resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/jscrollpane/jScrollPaneMin.js');
             resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.js');
+            
+            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/jscrollpane/jscrollpane.css');
             resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.css');
         }
 
@@ -40,6 +43,8 @@
             '<div id="na5centRepositories"></div>',
             '</div></div>'
         ];
+        
+        console.log(resourceJS);
 
         document.getElementById(targetElementId).innerHTML = html.join('');
         document.getElementById(targetElementId).className += 'ns-plugin-slide-search';
@@ -50,7 +55,7 @@
 
         for (var index in resourceJS) {
             loadScript(resourceJS[index], function() {
-                if (index == 3) {
+                if (index == (resourceJS.length - 1)) {
                     if (controller) {
                         controller(blogspotURL, languages, additionalDictionaries, window.jQuery);
                     }
