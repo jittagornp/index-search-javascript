@@ -348,7 +348,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         this.addAllPeriods = function(periodList) {
             if (notEmpty(periodList)) {
-                each(periodList, function(period){
+                each(periodList, function(period) {
                     this.addPeriod(period);
                 }, this);
             }
@@ -358,7 +358,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         function toPeriodList() {
             var list = [];
-            each(periodSet__, function(period){
+            each(periodSet__, function(period) {
                 list.push(period);
             });
             return list;
@@ -443,6 +443,19 @@ window.IndexSearch = window.IndexSearch || (function() {
         };
     };
 
+    var SearchOperation = {
+        AND: 'AND',
+        OR: 'OR'
+    };
+
+    var InputSearchSplitor = function(input) {
+        var input__ = input || '';
+
+        this.split = function() {
+            return input__.split(' ');
+        };
+    };
+
     /**
      * class Highlighter
      * for make html highlight result search    				
@@ -479,8 +492,9 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         function findPeriodsOfSentenceByKeyword(sentence, keywordString) {
             var integrator = new PeriodIntegrator();
-            
-            each(keywordString.split(' '), function(keyword) {
+            var splitor = new InputSearchSplitor(keywordString);
+
+            each(splitor.split(), function(keyword) {
                 if (empty(keyword)) {
                     return false;
                 }
@@ -511,7 +525,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
             var periods = findPeriodsOfSentenceByKeyword(newSentence, keywordString);
             var highlightSize = 0;
-            
+
             each(periods, function(period) {
                 var start = period.getStart() + highlightSize;
                 var end = period.getEnd() + highlightSize;
@@ -590,7 +604,8 @@ window.IndexSearch = window.IndexSearch || (function() {
         this.readIndex = function(keywordString) {
             var keywordMap = {};
 
-            var keywordList = keywordString.split(' ');
+            var splitor = new InputSearchSplitor(keywordString);
+            var keywordList = splitor.split();
             each(keywordList, function(keyword) {
                 if (empty(keyword)) {
                     return false;
@@ -678,8 +693,9 @@ window.IndexSearch = window.IndexSearch || (function() {
                 return {};
             }
 
+            var splitor = new InputSearchSplitor(keywordString);
             var dictionaries = {};
-            each(keywordString.split(' '), function(keword) {
+            each(splitor.split(), function(keword) {
                 if (empty(keword)) {
                     return false;
                 }
@@ -753,7 +769,7 @@ window.IndexSearch = window.IndexSearch || (function() {
         var dictionary__ = settings.dictionary;
         var percentSuggest__ = settings.percentSuggest || 60;
         var suggestionsSize__ = settings.suggestionsSize || 10;
-        var highlightClass__ = settings.highlightClass || 'keyword-highlight';
+        var highlighter__ = settings.highlighter;
 
         /**
          * for find total character map of string
@@ -811,11 +827,12 @@ window.IndexSearch = window.IndexSearch || (function() {
             return 100 * (percentTotal / mapBase);
         }
 
-        function getSuggestions(keyword, percentSuggest) {
+        function getSuggestions(keywordString, percentSuggest) {
             var suggestions = [];
             var fullSize = false;
 
-            var keywordSplit = keyword.split(' ');
+            var splitor = new InputSearchSplitor(keywordString);
+            var keywordSplit = splitor.split();
             for (var index in keywordSplit) {
                 var currentKeyword = keywordSplit[index];
                 if (fullSize) {
@@ -831,7 +848,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                         var percent = computePercentage(keywordMap, compareMap);
 
                         if (percent >= percentSuggest) {
-                            var highlightText = hightlight(currentKeyword, compareWord);
+                            var highlightText = highlighter__.highlight(keywordString, compareWord);
                             if (empty(highlightText)) {
                                 highlightText = compareWord;
                             }
@@ -875,31 +892,6 @@ window.IndexSearch = window.IndexSearch || (function() {
         this.getSuggestionsWhenSearchNotFound = function(keyword) {
             return getSuggestions(keyword, percentSuggest__);
         };
-
-        function hightlight(keyWord, suggest) {
-            var result = '';
-            for (var suggestIndex = 0; suggestIndex < suggest.length; suggestIndex++) {
-                var suggestCharacterAt = suggest.charAt(suggestIndex);
-
-                var found = false;
-                for (var characterIndex = 0; characterIndex < keyWord.length; characterIndex++) {
-                    var keyWordCharacterAt = keyWord.charAt(characterIndex);
-
-                    if (keyWordCharacterAt === suggestCharacterAt) {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (found) {
-                    result = result + '<span class=' + highlightClass__ + '>' + suggestCharacterAt + '</span>';
-                } else {
-                    result = result + suggestCharacterAt;
-                }
-            }
-
-            return result;
-        }
     };
 
 
@@ -1112,7 +1104,8 @@ window.IndexSearch = window.IndexSearch || (function() {
                 suggestionList__ = new Suggestion({
                     dictionary: indexReader__.getDictionaries(key),
                     suggestionsSize: suggestionsSize__,
-                    percentSuggest: percentSuggest__
+                    percentSuggest: percentSuggest__,
+                    highlighter : highlighter__
                 }).getSuggestionsWhenSearchNotFound(keyword__);
             } else {
                 notFoundTimes__ = 0;
@@ -1120,7 +1113,8 @@ window.IndexSearch = window.IndexSearch || (function() {
                 suggestionList__ = new Suggestion({
                     dictionary: indexReader__.getDictionaries(keyword__),
                     suggestionsSize: suggestionsSize__,
-                    percentSuggest: percentSuggest__
+                    percentSuggest: percentSuggest__,
+                    highlighter : highlighter__
                 }).getSuggestionsWhenSearchFound(keyword__);
             }
         }
