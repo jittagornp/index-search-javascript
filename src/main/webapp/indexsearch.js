@@ -73,10 +73,12 @@ window.IndexSearch = window.IndexSearch || (function() {
             for (var index in list) {
                 var returnBoolean = callback.call(context, list[index], index);
                 if (returnBoolean === false) {
-                    break;
+                    return false;
                 }
             }
         }
+        
+        return true;
     }
 
     function convertMapKeyToList(map) {
@@ -839,20 +841,19 @@ window.IndexSearch = window.IndexSearch || (function() {
             return 100 * (percentTotal / mapBase);
         }
 
-        function getSuggestions(keywordString, percentSuggest) {
+        function getSuggestions(keywordString, PERCENT_SUGGEST) {
             var suggestions = [];
-            var fullSize = false;
-
             var splitor = new InputSearchSplitor(keywordString);
+            
             each(splitor.split(), function(keyword) {
-                each(dictionaries__, function(indexes, dictionaryKeyword) {
-                    if (keyword !== dictionaryKeyword && !foundSuggest(dictionaryKeyword, suggestions)) {
+                return each(dictionaries__, function(indexes, dictionaryKeyword) {
+                    if (keyword !== dictionaryKeyword && !hasSuggest(dictionaryKeyword, suggestions)) {
 
                         var keywordMap = reduceKeywordAndTransformToMap(keyword);
                         var dictionaryMap = reduceKeywordAndTransformToMap(dictionaryKeyword);
                         var percent = computePercentage(keywordMap, dictionaryMap);
 
-                        if (percent >= percentSuggest) {
+                        if (percent >= PERCENT_SUGGEST) {
                             var highlightText = highlighter__.highlight(keywordString, dictionaryKeyword);
                             if (empty(highlightText)) {
                                 highlightText = dictionaryKeyword;
@@ -865,14 +866,11 @@ window.IndexSearch = window.IndexSearch || (function() {
                             });
 
                             if (suggestions.length === suggestionsSize__) {
-                                fullSize = true;
-                                return !fullSize;
+                                return false;
                             }
                         }
                     }
                 });
-
-                return !fullSize;
             });
 
             suggestions = suggestions.sort(function(keyword1, keyword2) {
@@ -882,7 +880,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             return suggestions;
         }
 
-        function foundSuggest(word, list) {
+        function hasSuggest(word, list) {
             for (var index in list) {
                 if (list[index].word === word) {
                     return true;
