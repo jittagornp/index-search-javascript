@@ -27,7 +27,7 @@
         var targetElementId = na5centScript.getAttribute('data-element-id');
         var additionalDictionaries = na5centScript.getAttribute('data-additionalDictionaries') || [];
         var slideSearch = na5centScript.getAttribute('data-slide-search') || false;
-        if (slideSearch) {
+        if (slideSearch == 'true') {
             resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/jscrollpane/MouseWheel.js');
             resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/jscrollpane/jScrollPaneMin.js');
             resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.js');
