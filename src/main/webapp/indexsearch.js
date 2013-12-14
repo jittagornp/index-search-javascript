@@ -77,7 +77,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                 }
             }
         }
-        
+
         return true;
     }
 
@@ -679,18 +679,16 @@ window.IndexSearch = window.IndexSearch || (function() {
                 return;
             }
 
-            each(indexStore__, function(store, storeSize) {
-                if (keyword.length >= storeSize) {
-                    var dictionaryKeyword = keyword.substring(0, storeSize);
-                    var dictionaryList = store[dictionaryKeyword];
+            each(indexStore__, function(store, dictionaryKeySize) {
+                if (keyword.length >= dictionaryKeySize) {
+                    var dictionaryKeyword = keyword.substring(0, dictionaryKeySize);
 
-                    if (notDefined(dictionaryList)) {
+                    if (notDefined(store[dictionaryKeyword])) {
                         store[dictionaryKeyword] = {};
-                        dictionaryList = store[dictionaryKeyword];
                     }
 
-                    if (notDefined(dictionaryList[keyword])) {
-                        dictionaryList[keyword] = [];
+                    if (notDefined(store[dictionaryKeyword][keyword])) {
+                        store[dictionaryKeyword][keyword] = [];
                     }
                 }
             });
@@ -844,10 +842,11 @@ window.IndexSearch = window.IndexSearch || (function() {
         function getSuggestions(keywordString, PERCENT_SUGGEST) {
             var suggestions = [];
             var splitor = new InputSearchSplitor(keywordString);
-            
-            each(splitor.split(), function(keyword) {
+            var keywordList = splitor.split();
+
+            each(keywordList, function(keyword) {
                 return each(dictionaries__, function(indexes, dictionaryKeyword) {
-                    if (keyword !== dictionaryKeyword && !hasSuggest(dictionaryKeyword, suggestions)) {
+                    if (!hasKeyword(dictionaryKeyword, keywordList) && !hasSuggest(dictionaryKeyword, suggestions)) {
 
                         var keywordMap = reduceKeywordAndTransformToMap(keyword);
                         var dictionaryMap = reduceKeywordAndTransformToMap(dictionaryKeyword);
@@ -860,6 +859,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                             }
 
                             suggestions.push({
+                                keywordMatch: keyword,
                                 word: dictionaryKeyword,
                                 highlight: highlightText,
                                 percent: numberFormat(percent)
@@ -878,6 +878,16 @@ window.IndexSearch = window.IndexSearch || (function() {
             });
 
             return suggestions;
+        }
+
+        function hasKeyword(word, list) {
+            for (var index in list) {
+                if (list[index] === word) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         function hasSuggest(word, list) {
@@ -940,7 +950,6 @@ window.IndexSearch = window.IndexSearch || (function() {
         var duplicated__ = {};
         var additionalDictionaries__ = settings.additionalDictionaries || [];
         var suggestionList__ = [];
-        var notFoundTimes__ = 0;
         var suggestionsSize__ = settings.suggestionsSize;
         var percentSuggest__ = settings.percentSuggest;
 
@@ -1059,6 +1068,22 @@ window.IndexSearch = window.IndexSearch || (function() {
             });
         };
 
+        function getResultSearch() {
+            return new ResultSearch({
+                totalPosition: highlighter__.getTotalHighlight(),
+                totalSentence: highlighter__.getTotalSentence(),
+                content: resultNode__,
+                suggestions: suggestionList__
+            });
+        }
+
+        function search() {
+            var indexes = indexReader__.readIndex(keyword__);
+            for (var idx in indexes) {
+                pullNode(indexes[idx]);
+            }
+        }
+
         this.search = function(keyword) {
             if (empty(keyword)) {
                 return new ResultSearch({
@@ -1071,12 +1096,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             // keyword not change, such as user try type an empty keyword
             // return old result
             if (keyword__ === keyword) {
-                return new ResultSearch({
-                    totalPosition: highlighter__.getTotalHighlight(),
-                    totalSentence: highlighter__.getTotalSentence(),
-                    content: resultNode__,
-                    suggestions: suggestionList__
-                });
+                return getResultSearch();
             }
 
             //clean results
@@ -1085,43 +1105,25 @@ window.IndexSearch = window.IndexSearch || (function() {
             suggestionList__ = [];
             //
             keyword__ = keyword;
-
-            var indexes = indexReader__.readIndex(keyword__);
-            for (var idx in indexes) {
-                pullNode(indexes[idx]);
-            }
+            search();
 
             pullSuggestions();
 
-            return new ResultSearch({
-                totalPosition: highlighter__.getTotalHighlight(),
-                totalSentence: highlighter__.getTotalSentence(),
-                content: resultNode__,
-                suggestions: suggestionList__
-            });
+            if (empty(resultNode__.nodes) && notEmpty(suggestionList__)) {
+                keyword__ = suggestionList__[0].word;
+                search();
+            }
+
+            return getResultSearch();
         };
 
         function pullSuggestions() {
-            if (empty(resultNode__.nodes)) {
-                notFoundTimes__ = notFoundTimes__ + 1;
-                var key = keyword__.substring(0, keyword__.length - notFoundTimes__);
-
-                suggestionList__ = new Suggestion({
-                    dictionary: indexReader__.getDictionaries(key),
-                    suggestionsSize: suggestionsSize__,
-                    percentSuggest: percentSuggest__,
-                    highlighter: highlighter__
-                }).getSuggestionsWhenSearchNotFound(keyword__);
-            } else {
-                notFoundTimes__ = 0;
-
-                suggestionList__ = new Suggestion({
-                    dictionary: indexReader__.getDictionaries(keyword__),
-                    suggestionsSize: suggestionsSize__,
-                    percentSuggest: percentSuggest__,
-                    highlighter: highlighter__
-                }).getSuggestionsWhenSearchFound(keyword__);
-            }
+            suggestionList__ = new Suggestion({
+                dictionary: indexReader__.getDictionaries(keyword__),
+                suggestionsSize: suggestionsSize__,
+                percentSuggest: percentSuggest__,
+                highlighter: highlighter__
+            }).getSuggestionsWhenSearchFound(keyword__);
         }
 
         function pullNode(index) {
