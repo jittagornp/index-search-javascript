@@ -97,64 +97,55 @@
         var $repositories = $('#na5centRepositories');
 
         showResult(repository);
-        var timeoutReferance;
         $searchInput.keyup(function() {
-            if (timeoutReferance) {
-                window.clearTimeout(timeoutReferance);
+            var keyword = $searchInput.val();
+            var result = indexSearch__.search(keyword);
+
+            $summary.text('').hide();
+            if (result.getTotalPosition() !== 0) {
+                $summary.append((languages.SEARCH || 'search') + ' \'')
+                        .append($('<span>').text(indexSearch__.getKeyword()).addClass('summary-highlight'))
+                        .append('\' ' + (languages.FOUND || 'found') + ' ')
+                        .append($('<span>').text(result.getTotalPosition()).addClass('summary-highlight'))
+                        .append(' ' + (languages.POSITIONS || 'positions on') + ' ')
+                        .append($('<span>').text(result.getTotalSentence()).addClass('summary-highlight'))
+                        .append(' ' + (languages.SENTENCES || 'sentences.'))
+                        .show();
+            } else if (keyword !== '') {
+                $summary.append((languages.SEARCH || 'search') + ' \'')
+                        .append($('<span>').text(indexSearch__.getKeyword()).addClass('summary-highlight'))
+                        .append('\' ' + (languages.NOT_FOUND || 'not found'))
+                        .show();
             }
 
-            timeoutReferance = setTimeout(function() {
-                window.clearTimeout(timeoutReferance);
 
-                var keyword = $searchInput.val();
-                var result = indexSearch__.search(keyword);
+            $suggestions.text('').hide();
+            var suggestions = result.getSuggestions();
+            if (suggestions.length !== 0) {
+                $suggestions.append((languages.DO_YOU_MEAN || 'do you mean') + ' ');
+                for (var suggestIndex in suggestions) {
+                    var suggest = suggestions[suggestIndex];
+                    var highlight = suggest.highlight;
 
-                $summary.text('').hide();
-                if (result.getTotalPosition() !== 0) {
-                    $summary.append((languages.SEARCH || 'search') + ' \'')
-                            .append($('<span>').text(indexSearch__.getKeyword()).addClass('summary-highlight'))
-                            .append('\' ' + (languages.FOUND || 'found') + ' ')
-                            .append($('<span>').text(result.getTotalPosition()).addClass('summary-highlight'))
-                            .append(' ' + (languages.POSITIONS || 'positions on') + ' ')
-                            .append($('<span>').text(result.getTotalSentence()).addClass('summary-highlight'))
-                            .append(' ' + (languages.SENTENCES || 'sentences.'))
-                            .show();
-                } else if (keyword !== '') {
-                    $summary.append((languages.SEARCH || 'search') + ' \'')
-                            .append($('<span>').text(indexSearch__.getKeyword()).addClass('summary-highlight'))
-                            .append('\' ' + (languages.NOT_FOUND || 'not found'))
-                            .show();
-                }
-
-
-                $suggestions.text('').hide();
-                var suggestions = result.getSuggestions();
-                if (suggestions.length !== 0) {
-                    $suggestions.append((languages.DO_YOU_MEAN || 'do you mean') + ' ');
-                    for (var suggestIndex in suggestions) {
-                        var suggest = suggestions[suggestIndex];
-                        var highlight = suggest.highlight;
-
-                        if (suggestIndex != 0) {
-                            $suggestions.append(', ');
-                        }
-
-                        var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
-                                .attr('data-suggest', suggest.word)
-                                .html(highlight)
-                                .click(function(event) {
-                            event.preventDefault();
-                            $searchInput.val($(this).attr('data-suggest')).keyup();
-                        });
-
-                        $suggestions.append($suggestItem);
+                    if (suggestIndex != 0) {
+                        $suggestions.append(', ');
                     }
 
-                    $suggestions.append(' ').append('?').show();
+                    var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
+                            .attr('data-suggest', suggest.word)
+                            .html(highlight)
+                            .click(function(event) {
+                        event.preventDefault();
+                        $searchInput.val($(this).attr('data-suggest')).keyup();
+                    });
+
+                    $suggestions.append($suggestItem);
                 }
 
-                showResult(result.getContent());
-            }, 300);
+                $suggestions.append(' ').append('?').show();
+            }
+
+            showResult(result.getContent());
         });
 
         $clearButton.click(function() {
