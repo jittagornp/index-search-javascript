@@ -7,3 +7,7 @@
     background : #fafafa;
     border-right: 1px #ddd solid;
 }
+
+.ns-plugin-search-box{
+    padding : 10px;
+}

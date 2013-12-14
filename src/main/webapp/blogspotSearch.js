@@ -34,12 +34,12 @@
             resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.css');
         }
 
-        var html = ['<input id="na5centSearchInput" placeholder="' + (languages.PLACE_HOLDER || 'search...') + '"/><button id="na5centClearButton">' + (languages.CLEAR || 'clear') + '</button>',
+        var html = ['<div class="ns-plugin-search-box" style="display : none;"><input id="na5centSearchInput" placeholder="' + (languages.PLACE_HOLDER || 'search...') + '"/><button id="na5centClearButton">' + (languages.CLEAR || 'clear') + '</button>',
             '<div id="na5centResult">',
             '<div id="na5centSummary"></div>',
             '<div id="na5centSuggestions"></div>',
             '<div id="na5centRepositories"></div>',
-            '</div>'
+            '</div></div>'
         ];
 
         document.getElementById(targetElementId).innerHTML = html.join('');
@@ -102,6 +102,7 @@
         var $summary = $('#na5centSummary');
         var $suggestions = $('#na5centSuggestions');
         var $repositories = $('#na5centRepositories');
+        $('.ns-plugin-search-box').show();
 
         showResult(repository);
         $searchInput.keyup(function() {
