@@ -478,46 +478,47 @@ window.IndexSearch = window.IndexSearch || (function() {
             totalSentence__ = 0;
         };
 
-        this.highlight = function(keyword, sentence) {
-            sentence = escapseString(sentence);
-            totalSentence__ = totalSentence__ + 1;
+        function getKeywordPeriodList(keywordString, sentence) {
+            keywordString = keywordString + '';
 
             var periodIntegrator = new PeriodIntegrator();
-            var keywordSplit = keyword.split(' ');
-            for (var index in keywordSplit) {
-                var currentWord = keywordSplit[index];
-                if (empty(currentWord)) {
-                    continue;
+            each(keywordString.split(' '), function(keyword) {
+                if (empty(keyword)) {
+                    return false;
                 }
 
-                var currentWordLength = currentWord.length;
+                var keywordLength = keyword.length;
 
                 var start = 0;
                 var end = 0;
                 while (true) {
-                    var indexOf = findIndex(currentWord, sentence, end);
-                    if (indexOf === -1) {
+                    var indexOf = findIndex(keyword, sentence, end);
+                    if (indexOf === -1) { //not found
                         break;
                     }
 
                     start = indexOf;
-                    end = indexOf + currentWordLength;
+                    end = indexOf + keywordLength;
 
                     periodIntegrator.addPeriod(new Period(start, end));
                 }
-            }
+            });
 
-            var periodList = periodIntegrator.integrate();
+            return periodIntegrator.integrate();
+        }
 
+        this.highlight = function(keywordString, sentence) {
+            totalSentence__ = totalSentence__ + 1;
+            sentence = escapseString(sentence);
+
+            var periodList = getKeywordPeriodList(keywordString, sentence);
             var highlightStringSize = 0;
-            for (var index in periodList) {
-                var period = periodList[index];
+            each(periodList, function(period) {
                 var start = period.getStart() + highlightStringSize;
                 var end = period.getEnd() + highlightStringSize;
 
                 var infront = sentence.substring(0, start);
                 var highlightString = sentence.substring(start, end);
-
                 var highlighted = highlightKeyword(highlightString);
                 var behind = sentence.substring(end);
 
@@ -525,7 +526,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                 sentence = infront + highlighted + behind;
 
                 totalHighlight__ = totalHighlight__ + 1;
-            }
+            });
 
             return sentence;
         };
@@ -534,7 +535,13 @@ window.IndexSearch = window.IndexSearch || (function() {
     /**
      * define IndexStore interface
      */
-    var IndexStore = new Interface('IndexStore', ['writeIndex', 'readIndex', 'addDictionary', 'getDictionaries', 'getIndexs']);
+    var IndexStore = new Interface('IndexStore', [
+        'writeIndex',
+        'readIndex',
+        'addDictionary',
+        'getDictionaries',
+        'getIndexs'
+    ]);
 
     /**
      * class InMemoryIndexStore
@@ -608,11 +615,11 @@ window.IndexSearch = window.IndexSearch || (function() {
         };
 
         function intersecIndexesByKeywordSize(keywordMap, keywordSearchSize) {
-            var indexMap = indexMapper(keywordMap);
+            var indexMap = indexCountMapper(keywordMap);
             return indexCountReducer(indexMap, keywordSearchSize);
         }
 
-        function indexMapper(keywordMap) {
+        function indexCountMapper(keywordMap) {
             var indexMap = {};
             each(keywordMap, function(indexes) {
                 each(indexes, function(index) {
