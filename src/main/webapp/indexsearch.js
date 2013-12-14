@@ -847,7 +847,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
             each(keywordList, function(keyword) {
                 return each(dictionaries__, function(indexes, dictionaryKeyword) {
-                    if (/*!hasKeyword(dictionaryKeyword, keywordList) && */!hasSuggest(dictionaryKeyword, suggestions)) {
+                    if (!hasSuggest(dictionaryKeyword, suggestions)) {
 
                         var keywordMap = reduceKeywordAndTransformToMap(keyword);
                         var dictionaryMap = reduceKeywordAndTransformToMap(dictionaryKeyword);
@@ -937,6 +937,8 @@ window.IndexSearch = window.IndexSearch || (function() {
         }
 
         var highlighter__ = new Highlighter(settings.highlightClass || 'keyword-highlight');
+        var suggestionHighlighter__ = new Highlighter(settings.highlightClass || 'keyword-highlight');
+        
         var indexStoreImpl__ = settings.indexStore || new InMemoryIndexStore(settings.maximumDictionaryKeySize || 3);
         Interface.ensureImplements(indexStoreImpl__, [IndexStore]);
 
@@ -1086,6 +1088,8 @@ window.IndexSearch = window.IndexSearch || (function() {
 
             //clean results
             highlighter__.resetTotal();
+            suggestionHighlighter__.resetTotal();
+            
             resultNode__ = {nodes: []};
             suggestionList__ = [];
             //
@@ -1175,7 +1179,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                 dictionary: indexReader__.getDictionaries(keyword__),
                 suggestionsSize: suggestionsSize__,
                 percentSuggest: percentSuggest__,
-                highlighter: highlighter__
+                highlighter: suggestionHighlighter__
             }).getSuggestionsWhenSearchFound(keyword__);
         }
 
