@@ -4,7 +4,9 @@
  * author     -->  redcrow (jittagorn pitakmetagoon)
  * create on  -->  26/08/2013
  * website    -->  na5cent.blogspot.com
+ * 
  * version    -->  1.0
+ * version    -->  2.0 (multiple search keyword : AND search operation)
  * 
  * License    ---> Apache License
  * Version 2.0, January 2004 (http://www.apache.org/licenses/LICENSE-2.0)
@@ -30,6 +32,10 @@ window.IndexSearch = window.IndexSearch || (function() {
 
     function notEmpty(list) {
         return !empty(list);
+    }
+
+    function trim(string) {
+        return string.replace(/^\s+|\s+$/g, '');  //for old browser
     }
 
     function findIndex(element, list, startPoint) {
@@ -446,11 +452,6 @@ window.IndexSearch = window.IndexSearch || (function() {
 
             return periodList__;
         };
-    };
-
-    var SearchOperation = {
-        AND: 'AND',
-        OR: 'OR'
     };
 
     var InputSearchSplitor = function(input) {
@@ -1068,6 +1069,68 @@ window.IndexSearch = window.IndexSearch || (function() {
             });
         };
 
+        this.search = function(keyword) {
+            if (empty(keyword)) {
+                return new ResultSearch({
+                    content: node__
+                });
+            }
+
+            keyword = keyword.trim().toLowerCase();
+
+            // keyword not change, such as user try typed an empty keyword
+            // return old result
+            if (keyword__ === keyword) {
+                return getResultSearch();
+            }
+
+            //clean results
+            highlighter__.resetTotal();
+            resultNode__ = {nodes: []};
+            suggestionList__ = [];
+            //
+            keyword__ = keyword;
+            search();
+            pullSuggestions();
+
+            if (empty(resultNode__.nodes) && notEmpty(suggestionList__)) {
+                keyword__ = generateNewKeywrod();
+                search();
+            }
+
+            return getResultSearch();
+        };
+
+        function generateNewKeywrod() {
+            var suggestMap = {};
+
+            each(suggestionList__, function(suggest) {
+                var firstCharactor = suggest.word[0];
+                if (notDefined(suggestMap[firstCharactor])) {
+                    suggestMap[firstCharactor] = [];
+                }
+
+                suggestMap[firstCharactor].push(suggest.word);
+            });
+
+            var splitor = new InputSearchSplitor(keyword__);
+            var keywordList = splitor.split();
+            each(suggestMap, function(keywords) {
+                getKeyword(keywords[0], keywordList);
+            });
+
+            return keywordList.join(' ');
+        }
+
+        function getKeyword(word, list) {
+            for (var index in list) {
+                if (list[index][0] === word[0] && (word.length < list[index].length || notFoundIn(list[index], word))) {
+                    list[index] = word;
+                    break;
+                }
+            }
+        }
+
         function getResultSearch() {
             return new ResultSearch({
                 totalPosition: highlighter__.getTotalHighlight(),
@@ -1083,39 +1146,6 @@ window.IndexSearch = window.IndexSearch || (function() {
                 pullNode(indexes[idx]);
             }
         }
-
-        this.search = function(keyword) {
-            if (empty(keyword)) {
-                return new ResultSearch({
-                    content: node__
-                });
-            }
-
-            keyword = keyword.trim().toLowerCase();
-
-            // keyword not change, such as user try type an empty keyword
-            // return old result
-            if (keyword__ === keyword) {
-                return getResultSearch();
-            }
-
-            //clean results
-            highlighter__.resetTotal();
-            resultNode__ = {nodes: []};
-            suggestionList__ = [];
-            //
-            keyword__ = keyword;
-            search();
-
-            pullSuggestions();
-
-            if (empty(resultNode__.nodes) && notEmpty(suggestionList__)) {
-                keyword__ = suggestionList__[0].word;
-                search();
-            }
-
-            return getResultSearch();
-        };
 
         function pullSuggestions() {
             suggestionList__ = new Suggestion({
