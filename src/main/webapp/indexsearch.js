@@ -68,6 +68,14 @@ window.IndexSearch = window.IndexSearch || (function() {
         }
     }
 
+    function each(list, callback, context) {
+        if (isFunction(callback)) {
+            for (var index in list) {
+                callback.call(context, list[index], index);
+            }
+        }
+    }
+
     function convertMapKeyToList(map) {
         var list = [];
         for (var key in map) {
@@ -435,7 +443,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             return periodList__;
         };
     };
-    
+
     /**
      * class Highlighter
      * for make html highlight result search    				
@@ -540,8 +548,8 @@ window.IndexSearch = window.IndexSearch || (function() {
         }
 
         var indexes__ = [];
-        for (var keySizeIndex = 1; keySizeIndex <= maximumDictionaryKeySize__; keySizeIndex++) {
-            indexes__[keySizeIndex] = {};
+        for (var index = 1; index <= maximumDictionaryKeySize__; index++) {
+            indexes__[index] = {};
         }
 
         this.writeIndex = function(index, sentence) {
@@ -564,58 +572,63 @@ window.IndexSearch = window.IndexSearch || (function() {
             }
         };
 
-        this.readIndex = function(keyword) {
-            var keywordIndexMap = {};
+        this.readIndex = function(keywords) {
+            var keywordMap = {};
 
-            var keywordSplit = keyword.split(' ');
-            for (var index in keywordSplit) {
-                var currentWord = keywordSplit[index];
-                if (empty(currentWord)) {
-                    continue;
+            var keywordList = keywords.split(' ');
+            each(keywordList, function(keyword) {
+                if (empty(keyword)) {
+                    return false;
                 }
 
-                var dictionaryObject = this.getDictionary(currentWord);
-                if (defined(dictionaryObject)) {
-                    for (var dictionaryKeyword in dictionaryObject) {
-                        if (foundIn(currentWord, dictionaryKeyword)) {
-                            if (notDefined(keywordIndexMap[currentWord])) {
-                                keywordIndexMap[currentWord] = {};
-                            }
+                var dictionary = this.getDictionary(keyword);
+                if (notDefined(dictionary)) {
+                    return false;
+                }
 
-                            var indexes = dictionaryObject[dictionaryKeyword];
-                            for (var idx in indexes) {
-                                var key = indexes[idx];
-                                keywordIndexMap[currentWord][key] = key;
-                            }
+                each(dictionary, function(indexes, dictionaryKey) {
+                    if (foundIn(keyword, dictionaryKey)) {
+                        if (notDefined(keywordMap[keyword])) {
+                            keywordMap[keyword] = {};
                         }
-                    }
-                }
-            }
 
-            return intersecIndex(keywordIndexMap, keywordSplit.length);
+                        each(indexes, function(index) {
+                            keywordMap[keyword][index] = index;
+                        });
+                    }
+                });
+            }, this);
+
+            return intersecIndexesByKeywordSize(keywordMap, keywordList.length);
         };
 
-        function intersecIndex(keywordIndexMap, keywordSearchSize) {
-            var keywordSearchMap = {};
-            for (var keyword in keywordIndexMap) {
-                var indexList = keywordIndexMap[keyword];
+        function intersecIndexesByKeywordSize(keywordMap, keywordSearchSize) {
+            var indexMap = indexMapper(keywordMap);
+            return indexCountReducer(indexMap, keywordSearchSize);
+        }
 
-                for (var index in indexList) {
-                    var indexKey = indexList[index];
-                    if (notDefined(keywordSearchMap[indexKey])) {
-                        keywordSearchMap[indexKey] = 0;
+        function indexMapper(keywordMap) {
+            var indexMap = {};
+            each(keywordMap, function(indexes) {
+                each(indexes, function(index) {
+                    if (notDefined(indexMap[index])) {
+                        indexMap[index] = 0;
                     }
 
-                    keywordSearchMap[indexKey] = keywordSearchMap[indexKey] + 1;
-                }
-            }
+                    indexMap[index] = indexMap[index] + 1;
+                });
+            });
 
+            return indexMap;
+        }
+
+        function indexCountReducer(indexMap, reduceSize) {
             var indexes = [];
-            for (var index in keywordSearchMap) {
-                if (keywordSearchMap[index] >= keywordSearchSize) {
+            each(indexMap, function(count, index) {
+                if (count >= reduceSize) {
                     indexes.push(index);
                 }
-            }
+            });
 
             return indexes;
         }
@@ -627,21 +640,21 @@ window.IndexSearch = window.IndexSearch || (function() {
                 return;
             }
 
-            for (var keySizeIndex in indexes__) {
-                if (keyword.length >= keySizeIndex) {
-                    var dictionary = keyword.substring(0, keySizeIndex);
-                    var dictionaryList = indexes__[keySizeIndex][dictionary];
+            each(indexes__, function(value, index) {
+                if (keyword.length >= index) {
+                    var dictionaryKeyword = keyword.substring(0, index);
+                    var dictionaryList = value[dictionaryKeyword];
 
                     if (notDefined(dictionaryList)) {
-                        indexes__[keySizeIndex][dictionary] = {};
-                        dictionaryList = indexes__[keySizeIndex][dictionary];
+                        value[dictionaryKeyword] = {};
+                        dictionaryList = value[dictionaryKeyword];
                     }
 
                     if (notDefined(dictionaryList[keyword])) {
                         dictionaryList[keyword] = [];
                     }
                 }
-            }
+            });
         };
 
         this.getDictionary = function(keywords) {
@@ -650,18 +663,22 @@ window.IndexSearch = window.IndexSearch || (function() {
             }
 
             var dictionary = {};
-            var keywordSplit = keywords.split(' ');
-            for (var index in keywordSplit) {
-                var currentKeyword = keywordSplit[index];
+            each(keywords.split(' '), function(keword) {
+                if (notEmpty(keword)) {
+                    var source;
+                    var destination = dictionary;
 
-                if (notEmpty(currentKeyword)) {
-                    if (currentKeyword.length <= maximumDictionaryKeySize__) {
-                        copyObject(indexes__[currentKeyword.length][currentKeyword], dictionary);
+                    if (keword.length <= maximumDictionaryKeySize__) {
+                        source = indexes__[keword.length][keword];
                     } else {
-                        copyObject(indexes__[maximumDictionaryKeySize__][currentKeyword.substring(0, maximumDictionaryKeySize__)], dictionary);
+                        var patialKeyword = keword.substring(0, maximumDictionaryKeySize__);
+                        source = indexes__[maximumDictionaryKeySize__][patialKeyword];
                     }
+
+                    copyObject(source, destination);
                 }
-            }
+            });
+
 
             if (notDefined(dictionary)) {
                 dictionary = {};
@@ -823,14 +840,14 @@ window.IndexSearch = window.IndexSearch || (function() {
 
             return suggestions;
         }
-        
-        function foundSuggest(word, list){
-            for(var index in list){
-                if(list[index].word === word){
+
+        function foundSuggest(word, list) {
+            for (var index in list) {
+                if (list[index].word === word) {
                     return true;
                 }
             }
-            
+
             return false;
         }
 
