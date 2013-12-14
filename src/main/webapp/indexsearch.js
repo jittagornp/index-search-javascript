@@ -348,9 +348,9 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         this.addAllPeriods = function(periodList) {
             if (notEmpty(periodList)) {
-                for (var index in periodList) {
-                    this.addPeriod(periodList[index]);
-                }
+                each(periodList, function(period){
+                    this.addPeriod(period);
+                }, this);
             }
 
             return this;
@@ -358,10 +358,9 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         function toPeriodList() {
             var list = [];
-            for (var index in periodSet__) {
-                list.push(periodSet__[index]);
-            }
-
+            each(periodSet__, function(period){
+                list.push(period);
+            });
             return list;
         }
 
@@ -478,10 +477,10 @@ window.IndexSearch = window.IndexSearch || (function() {
             totalSentence__ = 0;
         };
 
-        function getKeywordPeriodList(keywordString, sentence) {
+        function findPeriodsOfSentenceByKeyword(sentence, keywordString) {
             keywordString = keywordString + '';
 
-            var periodIntegrator = new PeriodIntegrator();
+            var integrator = new PeriodIntegrator();
             each(keywordString.split(' '), function(keyword) {
                 if (empty(keyword)) {
                     return false;
@@ -500,35 +499,36 @@ window.IndexSearch = window.IndexSearch || (function() {
                     start = indexOf;
                     end = indexOf + keywordLength;
 
-                    periodIntegrator.addPeriod(new Period(start, end));
+                    integrator.addPeriod(new Period(start, end));
                 }
             });
 
-            return periodIntegrator.integrate();
+            return integrator.integrate();
         }
 
         this.highlight = function(keywordString, sentence) {
             totalSentence__ = totalSentence__ + 1;
-            sentence = escapseString(sentence);
+            var newSentence = escapseString(sentence);
 
-            var periodList = getKeywordPeriodList(keywordString, sentence);
-            var highlightStringSize = 0;
-            each(periodList, function(period) {
-                var start = period.getStart() + highlightStringSize;
-                var end = period.getEnd() + highlightStringSize;
+            var periods = findPeriodsOfSentenceByKeyword(newSentence, keywordString);
+            var highlightSize = 0;
+            
+            each(periods, function(period) {
+                var start = period.getStart() + highlightSize;
+                var end = period.getEnd() + highlightSize;
 
-                var infront = sentence.substring(0, start);
-                var highlightString = sentence.substring(start, end);
-                var highlighted = highlightKeyword(highlightString);
-                var behind = sentence.substring(end);
+                var infront = newSentence.substring(0, start);
+                var word = newSentence.substring(start, end);
+                var highlighted = highlightKeyword(word);
+                var behind = newSentence.substring(end);
 
-                highlightStringSize = highlightStringSize + highlighted.length - (highlightString.length);
-                sentence = infront + highlighted + behind;
+                newSentence = infront + highlighted + behind;
 
+                highlightSize = highlightSize + highlighted.length - (word.length);
                 totalHighlight__ = totalHighlight__ + 1;
             });
 
-            return sentence;
+            return newSentence;
         };
     };
 
