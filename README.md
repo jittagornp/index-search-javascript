@@ -460,7 +460,18 @@ insert this code into your blogspot and change parameters<br/>
 <i>{string}</i> <b>targetElementId</b> (require) - target html element id for search box<br/>
 <i>{object}</i> <b>languages</b> - language for show in search box<br/>
 <i>{array}</i> <b>additionalDictionaries</b> - additional keywords from external<br/><br/>
-<b>basic</b>
+<b>basic</b><br/>
+html
+```html
+<script async 
+        type="text/javascript" 
+        data-blogspot-url="http://na5cent.blogspot.com" 
+        data-element-id="mySearch"
+        class="ns-blogsearch-script"   
+        src="https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js">
+</script>
+```
+javascript
 ```js
 /**
  * blogspot search plugin
