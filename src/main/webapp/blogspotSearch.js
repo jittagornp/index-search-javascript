@@ -36,15 +36,13 @@
             resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.css');
         }
 
-        var html = ['<div class="ns-plugin-search-box" style="display : none;"><input id="na5centSearchInput" placeholder="' + (languages.PLACE_HOLDER || 'search...') + '"/><button id="na5centClearButton">' + (languages.CLEAR || 'clear') + '</button>',
+        var html = ['<div class="ns-plugin-search-scroll"><div class="ns-plugin-search-scroll-content"><div class="ns-plugin-search-box" style="display : none;"><input id="na5centSearchInput" placeholder="' + (languages.PLACE_HOLDER || 'search...') + '"/><button id="na5centClearButton">' + (languages.CLEAR || 'clear') + '</button>',
             '<div id="na5centResult">',
             '<div id="na5centSummary"></div>',
             '<div id="na5centSuggestions"></div>',
             '<div id="na5centRepositories"></div>',
-            '</div></div>'
+            '</div></div></div><div class="ns-plugin-search-button"></div>'
         ];
-        
-        console.log(resourceJS);
 
         document.getElementById(targetElementId).innerHTML = html.join('');
         document.getElementById(targetElementId).className += 'ns-plugin-slide-search';
@@ -81,6 +79,7 @@
         script.type = 'text/javascript';
         script.onload = callback;
         script.src = jsURL;
+        script.async = false;
 
         getHeadElement().appendChild(script);
     }
