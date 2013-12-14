@@ -97,14 +97,14 @@
         var $repositories = $('#na5centRepositories');
 
         showResult(repository);
-        var delayTimeout = null;
+        var timeoutReferance;
         $searchInput.keyup(function() {
-            if (delayTimeout !== null) {
-                window.clearTimeout(delayTimeout);
+            if (timeoutReferance) {
+                window.clearTimeout(timeoutReferance);
             }
 
-            delayTimeout = setTimeout(function() {
-                window.clearTimeout(delayTimeout);
+            timeoutReferance = setTimeout(function() {
+                window.clearTimeout(timeoutReferance);
 
                 var keyword = $searchInput.val();
                 var result = indexSearch__.search(keyword);
@@ -154,7 +154,7 @@
                 }
 
                 showResult(result.getContent());
-            }, 500);
+            }, 300);
         });
 
         $clearButton.click(function() {
