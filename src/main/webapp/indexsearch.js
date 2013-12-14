@@ -478,9 +478,8 @@ window.IndexSearch = window.IndexSearch || (function() {
         };
 
         function findPeriodsOfSentenceByKeyword(sentence, keywordString) {
-            keywordString = keywordString + '';
-
             var integrator = new PeriodIntegrator();
+            
             each(keywordString.split(' '), function(keyword) {
                 if (empty(keyword)) {
                     return false;
@@ -589,7 +588,6 @@ window.IndexSearch = window.IndexSearch || (function() {
          * @returns {array} indexs
          */
         this.readIndex = function(keywordString) {
-            keywordString = keywordString + ''; //protect keyword is not string
             var keywordMap = {};
 
             var keywordList = keywordString.split(' ');
@@ -676,7 +674,6 @@ window.IndexSearch = window.IndexSearch || (function() {
          * @returns {object} dictionaries
          */
         this.getDictionaries = function(keywordString) {
-            keywordString = keywordString + '';
             if (empty(keywordString)) {
                 return {};
             }
