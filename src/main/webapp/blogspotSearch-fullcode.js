@@ -27,6 +27,12 @@
         var languages = na5centScript.getAttribute('data-languages') ? JSON.parse(na5centScript.getAttribute('data-languages')) : {};
         var targetElementId = na5centScript.getAttribute('data-element-id');
         var additionalDictionaries = na5centScript.getAttribute('data-additionalDictionaries') || [];
+        var slideSearch = na5centScript.getAttribute('data-slide-search');
+
+        if (slideSearch) {
+            resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.js');
+            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.css');
+        }
 
         var html = ['<input id="na5centSearchInput" placeholder="' + (languages.PLACE_HOLDER || 'search...') + '"/><button id="na5centClearButton">' + (languages.CLEAR || 'clear') + '</button>',
             '<div id="na5centResult">',
@@ -37,6 +43,7 @@
         ];
 
         document.getElementById(targetElementId).innerHTML = html.join('');
+        document.getElementById(targetElementId).className += 'ns-plugin-slide-search';
 
         for (var index in resourceStyle) {
             loadStyle(resourceStyle[index]);
