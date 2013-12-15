@@ -1,6 +1,5 @@
 (function(window, document, controller) {
     var resourceJS = [
-     
     ];
 
     var resourceStyle = [
@@ -17,7 +16,7 @@
         var slideSearch = na5centScript.getAttribute('data-slide-search') || false;
         if (slideSearch == 'true') {
             resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.js');
-            
+
             resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/jscrollpane/jscrollpane.css');
             resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.css');
         }
@@ -39,7 +38,11 @@
 
         for (var index in resourceJS) {
             loadScript(resourceJS[index], function() {
-                if (index == (resourceJS.length - 1)) {
+                if (resourceJS.length > 0) {
+                    if (index == (resourceJS.length - 1) && controller) {
+                        controller(blogspotURL, languages, additionalDictionaries, window.jQuery);
+                    }
+                } else {
                     if (controller) {
                         controller(blogspotURL, languages, additionalDictionaries, window.jQuery);
                     }
