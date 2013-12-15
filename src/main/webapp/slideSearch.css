@@ -1,3 +1,7 @@
+body{
+    overflow-x: hidden;
+}
+
 .ns-plugin-slide-search{
     position : fixed;
     top : 0px;
@@ -71,3 +75,4 @@
 .ns-plugin-search-scroll::-webkit-scrollbar-thumb:horizontal:hover {
     background: #777;
 } 
+
