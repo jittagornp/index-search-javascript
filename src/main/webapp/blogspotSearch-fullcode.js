@@ -14,23 +14,34 @@
         var targetElementId = na5centScript.getAttribute('data-element-id');
         var additionalDictionaries = na5centScript.getAttribute('data-additionalDictionaries') || [];
         var slideSearch = na5centScript.getAttribute('data-slide-search') || false;
+        var theme = na5centScript.getAttribute('data-theme') || 'facebook'; //default
         if (slideSearch == 'true') {
             resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.js');
 
             resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/jscrollpane/jscrollpane.css');
             resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.css');
+            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/theme/' + theme + '.css');
         }
 
-        var html = ['<div class="ns-plugin-search-scroll"><div class="ns-plugin-search-scroll-content"><div class="ns-plugin-search-box" style="display : none;"><input id="na5centSearchInput" placeholder="' + (languages.PLACE_HOLDER || 'search...') + '"/><button id="na5centClearButton">' + (languages.CLEAR || 'clear') + '</button>',
-            '<div id="na5centResult">',
-            '<div id="na5centSummary"></div>',
-            '<div id="na5centSuggestions"></div>',
-            '<div id="na5centRepositories"></div>',
-            '</div></div></div><div class="ns-plugin-search-button"></div>'
+        var html = ['<div class="ns-plugin-search-scroll">',
+                        '<div class="ns-plugin-search-scroll-content">',
+                            '<div class="ns-plugin-search-box" style="display : none;">',
+                                '<input class="ns-plugin-search-input" placeholder="' + (languages.PLACE_HOLDER || 'search...') + '"/>',
+                                '<button class="ns-plugin-search-clear-button">' + (languages.CLEAR || 'clear') + '</button>',
+                                '<div class="ns-plugin-search-result">',
+                                    '<div class="ns-plugin-search-summary"></div>',
+                                    '<div class="ns-plugin-search-suggestions"></div>',
+                                    '<div class="ns-plugin-search-repositories"></div>',
+                                '</div>',
+                            '</div>',
+                        '</div>',
+                    '</div>',
+                    '<div class="ns-plugin-search-button">',
+                    '</div>'
         ];
 
         document.getElementById(targetElementId).innerHTML = html.join('');
-        document.getElementById(targetElementId).className += 'ns-plugin-slide-search';
+        document.getElementById(targetElementId).className += 'ns-plugin-slide-search ns-plugin-theme-' + theme;
 
         for (var index in resourceStyle) {
             loadStyle(resourceStyle[index]);
@@ -89,11 +100,11 @@
         //====================================================================================
 
 
-        var $searchInput = $('#na5centSearchInput');
-        var $clearButton = $('#na5centClearButton');
-        var $summary = $('#na5centSummary');
-        var $suggestions = $('#na5centSuggestions');
-        var $repositories = $('#na5centRepositories');
+        var $searchInput = $('.ns-plugin-search-input');
+        var $clearButton = $('.ns-plugin-search-clear-button');
+        var $summary = $('.ns-plugin-search-summary');
+        var $suggestions = $('.ns-plugin-search-suggestions');
+        var $repositories = $('.ns-plugin-search-repositories');
         $('.ns-plugin-search-box').show();
 
         showResult(repository);
@@ -175,8 +186,11 @@
                 var $childDOM = $('<ol>');
                 var $list = $('<li>').attr('class', childNode.level)
                         .append($childLink)
-                        .append($newPost)
-                        .append($childDOM);
+                        .append($newPost);
+                
+                if(childNode.nodes && childNode.nodes.length > 0){
+                    $list.append($childDOM);
+                }
 
                 if (childNode.published) {
                     $list.attr('title', dateFormat(childNode.published));
