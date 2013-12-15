@@ -92,4 +92,10 @@ ol li{
 
 .ns-plugin-search-about{
     padding: 20px;
+    position: absolute;
+    bottom: 0px;
+}
+
+.ns-plugin-search-box{
+    padding : 10px 10px 50px 10px;
 }

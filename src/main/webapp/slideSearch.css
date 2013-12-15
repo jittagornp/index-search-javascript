@@ -25,11 +25,6 @@ body{
     overflow-y: auto;
     outline: none !important;
 }
-
-.ns-plugin-search-box{
-    padding : 10px;
-}
-
 .ns-plugin-search-input{
     width : 450px !important;
 }
