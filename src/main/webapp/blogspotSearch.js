@@ -79,7 +79,7 @@
         script.type = 'text/javascript';
         script.onload = callback;
         script.src = jsURL;
-        script.async = false;
+        //script.async = false;
 
         getHeadElement().appendChild(script);
     }
