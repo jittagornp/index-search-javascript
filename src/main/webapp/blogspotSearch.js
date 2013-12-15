@@ -501,7 +501,7 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
             return moment(date).format('MMMM Do YYYY, h:mm:ss a');
         }
         
-        $('.ns-plugin-search-scroll-content').append('<div class="ns-plugin-search-about">Blogspot search plugin : <a href="http://search-plugin.blogspot.com/">search-plugin.blogspot.com</a></div>');
+        $('.ns-plugin-search-scroll-content').append('<div class="ns-plugin-search-about">Search plugin : <a href="http://search-plugin.blogspot.com/">search-plugin.blogspot.com</a></div>');
     });
 });
 
