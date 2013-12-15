@@ -62,7 +62,7 @@
                 }, SLIDE_SPEED);
             } else {
                 $slideSearch.animate({
-                    marginLeft: -$slideSearch.width()
+                    marginLeft: -($slideSearch.width() + 1)
                 }, SLIDE_SPEED, function() {
                     $slideSearch.removeClass('expand');
                 });
