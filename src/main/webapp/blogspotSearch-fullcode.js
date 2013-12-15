@@ -1,19 +1,6 @@
-/**
- * blogspot search plugin
- * by index search javascript
- * code : https://github.com/jittagornp/index-search-javascript
- * 
- * @author jittagorn pitakmetagoon
- * create 10/12/2013
- * update 11/12/2013 protect laguages and additionalDictionaries is null
- */
 (function(window, document, controller) {
-
     var resourceJS = [
-        'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/jquery.js',
-        'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/moment.js',
-        'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/additionalDictionaries.js',
-        'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/indexsearch-mini.js'
+     
     ];
 
     var resourceStyle = [
@@ -21,25 +8,26 @@
     ];
 
     window.onload = function() {
-        var na5centScript = document.getElementsByClassName('ns-blogsearch-script')[0];
         //
+        var na5centScript = document.getElementsByClassName('ns-blogsearch-script')[0];
         var blogspotURL = na5centScript.getAttribute('data-blogspot-url');
         var languages = na5centScript.getAttribute('data-languages') ? JSON.parse(na5centScript.getAttribute('data-languages')) : {};
         var targetElementId = na5centScript.getAttribute('data-element-id');
         var additionalDictionaries = na5centScript.getAttribute('data-additionalDictionaries') || [];
-        var slideSearch = na5centScript.getAttribute('data-slide-search');
-
-        if (slideSearch) {
+        var slideSearch = na5centScript.getAttribute('data-slide-search') || false;
+        if (slideSearch == 'true') {
             resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.js');
+            
+            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/jscrollpane/jscrollpane.css');
             resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.css');
         }
 
-        var html = ['<input id="na5centSearchInput" placeholder="' + (languages.PLACE_HOLDER || 'search...') + '"/><button id="na5centClearButton">' + (languages.CLEAR || 'clear') + '</button>',
+        var html = ['<div class="ns-plugin-search-scroll"><div class="ns-plugin-search-scroll-content"><div class="ns-plugin-search-box" style="display : none;"><input id="na5centSearchInput" placeholder="' + (languages.PLACE_HOLDER || 'search...') + '"/><button id="na5centClearButton">' + (languages.CLEAR || 'clear') + '</button>',
             '<div id="na5centResult">',
             '<div id="na5centSummary"></div>',
             '<div id="na5centSuggestions"></div>',
             '<div id="na5centRepositories"></div>',
-            '</div>'
+            '</div></div></div><div class="ns-plugin-search-button"></div>'
         ];
 
         document.getElementById(targetElementId).innerHTML = html.join('');
@@ -51,7 +39,7 @@
 
         for (var index in resourceJS) {
             loadScript(resourceJS[index], function() {
-                if (index == 3) {
+                if (index == (resourceJS.length - 1)) {
                     if (controller) {
                         controller(blogspotURL, languages, additionalDictionaries, window.jQuery);
                     }
@@ -77,6 +65,7 @@
         script.type = 'text/javascript';
         script.onload = callback;
         script.src = jsURL;
+        //script.async = false;
 
         getHeadElement().appendChild(script);
     }
@@ -102,6 +91,7 @@
         var $summary = $('#na5centSummary');
         var $suggestions = $('#na5centSuggestions');
         var $repositories = $('#na5centRepositories');
+        $('.ns-plugin-search-box').show();
 
         showResult(repository);
         $searchInput.keyup(function() {
