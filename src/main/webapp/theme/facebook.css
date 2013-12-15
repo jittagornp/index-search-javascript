@@ -79,3 +79,15 @@
     color : rgb(73, 177, 47);
     font-weight: normal;
 }
+
+.ns-plugin-theme-facebook li{
+    border : none;
+}
+
+.ns-plugin-theme-facebook a{
+    color : #4e4e4e
+}
+
+.ns-plugin-theme-facebook a:hover{
+    color : #5b74a8;
+}
