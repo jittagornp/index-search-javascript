@@ -91,3 +91,7 @@
 .ns-plugin-theme-facebook a:hover{
     color : rgb(118, 116, 163);
 }
+
+.ns-plugin-theme-facebook a:visited{
+    color : rgb(79, 77, 138);
+}
