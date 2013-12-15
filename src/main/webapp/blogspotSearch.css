@@ -14,54 +14,54 @@
     color : #3297fd;
 }
 
-#repositories{
+ns-plugin-search-repositories{
     margin-top : 20px;
 }
 
-#na5centRepositories li{
+ns-plugin-search-repositories li{
     color : #4e4e4e;
 }
 
-#na5centSuggestions a{
-    color : #4e4e4e;
-    text-decoration : none;        
-}
-
-#na5centRepositories a{
+.ns-plugin-search-suggestions a{
     color : #4e4e4e;
     text-decoration : none;        
 }
 
-#na5centRepositories a:hover,
-#na5centSuggestions a:hover{
+.ns-plugin-search-repositories a{
+    color : #4e4e4e;
+    text-decoration : none;        
+}
+
+.ns-plugin-search-repositories a:hover,
+.ns-plugin-search-suggestions a:hover{
     text-decoration : underline;
 }
 
-#na5centSearchInput{
+.ns-plugin-search-input{
     width : 400px;
     padding : 5px;
     border : solid 1px #C2C2C2;
     outline : none;
 }
 
-#na5centSuggestions{
+.ns-plugin-search-suggestions{
     color : #4e4e4e;
     margin-left : 0px;    
     padding : 5px;
     display: none;
 }
 
-#na5centSuggestions .keyword-highlight{
+.ns-plugin-search-suggestions .keyword-highlight{
     background : #DAE7FF;
 }
 
-#na5centSummary{
+.ns-plugin-search-summary{
     margin-top : 10px; 
     padding : 5px; 
     display: none;
 }
 
-#na5centClearButton{
+.ns-plugin-search-clear-button{
     background : #3297fd;
     padding : 4px 10px;
     border : 2px #3297fd solid;
@@ -69,13 +69,13 @@
     margin-left : 10px;
 }
 
-#na5centClearButton:hover{
+.ns-plugin-search-clear-button:hover{
     background-color : #E00E0E;
     border-color : #E00E0E;
     cursor : default;
 }
 
-#na5centRepositories > ul{
+.ns-plugin-search-repositories > ul{
     padding-left : 10px;
 }
 

@@ -11,12 +11,8 @@ body{
     z-index: 1000; 
     background : #fff;
     border-right: 1px #ddd solid;
-    font-size: 10pt;
+    font-size: 11pt;
     margin-left: -601px;
-}
-
-.ns-plugin-slide-search .jspVerticalBar{
-    width : 10px;
 }
 
 .ns-plugin-search-scroll{
@@ -29,11 +25,11 @@ body{
     padding : 10px;
 }
 
-.ns-plugin-search-input{
+#na5centSearchInput{
     width : 470px !important;
 }
 
-.ns-plugin-search-repositories{
+#na5centRepositories{
     margin-top: 10px !important; 
 }
 
@@ -42,7 +38,7 @@ body{
 }
 
 .ns-plugin-search-scroll-content{
-   margin-left: 12px;
+   
 }
 
 .ns-plugin-search-button{
