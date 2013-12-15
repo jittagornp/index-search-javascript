@@ -5,6 +5,7 @@
     -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     outline: none;
+    color : #4e4e4e;
 }
 
 .ns-plugin-theme-facebook .ns-plugin-search-input{
