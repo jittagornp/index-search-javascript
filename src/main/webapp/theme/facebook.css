@@ -1,10 +1,18 @@
 .ns-plugin-theme-facebook{
     background : #fff;/*#edeff4;*/
     font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+    box-shadow: 0 0 5px #eee;
+    -moz-box-shadow: 0 0 5px #eee;
+    -webkit-box-shadow: 0 0 5px #eee;
+    outline: none;
 }
 
-.ns-plugin-search-clear-button,
-.ns-plugin-search-clear-button:hover{
+.ns-plugin-theme-facebook .ns-plugin-search-input{
+    border-color : #8E96B1;
+}
+
+.ns-plugin-theme-facebook .ns-plugin-search-clear-button,
+.ns-plugin-theme-facebook .ns-plugin-search-clear-button:hover{
     background-image: url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yO/r/Jsxaj6wDwuy.png);
     background-size : auto;
     background-position : -352px -54px;
@@ -20,30 +28,49 @@
     background-color: #aaa;
 }
 
-.keyword-highlight{
+.ns-plugin-theme-facebook .keyword-highlight{
     background : #E1DFFD;
+    font-style: italic;
+    font-style: italic;    
 }
 
-.level-0 > a{
+.ns-plugin-theme-facebook .level-0 > a{
     color : rgb(118, 116, 163) !important;
+    display: inline-block;
+    padding: 10px;
 }
 
-.ns-plugin-search-suggestions .keyword-highlight{
+.ns-plugin-theme-facebook .level-0 > ol{
+    background: #fdfdfd;
+    padding: 8px 8px 8px 30px!important;
+    border : solid 1px #fafafa;
+    width : 510px;
+}
+
+.ns-plugin-theme-facebook .ns-plugin-search-suggestions .keyword-highlight{
     background : #F1F1F1;
 }
 
-.ns-plugin-search-summary,
-.ns-plugin-search-suggestions{
-    font-style: italic;
+.ns-plugin-theme-facebook .ns-plugin-search-summary,
+.ns-plugin-theme-facebook .ns-plugin-search-suggestions{
+    /*font-style: italic;*/
 }
 
-.ns-plugin-search-suggestions,
-.ns-plugin-search-summary{
+.ns-plugin-theme-facebook .ns-plugin-search-suggestions,
+.ns-plugin-theme-facebook .ns-plugin-search-summary{
     font-weight: bold;
     color : rgb(94, 90, 105);
 }
 
-.ns-plugin-search-suggestions a,
-.ns-plugin-search-summary .summary-highlight{
+.ns-plugin-theme-facebook .ns-plugin-search-suggestions a,
+.ns-plugin-theme-facebook .ns-plugin-search-summary .summary-highlight{
     font-weight: normal;
+}
+
+.ns-plugin-theme-facebook .ns-plugin-search-button{
+    width : 28px;
+    height : 63px;
+    background-image: url('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/image/search-button-facebook.png');
+    margin-right: -28px;
+    margin-top: -32px;
 }
