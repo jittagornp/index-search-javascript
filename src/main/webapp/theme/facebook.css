@@ -81,7 +81,7 @@
 }
 
 .ns-plugin-theme-facebook li{
-    border : none;
+    border : none !important;
 }
 
 .ns-plugin-theme-facebook a{
