@@ -28,7 +28,7 @@
         verticalArrowPositions: 'split',
         horizontalArrowPositions: 'split',
         enableKeyboardNavigation: true,
-        hideFocus: false,
+        hideFocus: true,
         keyboardSpeed: 0,
         initialDelay: 300, // Delay before starting repeating
         speed: 30, // Default speed when others falsey
