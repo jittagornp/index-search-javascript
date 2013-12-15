@@ -63,8 +63,8 @@ ns-plugin-search-repositories li{
 
 .ns-plugin-search-clear-button{
     background : #3297fd;
-    padding : 4px 10px;
-    border : 2px #3297fd solid;
+    padding : 5px 10px;
+    border : 1px #3297fd solid;
     color : #fff;
     margin-left : 10px;
 }
