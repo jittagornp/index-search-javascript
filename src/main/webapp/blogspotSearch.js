@@ -303,7 +303,7 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
 
     window.onload = function() {
         //
-        var na5centScript = document.getElementsByClassName('ns-blogsearch-script')[0];
+        var na5centScript = document.querySelectorAll('.ns-blogsearch-script')[0];
         var blogspotURL = na5centScript.getAttribute('data-blogspot-url');
         var languages = na5centScript.getAttribute('data-languages') ? JSON.parse(na5centScript.getAttribute('data-languages')) : {};
         var targetElementId = na5centScript.getAttribute('data-element-id');
@@ -331,7 +331,7 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
                             '</div>',
                         '</div>',
                     '</div>',
-                    '<div class="ns-plugin-search-button">',
+                    '<div class="ns-plugin-search-button" title="' + (languages.SEARCH_BUTTON_TITLE || 'click for search contents of blog') + '">',
                     '</div>'
         ];
 

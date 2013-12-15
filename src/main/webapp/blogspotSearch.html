@@ -22,7 +22,7 @@
                 script.setAttribute('data-theme', settings.theme);
                 script.async = true;
 
-                script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
+                script.src = 'blogspotSearch.js';
                 document.getElementsByTagName('head')[0].appendChild(script);
             })(document, JSON, {
                 //settings
@@ -37,7 +37,8 @@
                     SENTENCES: 'sentences',
                     DO_YOU_MEAN: 'do you mean',
                     CLEAR: 'clear',
-                    PLACE_HOLDER: 'search...'
+                    PLACE_HOLDER: 'search...',
+                    SEARCH_BUTTON_TITLE : 'click for search contents of blog'
                 },
                 additionalDictionaries: [
                     //array of string (keywords)
