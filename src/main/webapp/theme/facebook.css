@@ -74,3 +74,8 @@
     margin-right: -28px;
     margin-top: -32px;
 }
+
+.ns-plugin-theme-facebook .index-search-new-post{
+    color : rgb(73, 177, 47);
+    font-weight: normal;
+}
