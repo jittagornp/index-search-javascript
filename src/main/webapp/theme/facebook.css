@@ -96,3 +96,7 @@
 .ns-plugin-theme-facebook a:visited{
     color : rgb(79, 77, 138);
 }
+
+.ns-plugin-search-scroll .jspVerticalBar{
+    left : 2px;
+}
