@@ -36,6 +36,7 @@
                             '</div>',
                         '</div>',
                     '</div>',
+                    '<div class="ns-plugin-search-about">Blogspot search plugin : develop by jittagorn pitakmetagoon <a href="http://search-plugin.blogspot.com/">(search-plugin.blogspot.com)</a></div>',
                     '<div class="ns-plugin-search-button">',
                     '</div>'
         ];

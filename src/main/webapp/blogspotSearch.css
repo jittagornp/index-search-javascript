@@ -89,3 +89,7 @@ ns-plugin-search-repositories li{
 ol li{
     list-style-type: decimal;
 }
+
+.ns-plugin-search-about{
+    padding: 20px;
+}
