@@ -460,6 +460,7 @@ insert this code into your blogspot and change parameters<br/>
 <i>{string}</i> <b>targetElementId</b> (require) - target html element id for search box<br/>
 <i>{object}</i> <b>languages</b> - language for show in search box<br/>
 <i>{array}</i> <b>additionalDictionaries</b> - additional keywords from external<br/><br/>
+<i>{boolean}</i> <b>slideSearch</b> - if is "true" enable left slide search<br/><br/>
 <b>basic</b><br/>
 html
 ```html
