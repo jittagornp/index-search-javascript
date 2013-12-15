@@ -36,18 +36,18 @@
             loadStyle(resourceStyle[index]);
         }
 
-        for (var index in resourceJS) {
-            loadScript(resourceJS[index], function() {
-                if (resourceJS.length > 0) {
+        if (resourceJS.length > 0) {
+            for (var index in resourceJS) {
+                loadScript(resourceJS[index], function() {
                     if (index == (resourceJS.length - 1) && controller) {
                         controller(blogspotURL, languages, additionalDictionaries, window.jQuery);
                     }
-                } else {
-                    if (controller) {
-                        controller(blogspotURL, languages, additionalDictionaries, window.jQuery);
-                    }
-                }
-            });
+                });
+            }
+        } else {
+            if (controller) {
+                controller(blogspotURL, languages, additionalDictionaries, window.jQuery);
+            }
         }
     };
 
