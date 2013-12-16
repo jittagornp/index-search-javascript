@@ -457,8 +457,8 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
         $clearButton.click(function() {
             $searchInput.val('');
             indexSearch__.clear();
-            $summary.text('');
-            $suggestions.text('');
+            $summary.text('').hide();
+            $suggestions.text('').hide();
             showResult(repository);
         });
 
