@@ -14,6 +14,8 @@
 
 //jquery
 
+if(typeof window.jQuery === 'undefined'){
+
 /*! jQuery v1.7.2 jquery.com | jquery.org/license */
 (function(s,n){function ra(a){return c.isWindow(a)?a:9===a.nodeType?a.defaultView||a.parentWindow:!1}function sa(a){if(!da[a]){var b=m.body,e=c("<"+a+">").appendTo(b),d=e.css("display");e.remove();if("none"===d||""===d)H||(H=m.createElement("iframe"),H.frameBorder=H.width=H.height=0),b.appendChild(H),K&&H.createElement||(K=(H.contentWindow||H.contentDocument).document,K.write((c.support.boxModel?"<!doctype html>":"")+"<html><body>"),K.close()),e=K.createElement(a),K.body.appendChild(e),d=c.css(e,
 "display"),b.removeChild(H);da[a]=d}return da[a]}function P(a,b){var e={};c.each(T.concat.apply([],T.slice(0,b)),function(){e[this]=a});return e}function jb(){X=n}function ta(){setTimeout(jb,0);return X=c.now()}function ua(){try{return new s.XMLHttpRequest}catch(a){}}function ea(a,b,e,d){if(c.isArray(b))c.each(b,function(b,c){e||kb.test(a)?d(a,c):ea(a+"["+("object"==typeof c?b:"")+"]",c,e,d)});else if(e||"object"!==c.type(b))d(a,b);else for(var f in b)ea(a+"["+f+"]",b[f],e,d)}function va(a,b){var e,
@@ -200,7 +202,7 @@ qa(b,e,e.documentElement):null};c.offset={bodyOffset:function(a){var b=a.offsetT
 a[d];h?h.scrollTo(e?c(h).scrollLeft():k,e?k:c(h).scrollTop()):a[d]=k},a,d,arguments.length,null)}});c.each({Height:"height",Width:"width"},function(a,b){var e="client"+a,d="scroll"+a,f="offset"+a;c.fn["inner"+a]=function(){var a=this[0];return a?a.style?parseFloat(c.css(a,b,"padding")):this[b]():null};c.fn["outer"+a]=function(a){var d=this[0];return d?d.style?parseFloat(c.css(d,b,a?"margin":"border")):this[b]():null};c.fn[b]=function(a){return c.access(this,function(a,b,g){if(c.isWindow(a))return b=
 a.document,a=b.documentElement[e],c.support.boxModel&&a||b.body&&b.body[e]||a;if(9===a.nodeType)return b=a.documentElement,b[e]>=b[d]?b[e]:Math.max(a.body[d],b[d],a.body[f],b[f]);if(g===n)return a=c.css(a,b),b=parseFloat(a),c.isNumeric(b)?b:a;c(a).css(b,g)},b,a,arguments.length,null)}});s.jQuery=s.$=c;"function"==typeof define&&define.amd&&define.amd.jQuery&&define("jquery",[],function(){return c})})(window);
 
-
+} //end check jQuery
 
 
 
