@@ -83,6 +83,7 @@
 
 .ns-plugin-theme-facebook li{
     border : none !important;
+    background: none !important;
 }
 
 .ns-plugin-theme-facebook a{
