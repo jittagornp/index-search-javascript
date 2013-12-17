@@ -86,6 +86,10 @@
     background: none !important;
 }
 
+.ns-plugin-theme-facebook li:hover{
+    background: none !important;
+}
+
 .ns-plugin-theme-facebook a{
     color : #4e4e4e
 }
