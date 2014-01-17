@@ -359,8 +359,11 @@ k.clear();l.text("");d.text("");n(m)})})})(jQuery,repository);
             marginLeft: 605 + marginLeft
         }, speedAnimation, function(){
             if(!indexes && expand){
-                makeIndex();
-                indexes = true;
+                var timeout = setTimeout(function(){
+                    window.clearTimeout(timeout);
+                    makeIndex();
+                    indexes = true;
+                }, 100);
             }
         });
 
