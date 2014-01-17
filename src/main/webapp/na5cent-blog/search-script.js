@@ -320,12 +320,13 @@ q.nodes;z||(z=[]);var A={name:t.title.$t,published:new Date(t.published.$t),link
 
 
 
-
+function makeIndex(){
 //search controller
 (function(a,m){a(function(){function n(b){var c=a("<ul>");q.html(c);p(b,c)}function p(b,c){var f=b.nodes;if(f&&0!==f.length)for(var g in f){var e=f[g],d=a("<a>").attr("href",e.link).html(e.nameHighlight||e.name),k=e.newPost?a("<span>").text("New!").addClass("index-search-new-post"):"",h=a("<ol>"),d=a("<li>").attr("class",e.level).append(d).append(k).append(h);c.append(d);p(e,h)}}var k=new IndexSearch({repository:m,indexOnFields:["name"],maximumIndexKeySize:5,additionalDictionaries:additionalDictionaries}),
 h=a("#searchInput"),r=a("#clearButton"),l=a("#summary"),d=a("#suggestions"),q=a("#repositories");n(m);h.keyup(function(){var b=h.val(),c=k.search(b);l.text("");0!==c.getTotalPosition()?l.append("search '").append(a("<span>").text(k.getKeyword()).attr("class","summary-highlight")).append("' found ").append(a("<span>").text(c.getTotalPosition()).attr("class","summary-highlight")).append(" positions on ").append(a("<span>").text(c.getTotalSentence()).attr("class","summary-highlight")).append(" sentances."):
 ""!==b&&l.append("search '").append(a("<span>").text(k.getKeyword()).attr("class","summary-highlight")).append("' not found.");d.text("");b=c.getSuggestions();if(0!==b.length){d.append("do you mean ");for(var f in b){var g=b[f],e=g.highlight;0!=f&&d.append(", ");g=a("<a>").attr("href","#"+g.word).attr("data-suggest",g.word).html(e).click(function(b){b.preventDefault();h.val(a(this).attr("data-suggest")).keyup()});d.append(g)}d.append(" ").append("?")}n(c.getContent())});r.click(function(){h.val("");
 k.clear();l.text("");d.text("");n(m)})})})(jQuery,repository);
+}
 
 
 
@@ -335,6 +336,7 @@ k.clear();l.text("");d.text("");n(m)})})})(jQuery,repository);
     var $window = $(window);
     var $leftSlider = $("#LeftSlider");
     var $sliderContent = $('#SliderContent');
+    var indexes = false;
 
     $leftSlider.css({
         "height": $window.height() - 30 + "px"
@@ -359,6 +361,9 @@ k.clear();l.text("");d.text("");n(m)})})})(jQuery,repository);
 
         if (!expand) {
             $leftSlider.addClass("expand");
+            if(!indexes){
+                makeIndex();
+            }
         } else {
             $leftSlider.removeClass("expand");
         }
