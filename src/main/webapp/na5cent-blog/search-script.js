@@ -362,8 +362,11 @@ k.clear();l.text("");d.text("");n(m)})})})(jQuery,repository);
         if (!expand) {
             $leftSlider.addClass("expand");
             if(!indexes){
-                makeIndex();
-                indexes = true;
+                var timeout = setTimeout(function(){
+                    window.clearTimeout(timeout);
+                    makeIndex();
+                    indexes = true;
+                }, 500);
             }
         } else {
             $leftSlider.removeClass("expand");
