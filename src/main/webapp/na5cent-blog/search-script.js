@@ -357,17 +357,15 @@ k.clear();l.text("");d.text("");n(m)})})})(jQuery,repository);
 
         $blogContent.animate({
             marginLeft: 605 + marginLeft
-        }, speedAnimation);
+        }, speedAnimation, function(){
+            if(!indexes && !expand){
+                makeIndex();
+                indexes = true;
+            }
+        });
 
         if (!expand) {
             $leftSlider.addClass("expand");
-            if(!indexes){
-                var timeout = setTimeout(function(){
-                    window.clearTimeout(timeout);
-                    makeIndex();
-                    indexes = true;
-                }, speedAnimation); 
-            }
         } else {
             $leftSlider.removeClass("expand");
         }
