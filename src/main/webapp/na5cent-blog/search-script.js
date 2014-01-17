@@ -366,7 +366,7 @@ k.clear();l.text("");d.text("");n(m)})})})(jQuery,repository);
                     window.clearTimeout(timeout);
                     makeIndex();
                     indexes = true;
-                }, 300);
+                }, 50);
             }
         } else {
             $leftSlider.removeClass("expand");
