@@ -363,6 +363,7 @@ k.clear();l.text("");d.text("");n(m)})})})(jQuery,repository);
             $leftSlider.addClass("expand");
             if(!indexes){
                 makeIndex();
+                indexes = true;
             }
         } else {
             $leftSlider.removeClass("expand");
