@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>search iframe</title>
+        <script>
+            (function(document) {
+                var script = document.createElement('script');
+                script.src = 'search-plugin.js';
+                script.type = 'text/javascript';
+                script.async = true;
+                
+                document.getElementsByTagName('head')[0].appendChild(script);
+            }).call(this, document);
+        </script>
+    </head>
+    <body>
+        <div id="search"></div>
+    </body>
+</html>
