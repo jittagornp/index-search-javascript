@@ -358,7 +358,7 @@ k.clear();l.text("");d.text("");n(m)})})})(jQuery,repository);
         $blogContent.animate({
             marginLeft: 605 + marginLeft
         }, speedAnimation, function(){
-            if(!indexes && !expand){
+            if(!indexes && expand){
                 makeIndex();
                 indexes = true;
             }
