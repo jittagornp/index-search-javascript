@@ -76,3 +76,7 @@ body{
     background: #777;
 } 
 
+.ns-plugin-search-repositories > ul{
+    margin-left : 0px;
+    padding-left : 0px;
+}
