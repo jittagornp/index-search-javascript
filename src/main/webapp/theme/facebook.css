@@ -42,9 +42,9 @@
 }
 
 .ns-plugin-theme-facebook .level-0 > ol{
-    background: #fdfdfd;
+    /*background: #fdfdfd;*/
     padding: 8px 8px 8px 30px!important;
-    border : solid 1px #fafafa;
+    /*border : solid 1px #fafafa;*/
     width : 510px;
 }
 
