@@ -77,11 +77,10 @@ body{
 } 
 
 .ns-plugin-search-repositories > ul{
-    margin-left : 0px;
-    padding-left : 0px;
+    margin-left : 0px !important;   
+    padding-left : 0px !important;   
 }
 
 .ns-plugin-search-repositories li{
     padding : 0px !important;   
-}
 }
