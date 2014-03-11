@@ -82,6 +82,7 @@
 .ns-plugin-theme-facebook li{
     border : none !important;
     background: none !important;
+    line-height : 1.3em !important;
 }
 
 .ns-plugin-theme-facebook li:hover{
