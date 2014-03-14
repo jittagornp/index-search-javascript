@@ -24,11 +24,19 @@
 
 .ns-plugin-theme-line .ns-plugin-search-clear-button,
 .ns-plugin-theme-line .ns-plugin-search-clear-button:hover{*/
-    background-size : auto;
-    background-position : -352px -54px;
-    background-color: #17CA1D;
-    border-color: #0CBB21 #26B813 #2DB40B;
-    color : #fff;
+border:1px #6CCC2C solid; 
+font-size:12px;
+font-family:arial, helvetica, sans-serif; 
+text-decoration:none; 
+display:inline-block;
+text-shadow: -1px -1px 0 rgba(0,0,0,0.3);
+font-weight:bold; color: #FFFFFF;
+ background-color: #8AEA2E; background-image: -webkit-gradient(linear, left top, left bottom, from(#8AEA2E), to(#94DC28));
+ background-image: -webkit-linear-gradient(top, #8AEA2E, #94DC28);
+ background-image: -moz-linear-gradient(top, #8AEA2E, #94DC28);
+ background-image: -ms-linear-gradient(top, #8AEA2E, ##94DC28);
+ background-image: -o-linear-gradient(top, #8AEA2E, ##94DC28);
+ background-image: linear-gradient(to bottom, #8AEA2E, #94DC28);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#8AEA2E, endColorstr=#94DC28);
 	outline : none;	
 	border-radius : 3px;	
 	-moz-border-radius : 3px;	
@@ -44,7 +52,7 @@
 }
 
 .ns-plugin-theme-line .level-0 > a{
-    color : #27B92B !important;
+    color : #56B927 !important;
     display: inline-block;
     padding: 10px;
 }
@@ -57,7 +65,7 @@
 }
 
 .ns-plugin-theme-line .ns-plugin-search-suggestions .keyword-highlight{
-    background : #EFFCAE;
+    background : #F0FFCA;
 }
 
 .ns-plugin-theme-line .ns-plugin-search-summary,
@@ -110,11 +118,11 @@
 }
 
 .ns-plugin-theme-line a:hover{
-    color : rgb(61, 160, 65);
+    color : rgb(86, 153, 34);
 }
 
 .ns-plugin-theme-line a:visited{
-    color : rgb(61, 160, 65);
+    color : rgb(86, 153, 34);
 }
 
 .ns-plugin-search-scroll .jspVerticalBar{
