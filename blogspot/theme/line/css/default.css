@@ -1,18 +1,22 @@
 .ns-plugin-theme-line{
-    background : #fff;/*#edeff4;*/
+    background-color : #fff;/*#edeff4;*/
     font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
     outline: none;
     color : #4e4e4e;
 	opacity : 0.95;
 	filter : Alpha(Opacity=95);
+	
+	background-image : url('https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/theme/line/image/sticker.png');
+	background-repeat : no-repeat;
+	background-position : 95% 95%;
 }
 
 .ns-plugin-theme-line .ns-plugin-search-input{
-    border-color : #ECECEC;
-	background-color : #F1F1F1;
+    border-color : #F1F0F0;
+	background-color : #FAFAFA;
 	border-radius : 3px;	
 	-moz-border-radius : 3px;	
 	-webkit-border-radius : 3px;	
@@ -76,10 +80,10 @@
 .ns-plugin-theme-line .ns-plugin-search-button{
     width : 28px;
     height : 63px;
-    background-image: url('https://raw.github.com/jittagornp/index-search-javascript/master/blogspot/theme/line/image/search-button.png');
+    background-image: url('https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/theme/line/image/search-button.png');
     margin-right: -31px;
     margin-top: -32px;
-	border : solid 1px #eaeaea;
+	border : solid 1px #D5D5D5;
 	border-radius : 3px;
 	box-shadow : 0 0 5px rgba(0, 0, 0, 0.07);
 	-moz-box-shadow : 0 0 5px rgba(0, 0, 0, 0.07);
