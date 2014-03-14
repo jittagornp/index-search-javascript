@@ -1,7 +1,3 @@
-body{
-	margin-left : 600px;
-}
-
 .ns-plugin-theme-line{
     background : #fff;/*#edeff4;*/
     font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
@@ -88,7 +84,7 @@ body{
 .ns-plugin-theme-line .ns-plugin-search-button{
     width : 28px;
     height : 63px;
-    background-image: url(''https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/theme/line/image/search-button.png?t=0');
+    background-image: url('https://raw.github.com/jittagornp/index-search-javascript/master/blogspot/theme/line/image/search-button.png');
     margin-right: -31px;
     margin-top: -32px;
 	border : solid 1px #eaeaea;
