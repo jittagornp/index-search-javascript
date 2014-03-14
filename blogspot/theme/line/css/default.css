@@ -1,0 +1,131 @@
+body{
+	margin-left : 600px;
+}
+
+.ns-plugin-theme-line{
+    background : #fff;/*#edeff4;*/
+    font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    outline: none;
+    color : #4e4e4e;
+	opacity : 0.95;
+	filter : Alpha(Opacity=95);
+}
+
+.ns-plugin-theme-line .ns-plugin-search-input{
+    border-color : #8E96B1;
+	background-color : #21B425;
+	color : #fff;	
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #eee;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color:    #eee;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color:    #eee;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color:    #eee;
+}
+
+.ns-plugin-theme-line .ns-plugin-search-clear-button,
+.ns-plugin-theme-line .ns-plugin-search-clear-button:hover{*/
+    background-size : auto;
+    background-position : -352px -54px;
+    background-color: #17CA1D;
+    border-color: #0CBB21 #26B813 #2DB40B;
+    color : #fff;
+	outline : none;	
+}
+
+.ns-plugin-theme-line .jspVerticalBar .jspDrag{
+    background-color: #aaa;
+}
+
+.ns-plugin-theme-line .keyword-highlight{
+    background : #E2FFC3;
+}
+
+.ns-plugin-theme-line .level-0 > a{
+    color : #27B92B !important;
+    display: inline-block;
+    padding: 10px;
+}
+
+.ns-plugin-theme-line .level-0 > ol{
+    /*background: #fdfdfd;*/
+    padding: 0px 0px 0px 30px!important;
+    /*border : solid 1px #fafafa;*/
+    width : 510px;
+}
+
+.ns-plugin-theme-line .ns-plugin-search-suggestions .keyword-highlight{
+    background : #EFFCAE;
+}
+
+.ns-plugin-theme-line .ns-plugin-search-summary,
+.ns-plugin-theme-line .ns-plugin-search-suggestions{
+    /*font-style: italic;*/
+}
+
+.ns-plugin-theme-line .ns-plugin-search-suggestions,
+.ns-plugin-theme-line .ns-plugin-search-summary{
+    font-weight: bold;
+    color : rgb(94, 90, 105);
+}
+
+.ns-plugin-theme-line .ns-plugin-search-suggestions a,
+.ns-plugin-theme-line .ns-plugin-search-summary .summary-highlight{
+    font-weight: normal;
+	color : #2DA116;	
+}
+
+.ns-plugin-theme-line .ns-plugin-search-button{
+    width : 28px;
+    height : 63px;
+    background-image: url('../image/search-button.png?t=0');
+    margin-right: -31px;
+    margin-top: -32px;
+	border : solid 1px #eaeaea;
+	border-radius : 3px;
+	box-shadow : 0 0 5px rgba(0, 0, 0, 0.07);
+	-moz-box-shadow : 0 0 5px rgba(0, 0, 0, 0.07);
+	-webkit-box-shadow : 0 0 5px rgba(0, 0, 0, 0.07);
+}
+
+.ns-plugin-theme-line .index-search-new-post{
+    color : rgb(73, 177, 47);
+    font-weight: normal;
+}
+
+.ns-plugin-theme-line li{
+    border : none !important;
+    background: none !important;
+    line-height : 1.3em !important;
+}
+
+.ns-plugin-theme-line li:hover{
+    background: none !important;
+}
+
+.ns-plugin-theme-line a{
+    color : #4e4e4e
+}
+
+.ns-plugin-theme-line a:hover{
+    color : rgb(61, 160, 65);
+}
+
+.ns-plugin-theme-line a:visited{
+    color : rgb(61, 160, 65);
+}
+
+.ns-plugin-search-scroll .jspVerticalBar{
+    left : 0px;
+	background-color : #eee;	
+}
