@@ -1,0 +1,109 @@
+.ns-plugin-theme-facebook{
+    background : #fff;/*#edeff4;*/
+    font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    outline: none;
+    color : #4e4e4e;
+	opacity : 0.95;
+	filter : Alpha(Opacity=95);
+}
+
+.ns-plugin-theme-facebook .ns-plugin-search-input{
+    border-color : #8E96B1;
+}
+
+.ns-plugin-theme-facebook .ns-plugin-search-clear-button,
+.ns-plugin-theme-facebook .ns-plugin-search-clear-button:hover{
+    background-image: url(https://fbstatic-a.akamaihd.net/rsrc.php/v2/yO/r/Jsxaj6wDwuy.png);
+    background-size : auto;
+    background-position : -352px -54px;
+    background-color: #5b74a8;
+    border-color: #29447e #29447e #1a356e;
+    color : #fff;
+	outline : none;	
+}
+
+.ns-plugin-theme-facebook .jspVerticalBar .jspDrag{
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    background-color: #aaa;
+}
+
+.ns-plugin-theme-facebook .keyword-highlight{
+    background : #E1DFFD;
+}
+
+.ns-plugin-theme-facebook .level-0 > a{
+    color : rgb(118, 116, 163) !important;
+    display: inline-block;
+    padding: 10px;
+}
+
+.ns-plugin-theme-facebook .level-0 > ol{
+    /*background: #fdfdfd;*/
+    padding: 0px 0px 0px 30px!important;
+    /*border : solid 1px #fafafa;*/
+    width : 510px;
+}
+
+.ns-plugin-theme-facebook .ns-plugin-search-suggestions .keyword-highlight{
+    background : #F1F1F1;
+}
+
+.ns-plugin-theme-facebook .ns-plugin-search-summary,
+.ns-plugin-theme-facebook .ns-plugin-search-suggestions{
+    /*font-style: italic;*/
+}
+
+.ns-plugin-theme-facebook .ns-plugin-search-suggestions,
+.ns-plugin-theme-facebook .ns-plugin-search-summary{
+    font-weight: bold;
+    color : rgb(94, 90, 105);
+}
+
+.ns-plugin-theme-facebook .ns-plugin-search-suggestions a,
+.ns-plugin-theme-facebook .ns-plugin-search-summary .summary-highlight{
+    font-weight: normal;
+}
+
+.ns-plugin-theme-facebook .ns-plugin-search-button{
+    width : 28px;
+    height : 63px;
+    background-image: url('https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/image/search-button-facebook.png?t=0');
+    margin-right: -29px;
+    margin-top: -32px;
+}
+
+.ns-plugin-theme-facebook .index-search-new-post{
+    color : rgb(73, 177, 47);
+    font-weight: normal;
+}
+
+.ns-plugin-theme-facebook li{
+    border : none !important;
+    background: none !important;
+    line-height : 1.3em !important;
+}
+
+.ns-plugin-theme-facebook li:hover{
+    background: none !important;
+}
+
+.ns-plugin-theme-facebook a{
+    color : #4e4e4e
+}
+
+.ns-plugin-theme-facebook a:hover{
+    color : rgb(118, 116, 163);
+}
+
+.ns-plugin-theme-facebook a:visited{
+    color : rgb(79, 77, 138);
+}
+
+.ns-plugin-search-scroll .jspVerticalBar{
+    left : 2px;
+}
