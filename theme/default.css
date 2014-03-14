@@ -8,9 +8,9 @@ body{
     left : 0px;
     bottom : 0px;
     width : 600px;
-    z-index: 10000; 
+    z-index: 100000; 
     background : #fff;
-    border-right: 1px #ddd solid;
+    border-right: 1px #dddddd solid;
     font-size: 11pt;
     margin-left: -601px;
 }

@@ -316,7 +316,7 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
             resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/slideSearch.js?t=0');
 
             resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/jscrollpane/jscrollpane.css?t=0');
-            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/slideSearch.css?t=0');
+            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/slideSearch.css?t=1');
             resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/theme/' + theme + '.css?t=0');
         }
 
