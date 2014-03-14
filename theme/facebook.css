@@ -6,6 +6,8 @@
     -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     outline: none;
     color : #4e4e4e;
+	opacity : 0.95;
+	filter : Alpha(Opacity=95);
 }
 
 .ns-plugin-theme-facebook .ns-plugin-search-input{
