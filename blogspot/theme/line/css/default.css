@@ -11,22 +11,11 @@
 }
 
 .ns-plugin-theme-line .ns-plugin-search-input{
-    border-color : #8E96B1;
-	background-color : #21B425;
-	color : #fff;	
-}
-
-::-webkit-input-placeholder { /* WebKit browsers */
-    color:    #eee;
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color:    #eee;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color:    #eee;
-}
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-    color:    #eee;
+    border-color : #ECECEC;
+	background-color : #F1F1F1;
+	border-radius : 3px;	
+	-moz-border-radius : 3px;	
+	-webkit-border-radius : 3px;	
 }
 
 .ns-plugin-theme-line .ns-plugin-search-clear-button,
@@ -37,6 +26,9 @@
     border-color: #0CBB21 #26B813 #2DB40B;
     color : #fff;
 	outline : none;	
+	border-radius : 3px;	
+	-moz-border-radius : 3px;	
+	-webkit-border-radius : 3px;	
 }
 
 .ns-plugin-theme-line .jspVerticalBar .jspDrag{
@@ -95,7 +87,7 @@
 }
 
 .ns-plugin-theme-line .index-search-new-post{
-    color : rgb(73, 177, 47);
+    color : rgb(255, 134, 39);
     font-weight: normal;
 }
 
