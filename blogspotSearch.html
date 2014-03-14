@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript">
+            /**
+             * blogspot search plugin
+             * by index search methodology
+             * url : https://github.com/jittagornp/index-search-javascript
+             * 
+             * @author jittagorn pitakmetagoon
+             * create 10/12/2013
+             */
+            (function(document, JSON, settings) {
+                var script = document.createElement('script');
+                script.type = 'text/javascript';
+                script.setAttribute('class', 'ns-blogsearch-script');
+                script.setAttribute('data-blogspot-url', settings.blogspotURL);
+                script.setAttribute('data-element-id', settings.targetElementId);
+                script.setAttribute('data-languages', JSON.stringify(settings.languages || {}));
+                script.setAttribute('data-additionalDictionaries', (settings.additionalDictionaries || []).join(','));
+                script.setAttribute('data-slide-search', settings.slideSearch);
+                script.setAttribute('data-theme', settings.theme);
+                script.async = true;
+
+                script.src = 'blogspotSearch.js';
+                document.getElementsByTagName('head')[0].appendChild(script);
+            })(document, JSON, {
+                //settings
+                blogspotURL: 'http://na5cent.blogspot.com', //url of your blogspot
+                targetElementId: 'mySearch', //target html element id for search box
+                slideSearch: true,
+                languages: {//language for show in search box
+                    SEARCH: 'search',
+                    FOUND: 'found',
+                    NOT_FOUND: 'not found',
+                    POSITIONS: 'positions on',
+                    SENTENCES: 'sentences',
+                    DO_YOU_MEAN: 'do you mean',
+                    CLEAR: 'clear',
+                    PLACE_HOLDER: 'search...',
+                    SEARCH_BUTTON_TITLE : 'click for search contents of blog'
+                },
+                additionalDictionaries: [
+                    //array of string (keywords)
+                ],
+                theme : 'facebook'
+            });
+        </script>    
+    </head>
+    <body>
+        <div id="mySearch"></div>
+    </body>
+</html>

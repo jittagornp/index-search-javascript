@@ -300,7 +300,7 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
     ];
 
     var resourceStyle = [
-        'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspotSearch.css'
+        'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.css'
     ];
 
     window.onload = function() {
@@ -313,11 +313,11 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
         var slideSearch = na5centScript.getAttribute('data-slide-search') || false;
         var theme = na5centScript.getAttribute('data-theme') || 'facebook'; //default
         if (slideSearch == 'true') {
-            resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/slideSearch.js');
+            resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.js');
 
-            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/jscrollpane/jscrollpane.css');
-            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/slideSearch.css');
-            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/theme/' + theme + '.css');
+            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/jscrollpane/jscrollpane.css');
+            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/slideSearch.css');
+            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/theme/' + theme + '.css');
         }
 
         var html = ['<div class="ns-plugin-search-scroll">',
