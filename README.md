@@ -470,7 +470,7 @@ html
         data-element-id="mySearch"
         data-slide-search="true"
         class="ns-blogsearch-script"   
-        src="https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js">
+        src="https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/blogspot.js">
 </script>
 ```
 javascript
@@ -492,7 +492,7 @@ javascript
     script.setAttribute('data-slide-search', settings.slideSearch);
     script.async = true;
  
-    script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
+    script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/blogspot.js';
     document.getElementsByTagName('head')[0].appendChild(script);
 })(document, {
     //settings
@@ -522,7 +522,7 @@ javascript
     script.setAttribute('data-slide-search', settings.slideSearch);
     script.async = true;
 
-    script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/src/main/webapp/blogspotSearch.js';
+    script.src = 'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/blogspot.js';
     document.getElementsByTagName('head')[0].appendChild(script);
 })(document, JSON, {
     //settings
