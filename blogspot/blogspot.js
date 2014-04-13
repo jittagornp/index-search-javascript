@@ -323,7 +323,7 @@ __searchPluginLocale__.th = {
 
 
 (function(window, document, controller) {
-	var SOURCE_CODE = '';//'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/';
+	var SOURCE_CODE = 'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/';
 
     var resourceJS = [
     ];
