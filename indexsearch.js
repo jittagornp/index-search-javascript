@@ -1160,6 +1160,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         function getResultSearch() {
 			var splitor = new InputSearchSplitor(keyword__);
+			splitor.split();
             return new ResultSearch({
                 totalPosition: splitor.getKeywordSize() > 0 ? Math.ceil(highlighter__.getTotalHighlight() / splitor.getKeywordSize()) : 0,
                 totalSentence: highlighter__.getTotalSentence(),
