@@ -324,7 +324,7 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
 
             resourceStyle.push(SOURCE_CODE + 'jscrollpane/jscrollpane.css');
             resourceStyle.push(SOURCE_CODE + 'slide.css');
-            resourceStyle.push(SOURCE_CODE + 'theme/' + theme + '/css/default.css');
+            resourceStyle.push(SOURCE_CODE + 'theme/' + theme + '/css/default.css?time=2');
         }
 
         var html = ['<div class="ns-plugin-search-scroll">',
