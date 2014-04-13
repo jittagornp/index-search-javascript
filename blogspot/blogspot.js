@@ -1,4 +1,4 @@
-/**
+﻿/**
  * blogspot search plugin
  * by index search javascript
  * code : https://github.com/jittagornp/index-search-javascript
@@ -295,9 +295,35 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
 
 
 
+var __searchPluginLocale__ = {};
+
+__searchPluginLocale__.en = {
+	SEARCH: 'search',
+	FOUND: 'found',
+	NOT_FOUND: 'not found',
+	POSITIONS: 'positions on',
+	SENTENCES: 'sentences',
+	DO_YOU_MEAN: 'do you mean',
+	CLEAR: 'clear',
+	PLACE_HOLDER : 'search...',
+	SEARCH_BUTTON_TITLE : 'click for search contents of blog'
+};
+
+__searchPluginLocale__.th = {
+	SEARCH: 'ค้นหา',
+	FOUND: 'พบ',
+	NOT_FOUND: 'ไม่พบ',
+	POSITIONS: 'ตำแหน่ง บน',
+	SENTENCES: 'ประโยค',
+	DO_YOU_MEAN: 'คุณหมายถึง',
+	CLEAR: 'เคลียร์',
+	PLACE_HOLDER : 'พิมพ์สิ่งที่ต้องการค้นหา...',
+	SEARCH_BUTTON_TITLE : 'คลิกเพื่อค้นหาบนความของ blog'
+};
+
 
 (function(window, document, controller) {
-	var SOURCE_CODE = 'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/';
+	var SOURCE_CODE = '';//'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/';
 
     var resourceJS = [
     ];
@@ -311,6 +337,12 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
         var na5centScript = document.querySelectorAll('.ns-blogsearch-script')[0];
         var blogspotURL = na5centScript.getAttribute('data-blogspot-url');
         var languages = na5centScript.getAttribute('data-languages') ? JSON.parse(na5centScript.getAttribute('data-languages')) : {};
+		var locale = na5centScript.getAttribute('data-locale') || 'en';
+		var localeObj = __searchPluginLocale__[locale];
+		if(!localeObj){
+			alert('Not support locale (data-locale) "' + locale + '"');
+		}
+		
         var targetElementId = na5centScript.getAttribute('data-element-id');
         var additionalDictionaries = na5centScript.getAttribute('data-additionalDictionaries') || [];
         var slideSearch = na5centScript.getAttribute('data-slide-search');
@@ -330,8 +362,8 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
         var html = ['<div class="ns-plugin-search-scroll">',
                         '<div class="ns-plugin-search-scroll-content">',
                             '<div class="ns-plugin-search-box" style="display : none;">',
-                                '<input class="ns-plugin-search-input" placeholder="' + (languages.PLACE_HOLDER || 'search...') + '"/>',
-                                '<button class="ns-plugin-search-clear-button">' + (languages.CLEAR || 'clear') + '</button>',
+                                '<input class="ns-plugin-search-input" placeholder="' + (languages.PLACE_HOLDER || localeObj.PLACE_HOLDER) + '"/>',
+                                '<button class="ns-plugin-search-clear-button">' + (languages.CLEAR || localeObj.CLEAR) + '</button>',
                                 '<div class="ns-plugin-search-result">',
                                     '<div class="ns-plugin-search-summary"></div>',
                                     '<div class="ns-plugin-search-suggestions"></div>',
@@ -341,7 +373,7 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
                         '</div>',
                     '</div>',
 					
-                    '<div class="ns-plugin-search-button" title="' + (languages.SEARCH_BUTTON_TITLE || 'click for search contents of blog') + '">',
+                    '<div class="ns-plugin-search-button" title="' + (languages.SEARCH_BUTTON_TITLE || localeObj.SEARCH_BUTTON_TITLE) + '">',
                     '</div>'
         ];
 
@@ -356,13 +388,13 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
             for (var index in resourceJS) {
                 loadScript(resourceJS[index], function() {
                     if (index == (resourceJS.length - 1) && controller) {
-                        controller(blogspotURL, languages, additionalDictionaries, window.jQuery);
+                        controller(blogspotURL, languages, localeObj, additionalDictionaries, window.jQuery);
                     }
                 });
             }
         } else {
             if (controller) {
-                controller(blogspotURL, languages, additionalDictionaries, window.jQuery);
+                controller(blogspotURL, languages, localeObj, additionalDictionaries, window.jQuery);
             }
         }
     });
@@ -388,7 +420,7 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
 
         getHeadElement().appendChild(script);
     }
-})(window, document, function(blogspotURL, languages, additionalDictionaries, $) {
+})(window, document, function(blogspotURL, languages, localeObj, additionalDictionaries, $) {
     if (!window.Blogger || !$) {
         return;
     }
@@ -419,18 +451,18 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
 
             $summary.text('').hide();
             if (result.getTotalPosition() !== 0) {
-                $summary.append((languages.SEARCH || 'search') + ' \'')
+                $summary.append((languages.SEARCH || localeObj.SEARCH) + ' \'')
                         .append($('<span>').text(indexSearch__.getKeyword()).addClass('summary-highlight'))
-                        .append('\' ' + (languages.FOUND || 'found') + ' ')
+                        .append('\' ' + (languages.FOUND || localeObj.FOUND) + ' ')
                         .append($('<span>').text(result.getTotalPosition()).addClass('summary-highlight'))
-                        .append(' ' + (languages.POSITIONS || 'positions on') + ' ')
+                        .append(' ' + (languages.POSITIONS || localeObj.POSITIONS) + ' ')
                         .append($('<span>').text(result.getTotalSentence()).addClass('summary-highlight'))
-                        .append(' ' + (languages.SENTENCES || 'sentences.'))
+                        .append(' ' + (languages.SENTENCES || localeObj.SENTENCES))
                         .show();
             } else if (keyword !== '') {
-                $summary.append((languages.SEARCH || 'search') + ' \'')
+                $summary.append((languages.SEARCH || localeObj.SEARCH) + ' \'')
                         .append($('<span>').text(indexSearch__.getKeyword()).addClass('summary-highlight'))
-                        .append('\' ' + (languages.NOT_FOUND || 'not found'))
+                        .append('\' ' + (languages.NOT_FOUND || localeObj.NOT_FOUND))
                         .show();
             }
 
@@ -438,7 +470,7 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
             $suggestions.text('').hide();
             var suggestions = result.getSuggestions();
             if (suggestions.length !== 0) {
-                $suggestions.append((languages.DO_YOU_MEAN || 'do you mean') + ' ');
+                $suggestions.append((languages.DO_YOU_MEAN || localeObj.DO_YOU_MEAN) + ' ');
                 for (var suggestIndex in suggestions) {
                     var suggest = suggestions[suggestIndex];
                     var highlight = suggest.highlight;
