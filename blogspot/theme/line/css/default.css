@@ -23,7 +23,7 @@
 }
 
 .ns-plugin-theme-line .ns-plugin-search-clear-button,
-.ns-plugin-theme-line .ns-plugin-search-clear-button:hover{
+.ns-plugin-theme-line .ns-plugin-search-clear-button:hover{ 
 border:1px #6CCC2C solid !important; 
 font-size:12px;
 font-family:arial, helvetica, sans-serif; 

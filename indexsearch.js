@@ -1159,8 +1159,9 @@ window.IndexSearch = window.IndexSearch || (function() {
         }
 
         function getResultSearch() {
+			var splitor = new InputSearchSplitor(keyword__);
             return new ResultSearch({
-                totalPosition: highlighter__.getTotalHighlight(),
+                totalPosition: splitor.getKeywordSize() > 0 ? Math.ceil(highlighter__.getTotalHighlight() / splitor.getKeywordSize()) : 0,
                 totalSentence: highlighter__.getTotalSentence(),
                 content: resultNode__,
                 suggestions: suggestionList__
