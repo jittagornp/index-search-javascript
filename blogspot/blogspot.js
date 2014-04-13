@@ -306,7 +306,8 @@ __searchPluginLocale__.en = {
 	DO_YOU_MEAN: 'do you mean',
 	CLEAR: 'clear',
 	PLACE_HOLDER : 'search...',
-	SEARCH_BUTTON_TITLE : 'click for search contents of blog'
+	SEARCH_BUTTON_TITLE : 'click for search contents of blog',
+	NEW : 'New'
 };
 
 __searchPluginLocale__.th = {
@@ -318,7 +319,8 @@ __searchPluginLocale__.th = {
 	DO_YOU_MEAN: 'คุณหมายถึง',
 	CLEAR: 'เคลียร์',
 	PLACE_HOLDER : 'พิมพ์สิ่งที่ต้องการค้นหา...',
-	SEARCH_BUTTON_TITLE : 'คลิกเพื่อค้นหาบนความของ blog'
+	SEARCH_BUTTON_TITLE : 'คลิกเพื่อค้นหาบนความของ blog',
+	NEW : 'ใหม่'
 };
 
 
@@ -519,7 +521,7 @@ __searchPluginLocale__.th = {
             for (var index in nodes) {
                 var childNode = nodes[index];
                 var $childLink = $('<a>').attr('href', childNode.link).html(childNode.nameHighlight || childNode.name);
-                var $newPost = childNode.newPost ? $('<span>').text('New!').addClass('index-search-new-post') : '';
+                var $newPost = childNode.newPost ? $('<span>').text(localeObj.NEW + '!').addClass('index-search-new-post') : '';
                 var $childDOM = $('<ol>');
                 var $list = $('<li>').attr('class', childNode.level)
                         .append($childLink)
