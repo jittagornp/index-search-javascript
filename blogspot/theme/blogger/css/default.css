@@ -128,9 +128,9 @@ background-color: #fd934d; background-image: -webkit-gradient(linear, left top, 
 }
 
 .ns-plugin-theme-blogger a:hover{
-    color : rgb(184, 121, 28);
+    color : rgb(184, 121, 28) !important;
 }
 
 .ns-plugin-theme-blogger a:visited{
-    color : rgb(163, 163, 163);
+    color : rgb(163, 163, 163) !important;
 }
