@@ -105,8 +105,11 @@ background-color: #fd934d; background-image: -webkit-gradient(linear, left top, 
 }
 
 .ns-plugin-theme-blogger .index-search-new-post{
-    color : rgb(255, 0, 0);
-    font-weight: normal;
+	background: rgb(255, 173, 27);
+	font-weight: normal;
+	color: #fff;
+	padding: 1px 5px;
+	border-radius: 3px;
 }
 
 .ns-plugin-theme-blogger li{
