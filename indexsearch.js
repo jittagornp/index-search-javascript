@@ -69,16 +69,16 @@ window.IndexSearch = window.IndexSearch || (function() {
     }
 
     function copyObject(source, destination) {
-        for (var index in source) {
-            destination[index] = source[index];
+        for (var key in source) {
+            destination[key] = source[key];
         }
     }
 
-    function each(list, callback, context) {
-        if (defined(list) && isFunction(callback)) {
-            for (var index in list) {
-                var returnBoolean = callback.call(context, list[index], index);
-                if (returnBoolean === false) {
+    function forEachObject(obj, callback, context_opt) {
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                var value = callback.call(context_opt, obj[key], key, obj);
+                if (value === false) {
                     return false;
                 }
             }
@@ -87,13 +87,38 @@ window.IndexSearch = window.IndexSearch || (function() {
         return true;
     }
 
-    function convertMapKeyToList(map) {
-        var list = [];
-        for (var key in map) {
-            list.push(key);
+    function forEachArray(array, callback, context_opt) {
+        var length = array.length;
+        for (var i = 0; i < length; i++) {
+            var value = callback.call(context_opt, array[i], i, array);
+            if (value === false) {
+                return false;
+            }
         }
 
-        return list;
+        return true;
+    }
+
+    function forEach(obj, callback, context_opt) {
+        var forEachImpl;
+        if (isObject(obj)) {
+            forEachImpl = forEachObject;
+        } else if (isArray(obj)) {
+            forEachImpl = forEachArray;
+        }
+
+        return forEachImpl(obj, callback, context_opt);
+    }
+
+    function object2Array(obj) {
+        var newObj = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                newObj.push(key);
+            }
+        }
+
+        return newObj;
     }
 
     function replaceNotation(text) {
@@ -359,7 +384,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         this.addAllPeriods = function(periodList) {
             if (notEmpty(periodList)) {
-                each(periodList, function(period) {
+                forEach(periodList, function(period) {
                     this.addPeriod(period);
                 }, this);
             }
@@ -369,7 +394,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         function toPeriodList() {
             var list = [];
-            each(periodSet__, function(period) {
+            forEach(periodSet__, function(period) {
                 list.push(period);
             });
             return list;
@@ -461,7 +486,7 @@ window.IndexSearch = window.IndexSearch || (function() {
         this.split = function() {
             var result = [];
             var keywordList = input__.split(' ');
-            each(keywordList, function(keyword) {
+            forEach(keywordList, function(keyword) {
                 if (notEmpty(keyword)) {
                     result.push(keyword);
                     keywordSize__ = keywordSize__ + 1;
@@ -473,6 +498,10 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         this.getKeywordSize = function() {
             return keywordSize__;
+        };
+
+        this.getInput = function() {
+            return input__;
         };
     };
 
@@ -514,7 +543,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             var integrator = new PeriodIntegrator();
             var splitor = new InputSearchSplitor(keywordString);
 
-            each(splitor.split(), function(keyword) {
+            forEach(splitor.split(), function(keyword) {
                 if (empty(keyword)) {
                     return true;
                 }
@@ -546,7 +575,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             var periods = findPeriodsOfSentenceByKeyword(newSentence, keywordString);
             var highlightSize = 0;
 
-            each(periods, function(period) {
+            forEach(periods, function(period) {
                 var start = period.getStart() + highlightSize;
                 var end = period.getEnd() + highlightSize;
 
@@ -604,9 +633,9 @@ window.IndexSearch = window.IndexSearch || (function() {
                 return;
             }
 
-            each(indexStore__, function(store) {
-                each(store, function(dictionaries) {
-                    each(dictionaries, function(indexes, keyword) {
+            forEach(indexStore__, function(store) {
+                forEach(store, function(dictionaries) {
+                    forEach(dictionaries, function(indexes, keyword) {
                         if (foundIn(keyword, sentence) && notFoundIn(index, indexes)) {
                             indexes.push(index);
                         }
@@ -625,14 +654,14 @@ window.IndexSearch = window.IndexSearch || (function() {
             var keywordMap = {};
 
             var splitor = new InputSearchSplitor(keywordString);
-            each(splitor.split(), function(keyword) {
-                each(this.getDictionaries(keyword), function(indexes, dictionaryKey) {
+            forEach(splitor.split(), function(keyword) {
+                forEach(this.getDictionaries(keyword), function(indexes, dictionaryKey) {
                     if (foundIn(keyword, dictionaryKey)) {
                         if (notDefined(keywordMap[keyword])) {
                             keywordMap[keyword] = {};
                         }
 
-                        each(indexes, function(index) {
+                        forEach(indexes, function(index) {
                             keywordMap[keyword][index] = index;
                         });
                     }
@@ -649,8 +678,8 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         function indexCountMapper(keywordMap) {
             var indexMap = {};
-            each(keywordMap, function(indexes) {
-                each(indexes, function(index) {
+            forEach(keywordMap, function(indexes) {
+                forEach(indexes, function(index) {
                     if (notDefined(indexMap[index])) {
                         indexMap[index] = 0;
                     }
@@ -664,7 +693,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         function indexCountReducer(indexMap, reduceSize) {
             var indexes = [];
-            each(indexMap, function(count, index) {
+            forEach(indexMap, function(count, index) {
                 if (count >= reduceSize) {
                     indexes.push(index);
                 }
@@ -680,7 +709,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                 return;
             }
 
-            each(indexStore__, function(store, dictionaryKeySize) {
+            forEach(indexStore__, function(store, dictionaryKeySize) {
                 if (keyword.length >= dictionaryKeySize) {
                     var dictionaryKeyword = keyword.substring(0, dictionaryKeySize);
 
@@ -708,7 +737,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
             var splitor = new InputSearchSplitor(keywordString);
             var dictionaries = {};
-            each(splitor.split(), function(keword) {
+            forEach(splitor.split(), function(keword) {
                 var source;
                 var destination = dictionaries;
 
@@ -845,8 +874,8 @@ window.IndexSearch = window.IndexSearch || (function() {
             var splitor = new InputSearchSplitor(keywordString);
             var keywordList = splitor.split();
 
-            each(keywordList, function(keyword) {
-                return each(dictionaries__, function(indexes, dictionaryKeyword) {
+            forEach(keywordList, function(keyword) {
+                return forEach(dictionaries__, function(indexes, dictionaryKeyword) {
                     if (!hasSuggest(dictionaryKeyword, suggestions)) {
 
                         var keywordMap = reduceKeywordAndTransformToMap(keyword);
@@ -938,7 +967,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         var highlighter__ = new Highlighter(settings.highlightClass || 'keyword-highlight');
         var suggestionHighlighter__ = new Highlighter(settings.highlightClass || 'keyword-highlight');
-        
+
         var indexStoreImpl__ = settings.indexStore || new InMemoryIndexStore(settings.maximumDictionaryKeySize || 3);
         Interface.ensureImplements(indexStoreImpl__, [IndexStore]);
 
@@ -1089,7 +1118,7 @@ window.IndexSearch = window.IndexSearch || (function() {
             //clean results
             highlighter__.resetTotal();
             suggestionHighlighter__.resetTotal();
-            
+
             resultNode__ = {nodes: []};
             suggestionList__ = [];
             //
@@ -1098,14 +1127,14 @@ window.IndexSearch = window.IndexSearch || (function() {
             keyword__ = generateNewKeywrod();
             search();
             keyword__ = keyword;
-            
+
             return getResultSearch();
         };
 
         function generateNewKeywrod() {
             var suggestMap = {};
 
-            each(suggestionList__, function(suggest) {
+            forEach(suggestionList__, function(suggest) {
                 var firstCharactor = suggest.word[0];
                 if (notDefined(suggestMap[firstCharactor])) {
                     suggestMap[firstCharactor] = [];
@@ -1116,7 +1145,7 @@ window.IndexSearch = window.IndexSearch || (function() {
 
             var splitor = new InputSearchSplitor(keyword__);
             var keywordList = splitor.split();
-            each(suggestMap, function(suggests) {
+            forEach(suggestMap, function(suggests) {
                 getKeyword(suggests[0], keywordList);
             });
 
@@ -1126,14 +1155,14 @@ window.IndexSearch = window.IndexSearch || (function() {
 
         function removeSomeSuggests(keywordList) {
             var newSuggets = [];
-            each(keywordList, function(keyword){
-                each(suggestionList__, function(suggest){
+            forEach(keywordList, function(keyword) {
+                forEach(suggestionList__, function(suggest) {
                     if (keyword !== suggest.word && notFoundIn(suggest, newSuggets)) {
-                       newSuggets.push(suggest);
+                        newSuggets.push(suggest);
                     }
                 });
             });
-            
+
             suggestionList__ = newSuggets;
         }
 
@@ -1143,7 +1172,7 @@ window.IndexSearch = window.IndexSearch || (function() {
                 keywordMap[keywordList[index]] = keywordList[index];
             }
 
-            return convertMapKeyToList(keywordMap).join(' ');
+            return object2Array(keywordMap).join(' ');
         }
 
         function getKeyword(word, list) {
@@ -1159,8 +1188,8 @@ window.IndexSearch = window.IndexSearch || (function() {
         }
 
         function getResultSearch() {
-			var splitor = new InputSearchSplitor(keyword__);
-			splitor.split();
+            var splitor = new InputSearchSplitor(keyword__);
+            splitor.split();
             return new ResultSearch({
                 totalPosition: splitor.getKeywordSize() > 0 ? Math.ceil(highlighter__.getTotalHighlight() / splitor.getKeywordSize()) : 0,
                 totalSentence: highlighter__.getTotalSentence(),

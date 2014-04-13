@@ -297,28 +297,34 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
 
 
 (function(window, document, controller) {
+	var SOURCE_CODE = 'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/';
+
     var resourceJS = [
     ];
 
     var resourceStyle = [
-        'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/blogspot.css?time=1'
+        SOURCE_CODE + 'blogspot.css?time=1'
     ];
 
-    window.onload = function() {
+    window.addEventListener('load', function() {
         //
         var na5centScript = document.querySelectorAll('.ns-blogsearch-script')[0];
         var blogspotURL = na5centScript.getAttribute('data-blogspot-url');
         var languages = na5centScript.getAttribute('data-languages') ? JSON.parse(na5centScript.getAttribute('data-languages')) : {};
         var targetElementId = na5centScript.getAttribute('data-element-id');
         var additionalDictionaries = na5centScript.getAttribute('data-additionalDictionaries') || [];
-        var slideSearch = na5centScript.getAttribute('data-slide-search') || false;
+        var slideSearch = na5centScript.getAttribute('data-slide-search');
+		if(!slideSearch){
+			slideSearch = 'true';
+		}
+		
         var theme = na5centScript.getAttribute('data-theme') || 'facebook'; //default
-        if (slideSearch == 'true') {
-            resourceJS.push('https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/slide.js');
+        if (Boolean(slideSearch)) {
+            resourceJS.push(SOURCE_CODE + 'slide.js');
 
-            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/jscrollpane/jscrollpane.css');
-            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/slide.css');
-            resourceStyle.push('https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/theme/' + theme + '/css/default.css?time=70000');
+            resourceStyle.push(SOURCE_CODE + 'jscrollpane/jscrollpane.css');
+            resourceStyle.push(SOURCE_CODE + 'slide.css');
+            resourceStyle.push(SOURCE_CODE + 'theme/' + theme + '/css/default.css');
         }
 
         var html = ['<div class="ns-plugin-search-scroll">',
@@ -334,6 +340,7 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
                             '</div>',
                         '</div>',
                     '</div>',
+					
                     '<div class="ns-plugin-search-button" title="' + (languages.SEARCH_BUTTON_TITLE || 'click for search contents of blog') + '">',
                     '</div>'
         ];
@@ -358,7 +365,7 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
                 controller(blogspotURL, languages, additionalDictionaries, window.jQuery);
             }
         }
-    };
+    });
 
     function getHeadElement() {
         return document.getElementsByTagName('head')[0];

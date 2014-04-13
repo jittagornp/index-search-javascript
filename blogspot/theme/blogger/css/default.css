@@ -1,0 +1,127 @@
+/* color : #f26300 !important */
+.ns-plugin-theme-blogger{
+    background : #fcfcfc;/*#edeff4;*/
+    font-family: 'lucida grande',tahoma,verdana,arial,sans-serif;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    outline: none;
+    color : #4e4e4e;
+	opacity : 0.95;
+	filter : Alpha(Opacity=95);
+}
+
+.ns-plugin-theme-blogger .ns-plugin-search-input{
+    border-color : #CAC9C9;
+	width: 460px !important;
+}
+
+.ns-plugin-theme-blogger .ns-plugin-search-clear-button,
+.ns-plugin-theme-blogger .ns-plugin-search-clear-button:hover{
+    background-size : auto;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fd934d), to(#f9760b));
+    border: 1px solid #fb8f3d;
+	color: #fff;
+	outline : none;	
+	border-radius : 3px;
+	-moz-border-radius : 3px;
+	-webkit-border-radius : 3px;	
+	font-weight : bold;
+}
+
+.ns-plugin-theme-blogger .ns-plugin-search-result{
+	background: #fff;
+	border: #F7F7F7 solid 1px;
+	padding: 0 10px;
+	margin-top: 10px;
+}
+
+.ns-plugin-search-repositories > ul{
+	
+}
+
+.ns-plugin-theme-blogger .jspVerticalBar .jspDrag{
+    background-color: #aaa;
+}
+
+.ns-plugin-theme-blogger .jspVerticalBar{
+	left : 0;
+}
+
+.ns-plugin-theme-blogger .keyword-highlight{
+    background : #F0F0F0;
+}
+
+.ns-plugin-theme-blogger .level-0 > a{
+    color : rgb(253, 122, 0) !important;
+    display: inline-block;
+    padding: 10px;
+}
+
+.ns-plugin-theme-blogger .level-0 > ol{
+    /*background: #fdfdfd;*/
+    padding: 0px 0px 0px 30px!important;
+    /*border : solid 1px #fafafa;*/
+    width : 510px;
+}
+
+.ns-plugin-theme-blogger .ns-plugin-search-suggestions .keyword-highlight{
+    background : #F1F1F1;
+}
+
+.ns-plugin-theme-blogger .ns-plugin-search-summary,
+.ns-plugin-theme-blogger .ns-plugin-search-suggestions{
+    /*font-style: italic;*/
+}
+
+.ns-plugin-theme-blogger .ns-plugin-search-suggestions,
+.ns-plugin-theme-blogger .ns-plugin-search-summary{
+    font-weight: bold;
+    color : rgb(94, 90, 105);
+}
+
+.ns-plugin-theme-blogger .ns-plugin-search-suggestions a,
+.ns-plugin-theme-blogger .ns-plugin-search-summary .summary-highlight{
+    font-weight: normal;
+	color : #C27400; 
+}
+
+.ns-plugin-theme-blogger .ns-plugin-search-button{
+    width : 28px;
+    height : 63px;
+    background-image: url('https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/theme/blogger/image/search-button.png');
+    margin-right: -29px;
+    margin-top: -32px;
+}
+
+.ns-plugin-theme-blogger .index-search-new-post{
+    color : rgb(255, 0, 0);
+    font-weight: normal;
+}
+
+.ns-plugin-theme-blogger li{
+    border : none !important;
+    background: none !important;
+    line-height : 1.3em !important;
+	width : 480px; 
+}
+
+.ns-plugin-theme-blogger li:hover{
+    background: none !important;
+}
+
+.ns-plugin-theme-blogger a{
+    color : #4e4e4e
+}
+
+.ns-plugin-theme-blogger a:hover{
+    color : rgb(118, 116, 163);
+}
+
+.ns-plugin-theme-blogger a:visited{
+    color : rgb(131, 80, 24);
+}
+
+.ns-plugin-search-scroll .jspVerticalBar{
+    left : 2px;
+}
