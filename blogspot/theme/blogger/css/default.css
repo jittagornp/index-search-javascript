@@ -45,7 +45,11 @@
 }
 
 .ns-plugin-theme-blogger .jspVerticalBar{
-	left : 0;
+	left : 0 !important;
+}
+
+.ns-plugin-theme-blogger .jspTrack{
+	background : #ddd;
 }
 
 .ns-plugin-theme-blogger .keyword-highlight{
@@ -92,6 +96,9 @@
     background-image: url('https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/theme/blogger/image/search-button.png?t=999');
     margin-right: -29px;
     margin-top: -32px;
+	box-shadow : 0 0 3px rgba(0, 0, 0, 0.17); 
+	-moz-box-shadow : 0 0 3px rgba(0, 0, 0, 0.17); 
+	-webkit-box-shadow : 0 0 3px rgba(0, 0, 0, 0.17); 
 }
 
 .ns-plugin-theme-blogger .index-search-new-post{
@@ -120,8 +127,4 @@
 
 .ns-plugin-theme-blogger a:visited{
     color : rgb(131, 80, 24);
-}
-
-.ns-plugin-search-scroll .jspVerticalBar{
-    left : 2px;
 }
