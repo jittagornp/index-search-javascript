@@ -12,14 +12,19 @@
 }
 
 .ns-plugin-theme-blogger .ns-plugin-search-input{
-    border-color : #CAC9C9;
-	width: 450px !important;
+    border-color : #CAC9C9;;
 }
 
 .ns-plugin-theme-blogger .ns-plugin-search-clear-button,
 .ns-plugin-theme-blogger .ns-plugin-search-clear-button:hover{
     background-size : auto;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fd934d), to(#f9760b));
+background-color: #fd934d; background-image: -webkit-gradient(linear, left top, left bottom, from(#fd934d), to(#f9760b));
+ background-image: -webkit-linear-gradient(top, #fd934d, #f9760b);
+ background-image: -moz-linear-gradient(top, #fd934d, #f9760b);
+ background-image: -ms-linear-gradient(top, #fd934d, #f9760b);
+ background-image: -o-linear-gradient(top, #fd934d, #f9760b);
+ background-image: linear-gradient(to bottom, #fd934d, #f9760b);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#fd934d, endColorstr=#f9760b);	
+	
     border: 1px solid #fb8f3d;
 	color: #fff;
 	outline : none;	
