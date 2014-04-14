@@ -490,18 +490,18 @@ __searchPluginLocale__.th = {
 
             $summary.text('').hide();
             if (result.getTotalPosition() !== 0) {
-                $summary.append((context.languages.SEARCH || context.locale.lange.SEARCH) + ' \'')
+                $summary.append((context.languages.SEARCH || context.locale.lang.SEARCH) + ' \'')
                         .append($('<span>').text(indexSearch.getKeyword()).addClass('summary-highlight'))
-                        .append('\' ' + (context.languages.FOUND || context.locale.lange.FOUND) + ' ')
+                        .append('\' ' + (context.languages.FOUND || context.locale.lang.FOUND) + ' ')
                         .append($('<span>').text(result.getTotalPosition()).addClass('summary-highlight'))
-                        .append(' ' + (context.languages.POSITIONS || context.locale.lange.POSITIONS) + ' ')
+                        .append(' ' + (context.languages.POSITIONS || context.locale.lang.POSITIONS) + ' ')
                         .append($('<span>').text(result.getTotalSentence()).addClass('summary-highlight'))
-                        .append(' ' + (context.languages.SENTENCES || context.locale.lange.SENTENCES))
+                        .append(' ' + (context.languages.SENTENCES || context.locale.lang.SENTENCES))
                         .show();
             } else if (keyword !== '') {
-                $summary.append((context.languages.SEARCH || context.locale.lange.SEARCH) + ' \'')
+                $summary.append((context.languages.SEARCH || context.locale.lang.SEARCH) + ' \'')
                         .append($('<span>').text(indexSearch.getKeyword()).addClass('summary-highlight'))
-                        .append('\' ' + (context.languages.NOT_FOUND || context.locale.lange.NOT_FOUND))
+                        .append('\' ' + (context.languages.NOT_FOUND || context.locale.lang.NOT_FOUND))
                         .show();
             }
 
@@ -509,7 +509,7 @@ __searchPluginLocale__.th = {
             $suggestions.text('').hide();
             var suggestions = result.getSuggestions();
             if (suggestions.length !== 0) {
-                $suggestions.append((context.languages.DO_YOU_MEAN || context.locale.lange.DO_YOU_MEAN) + ' ');
+                $suggestions.append((context.languages.DO_YOU_MEAN || context.locale.lang.DO_YOU_MEAN) + ' ');
                 for (var suggestIndex in suggestions) {
                     var suggest = suggestions[suggestIndex];
                     var highlight = suggest.highlight;
