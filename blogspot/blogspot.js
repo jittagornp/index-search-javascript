@@ -261,31 +261,1394 @@ animateScroll:!1,animateDuration:300,animateEase:"linear",hijackInternalLinks:!1
 
 
 //index search
-window.IndexSearch=window.IndexSearch||function(){function p(a){return k(a)||0===a.length}function s(a,b,c){if(k(a))return-1;h(b,"String")&&(a=a.toLowerCase(),b=b.toLowerCase());return b.indexOf(a,k(c)?0:c)}function t(a){return a=a.replace(/&/g,"&amp;").replace(/>/g,"&gt;").replace(/</g,"&lt;").replace(/"/g,"&quot;")}function D(a,b,c){for(var g in a)if(a.hasOwnProperty(g)&&!1===b.call(c,a[g],g,a))return!1;return!0}function u(a,b,c){for(var g=a.length,d=0;d<g;d++)if(!1===b.call(c,a[d],d,a))return!1;
-return!0}function f(a,b,c){var g;h(a,"Object")?g=D:h(a,"Array")&&(g=u);return g(a,b,c)}function h(a,b){return Object.prototype.toString.call(a)==="[object "+b+"]"}function k(a){return h(a,"Undefined")}function A(a){var b=0,c;for(c in a)b+=1;return b}function B(a){var b=parseFloat(a),c=parseInt(a);return 0===b-c?c:(new Number(a)).toFixed(2)}var v=function(){function a(a,b){if(!h(a,"String"))throw Error("constructor of Interface class require first argument is 'string', but is '"+typeof a+"'.");if(!h(b,
-"Array"))throw Error("constructor of Interface class require second argument is 'array of string', but is '"+typeof b+"'.");}function b(a,b){if(!h(a,"String"))throw Error("constructor of Interface class require second argument is 'array of string', but method index "+b+" is not 'string', is '"+typeof a+"'.");return a}return function(c,g){if(2!==arguments.length)throw Error("constructor of Interface class require 2 arguments : Interface({string} name, {string[]} method names");a(c,g);for(var d=[],
-y=0;y<g.length;y++){var e=b(g[y],y);d.push(e)}this.getName=function(){return c};this.getMethods=function(){return d}}}();v.ensureImplements=function(a,b){if(2!==arguments.length)throw Error("Interface.ensureImplements require 2 arguments : Interface.ensureImplement({object} obj, {interface[]} interfaces).");if(!h(a,"Object"))throw Error("first argument of Interface.ensureImplements is not 'object', but is '"+typeof a+"'.");if(!h(b,"Array"))throw Error("second argument of Interface.ensureImplements is not 'array of interface', but is '"+
-typeof b+"'.");for(var c=0;c<b.length;c++){var g=b[c];if(g.constructor!==v)throw Error("second argument of Interface.ensureImplements index "+c+" is not interface.");var d=g.getMethods(),y;for(y in d){var e=d[y];if(k(a[e]))throw Error("implementation class is not define method '"+e+"' of Interface '"+g.getName()+"'.");if(!h(a[e],"Function"))throw Error("implementation class define '"+e+"' is not 'method', but is '"+typeof a[e]+"'.");}}};var C=function(a){var b=a.totalPosition||0,c=a.totalSentence||
-0,g=a.content||{nodes:{}},d=a.suggestions||[];this.getTotalPosition=function(){return b};this.getTotalSentence=function(){return c};this.getContent=function(){return g};this.getSuggestions=function(){return d}},z=function(a,b){var c=a,g=b;this.getStart=function(){return c};this.getEnd=function(){return g};this.setStart=function(a){c=a};this.setEnd=function(a){g=a};this.equals=function(a){return a.getStart()===c&&a.getEnd()===g?!0:!1};this.toString=function(){return"period {"+c+", "+g+"}"}},w=function(){function a(){var a=
-[];f(g,function(e){a.push(e)});return a}function b(){d=a().sort(function(a,e){return a.getStart()===e.getStart()?a.getEnd()-e.getEnd():a.getStart()-e.getStart()})}function c(a){for(var e in d)d[e].equals(a)&&delete d[e]}var g={},d;this.addPeriod=function(a){var e;e=a.getStart()+":"+a.getEnd();k(g[e])&&(g[e]=a);return this};this.addAllPeriods=function(a){p(a)||f(a,function(a){this.addPeriod(a)},this);return this};this.integrate=function(){b();if(1<d.length)for(var a=1;a<d.length;a++){var e=d[a-1],
-l=d[a];l.getStart()<e.getEnd()&&l.setStart(e.getEnd())}if(1<d.length)for(a=1;a<d.length;a++)for(e=d[a],l=a+1;l<d.length;l++){var x=d[l],m;if(m=!k(e))if(m=!k(x))if(m=x,!(m=m.getStart()>=m.getEnd())){m=x;var g=e;m=m.getStart()>=g.getStart()&&m.getEnd()<=g.getEnd()}m&&c(x)}if(1<d.length)for(a=1;a<d.length;a++)e=d[a-1],l=d[a],k(l)||k(e)||l.getStart()!==e.getEnd()||(l.setStart(e.getStart()),c(e),a--);return d}},q=function(a){var b=a||"",c=0;this.split=function(){var a=[],d=b.split(" ");f(d,function(b){p(b)||
-(a.push(b),c+=1)});return a};this.getKeywordSize=function(){return c};this.getInput=function(){return b}},H=function(a){function b(a,b){var e=new w,l=new q(b);f(l.split(),function(b){if(p(b))return!0;for(var m=b.length,l=0,c=0;;){c=s(b,a,c);if(-1===c)break;l=c;c+=m;e.addPeriod(new z(l,c))}});return e.integrate()}var c=0,g=0;this.getTotalSentence=function(){return c};this.resetTotalSentence=function(){c=0};this.getTotalHighlight=function(){return g};this.resetTotalHighlight=function(){g=0};this.resetTotal=
-function(){c=g=0};this.highlight=function(d,k){c+=1;var e=t(k),l=b(e,d),x=0;f(l,function(b){var c=b.getStart()+x,l=b.getEnd()+x;b=e.substring(0,c);var c=e.substring(c,l),d='<span class="'+a+'">'+c+"</span>",l=e.substring(l);e=b+d+l;x=x+d.length-c.length;g+=1});return e}},K=new v("IndexStore",["writeIndex","readIndex","addDictionary","getDictionaries","getIndexs"]),L=function(a){function b(a,b){var x=c(a);return g(x,b)}function c(a){var b={};f(a,function(a){f(a,function(a){k(b[a])&&(b[a]=0);b[a]+=
-1})});return b}function g(a,b){var c=[];f(a,function(a,e){a>=b&&c.push(e)});return c}var d=a;if(k(d)||1>d)d=1;var h=[];for(a=1;a<=d;a++)h[a]={};this.writeIndex=function(a,b){k(b)||f(h,function(c){f(c,function(c){f(c,function(c,d){-1!==s(d,b)&&-1===s(a,c)&&c.push(a)})})})};this.readIndex=function(a){var c={};a=new q(a);f(a.split(),function(a){f(this.getDictionaries(a),function(b,e){-1!==s(a,e)&&(k(c[a])&&(c[a]={}),f(b,function(b){c[a][b]=b}))})},this);return b(c,a.getKeywordSize())};this.addDictionary=
-function(a){a=a.trim().toLowerCase();p(a)||f(h,function(b,c){if(a.length>=c){var d=a.substring(0,c);k(b[d])&&(b[d]={});k(b[d][a])&&(b[d][a]=[])}})};this.getDictionaries=function(a){if(p(a))return{};a=new q(a);var b={};f(a.split(),function(a){var c=b;a.length<=d?a=h[a.length][a]:(a=a.substring(0,d),a=h[d][a]);for(var e in a)c[e]=a[e]});k(b)&&(b={});return b};this.getIndexs=function(){return h}},M=function(a){this.writeIndex=function(b,c){a.writeIndex(b,c)};this.addDictionary=function(b){a.addDictionary(b)}},
-N=function(a){this.readIndex=function(b){return a.readIndex(b)};this.getDictionaries=function(b){return a.getDictionaries(b)};this.getIndexs=function(){return a.getIndexs()}},P=function(a){function b(a){for(var b={},c=0;c<a.length;c++){var d=a.charAt(c);k(b[d])&&(b[d]={duplicate:0,position:0});b[d].duplicate+=1;b[d].position+=c}return b}function c(a,c){var m=[],h=(new q(a)).split();f(h,function(h){return f(g,function(g,f){var n;a:{n=m;for(var z in n)if(n[z].word===f){n=!0;break a}n=!1}if(!n){z=b(h);
-var q,s=b(f);n=0;for(q in z){k(s[q])&&(s[q]={duplicate:0,position:0});var w=z[q],r=s[q],w=w.duplicate+w.position,r=r.duplicate+r.position;if(0!==w&&0!==r){var y=(r+w)/2;n=w>=r?n+r/y:n+w/y}}q=(A(z)+A(s))/2;q=n/q*100;if(q>=c&&(n=d.highlight(a,f),p(n)&&(n=f),m.push({keywordMatch:h,word:f,highlight:n,percent:B(q)}),m.length===e))return!1}})});return m=m.sort(function(a,b){return b.percent-a.percent})}var g=a.dictionary,d=a.highlighter,h=a.percentSuggest||60,e=a.suggestionsSize||10;this.getSuggestionsWhenSearchFound=
-function(a){return c(a,0)};this.getSuggestionsWhenSearchNotFound=function(a){return c(a,h)}};return function(a){function b(){for(var a in J)n.addDictionary(J[a]);c(m);for(var b in m.nodes)g(0,b,m.nodes[b]);for(var d in F)delete F[d]}function c(a){for(var b in t){var d=a[t[b]];if(!p(d)){var d=Q(d),e=void 0;for(e in d)n.addDictionary(d[e])}}a=a.nodes;if(!p(a))for(var g in a)c(a[g])}function g(a,b,c){d(c,function(a){n.writeIndex(b,a)});c.level="level-"+a;c.index=b+"";c=c.nodes;if(!p(c))for(var e in c)g(a+
-1,b+I+e,c[e])}function d(a,b){for(var c in t){var d=t[c],e=F[d];k(e)&&(e={},F[d]=e);var g=e[a[d]];k(g)&&(g=!0,e[a[d]]=g,b(a[d]))}}function z(){var a={};f(E,function(b){var c=b.word[0];k(a[c])&&(a[c]=[]);a[c].push(b.word)});var b=(new q(r)).split();f(a,function(a){a=a[0];for(var c in b){var d=b[c];d[0]===a[0]&&(a.length<d.length||-1===s(d,a))&&(b[c]=a)}});e(b);return l(b)}function e(a){var b=[];f(a,function(a){f(E,function(c){a===c.word||-1!==s(c,b)||b.push(c)})});E=b}function l(a){var b={},c;for(c in a)b[a[c]]=
-a[c];a=[];for(var d in b)b.hasOwnProperty(d)&&a.push(d);return a.join(" ")}function w(){var a=new q(r);a.split();return new C({totalPosition:0<a.getKeywordSize()?parseInt(u.getTotalHighlight()/a.getKeywordSize()):0,totalSentence:u.getTotalSentence(),content:G,suggestions:E})}if(k(a))throw Error("require {object} settings");var m=a.repository;if(k(m))throw Error("require {repository} settings.repository");if(!h(m,"Object"))throw Error("require {repository} settings.repository is root node object");
-var t=a.indexOnFields||[];if(p(t))throw Error("require index field on {string[]} : settings.indexOnFields");if(-1!==s("nodes",t))throw Error("field name 'nodes' in {string[]} : settings.indexOnFields is reserved word");var u=new H(a.highlightClass||"keyword-highlight"),A=new H(a.highlightClass||"keyword-highlight"),B=a.indexStore||new L(a.maximumDictionaryKeySize||3);v.ensureImplements(B,[K]);var n=new M(B),D=new N(B),I=a.indexSeparator||"/",O=a.postfixFieldNameHighlight||"Highlight",G,r="",F={},
-J=a.additionalDictionaries||[],E=[],R=a.suggestionsSize,S=a.percentSuggest,Q=a.stopword||function(a){a=k(a)?"":a.replace(/\(/g," ").replace(/\)/g," ").replace(/\,/g," ").replace(/\//g," ").replace(/\\/g," ").replace(/\:/g," ").replace(/\./g," ").replace(/\>/g," ").replace(/\</g," ").replace(/\[/g," ").replace(/\]/g," ").replace(/\+/g," ").replace(/\=/g," ").replace(/\;/g," ");return a.split(" ")};b();this.reIndex=function(a){m=a;b()};this.getKeyword=function(){return r};this.getRepository=function(){return m};
-this.getIndexs=function(){return D.getIndexs()};this.clear=function(){r="";return new C({content:m})};this.search=function(a){if(p(a))return new C({content:m});a=a.trim().toLowerCase();if(r===a)return w();u.resetTotal();A.resetTotal();G={nodes:[]};E=[];r=a;E=(new P({dictionary:D.getDictionaries(r),suggestionsSize:R,percentSuggest:S,highlighter:A})).getSuggestionsWhenSearchFound(r);r=z();var b=D.readIndex(r),c;for(c in b){var d=b[c].split(I),e=m,g=G,h=void 0;for(h in d){var f=d[h];if(p(f))break;var e=
-e.nodes[f],l=g.nodes[f];if(k(l)){var l=e,q={},n=void 0;for(n in l)if("nodes"!==n){q[n]=l[n];for(var s in t)if(n===t[s]){var v=u.highlight(r,q[n]);!p(v)&&(q[n+O]=v)}}l=q;g.nodes[f]=l}k(l.nodes)&&(l.nodes=[]);g=l}}r=a;return w()}}}();window.Blogger=window.Blogger||{};
-window.Blogger.pullRepositoryFromBlog=function(p,s){var t=document.createElement("script");t.type="text/javascript";t.src=p+"/feeds/posts/default?max-results=10000&alt=json-in-script&callback=blogFeedCallback";t.onload=function(){s(window.blogFeedRepository)};document.getElementsByTagName("head")[0].appendChild(t)};
-function blogFeedCallback(p){function s(f){f=f.sort(function(f,h){return f.published>h.published})}function t(f){var h=u.nodes,k;for(k in h){var p=h[k];if(p.name===f)return p}return null}function D(f){f=f.link;for(var h in f)if("alternate"===f[h].rel)return f[h].href;return""}var u={nodes:[]},f=p.feed,h=f.category,k;for(k in h)p=h[k],u.nodes.push({name:p.term,link:"/search/label/"+encodeURIComponent(p.term)});f=f.entry;for(k in f){h=f[k];h.title.$t;var A=h.category,B;for(B in A){p=t(A[B].term);var v=
-p.nodes;v||(v=[]);var C={name:h.title.$t,published:new Date(h.published.$t),link:D(h),nodes:[]};5>k&&(C.newPost=!0);v.push(C);p.nodes=v}}(function(f){f=f.sort(function(f,h){return f.name.localeCompare(h.name)})})(u.nodes);for(k in u.nodes)C=u.nodes[k],s(C.nodes);window.blogFeedRepository=u};
+/**
+ * IndexSearch.js
+ *
+ * author     -->  redcrow (jittagorn pitakmetagoon)
+ * create on  -->  26/08/2013
+ * website    -->  na5cent.blogspot.com
+ * 
+ * version    -->  1.0
+ * version    -->  2.0 (multiple search keyword : AND search operation)
+ * 
+ * License    ---> Apache License
+ * Version 2.0, January 2004 (http://www.apache.org/licenses/LICENSE-2.0)
+ * 
+ * 
+ * 
+ * update 13/12/2013 : add integrate period algorithm (document : http://na5cent.blogspot.com/2013/12/integrate-period-algorithm-javascript.html)
+ */
 
+window.IndexSearch = window.IndexSearch || (function() {
+
+    function defined(object) {
+        return !isUndefined(object);
+    }
+
+    function notDefined(object) {
+        return isUndefined(object);
+    }
+
+    function empty(list) {
+        return notDefined(list) || list.length === 0;
+    }
+
+    function notEmpty(list) {
+        return !empty(list);
+    }
+
+    function trim(string) {
+        return string.replace(/^\s+|\s+$/g, '');  //for old browser
+    }
+
+    function findIndex(element, list, startPoint) {
+        if (notDefined(element)) {
+            return -1;
+        }
+
+        if (isString(list)) {
+            element = element.toLowerCase();
+            list = list.toLowerCase();
+        }
+
+        return list.indexOf(element, defined(startPoint) ? startPoint : 0);
+    }
+
+    function foundIn(element, list) {
+        return findIndex(element, list) !== -1;
+    }
+
+    function notFoundIn(element, list) {
+        return !foundIn(element, list);
+    }
+
+    function escapseString(text) {
+        text = text.replace(/&/g, '&amp;')
+                .replace(/>/g, '&gt;')
+                .replace(/</g, '&lt;')
+                .replace(/"/g, '&quot;');
+
+        return text;
+    }
+
+    function copyObject(source, destination) {
+        for (var key in source) {
+            destination[key] = source[key];
+        }
+    }
+
+    function forEachObject(obj, callback, context_opt) {
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                var value = callback.call(context_opt, obj[key], key, obj);
+                if (value === false) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    function forEachArray(array, callback, context_opt) {
+        var length = array.length;
+        for (var i = 0; i < length; i++) {
+            var value = callback.call(context_opt, array[i], i, array);
+            if (value === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function forEach(obj, callback, context_opt) {
+        var forEachImpl;
+        if (isObject(obj)) {
+            forEachImpl = forEachObject;
+        } else if (isArray(obj)) {
+            forEachImpl = forEachArray;
+        }
+
+        return forEachImpl(obj, callback, context_opt);
+    }
+
+    function object2Array(obj) {
+        var newObj = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                newObj.push(key);
+            }
+        }
+
+        return newObj;
+    }
+
+    function replaceNotation(text) {
+        if (notDefined(text)) {
+            return '';
+        }
+
+        text = text.replace(/\(/g, ' ')
+                .replace(/\)/g, ' ')
+                .replace(/\,/g, ' ')
+                .replace(/\//g, ' ')
+                .replace(/\\/g, ' ')
+                .replace(/\:/g, ' ')
+                .replace(/\./g, ' ')
+                .replace(/\>/g, ' ')
+                .replace(/\</g, ' ')
+                .replace(/\[/g, ' ')
+                .replace(/\]/g, ' ')
+                .replace(/\+/g, ' ')
+                .replace(/\=/g, ' ')
+                .replace(/\;/g, ' ');
+
+        return text;
+    }
+
+    function is(data, type) {
+        return Object.prototype.toString.call(data) === '[object ' + type + ']';
+    }
+
+    function isFunction(data) {
+        return is(data, 'Function');
+    }
+
+    function isArray(data) {
+        return is(data, 'Array');
+    }
+
+    function isString(data) {
+        return is(data, 'String');
+    }
+
+    function isNumber(data) {
+        return is(data, 'Number');
+    }
+
+    function isObject(data) {
+        return is(data, 'Object');
+    }
+
+    function isRegExp(data) {
+        return is(data, 'RegExp');
+    }
+
+    function isUndefined(data) {
+        return is(data, 'Undefined');
+    }
+
+    function totalProperties(object) {
+        var total = 0;
+        for (var property in object) {
+            total = total + 1;
+        }
+
+        return total;
+    }
+
+    function numberFormat(number) {
+        var floatNumber = parseFloat(number);
+        var integerNumber = parseInt(number);
+        if ((floatNumber - integerNumber) === 0) {
+            return integerNumber;
+        } else {
+            return new Number(number).toFixed(2);
+        }
+    }
+
+    /**
+     * class Interface
+     * @author redcrow
+     * @create on 25/02/2013
+     * @website na5cent.blogspot.com
+     */
+    var Interface = (function() {
+
+        /**
+         * for ensure constructor input type require
+         */
+        function ensureConstructorRequire(name, methods) {
+            if (!isString(name)) {
+                throw new Error('constructor of Interface class require first argument is \'string\', but is \'' + (typeof name) + '\'.');
+            }
+
+            if (!isArray(methods)) {
+                throw new Error('constructor of Interface class require second argument is \'array of string\', but is \'' + (typeof methods) + '\'.');
+            }
+        }
+
+        /**
+         * for ensure method type require
+         */
+        function ensureMethodType(method, index) {
+            if (!isString(method)) {
+                throw new Error('constructor of Interface class require second argument is \'array of string\', but method index ' + index + ' is not \'string\', is \'' + (typeof method) + '\'.');
+            }
+
+            return method;
+        }
+
+        /**
+         * Interface constructor
+         * {string} name
+         * {string[]} method names 
+         */
+        return function(name, methods) {
+            if (arguments.length !== 2) {
+                throw new Error("constructor of Interface class require 2 arguments : Interface({string} name, {string[]} method names");
+            }
+            ensureConstructorRequire(name, methods);
+
+            var name__ = name;
+            var methods__ = [];
+
+            for (var index = 0; index < methods.length; index++) {
+                var method = ensureMethodType(methods[index], index);
+                methods__.push(method);
+            }
+
+            this.getName = function() {
+                return name__;
+            };
+
+            this.getMethods = function() {
+                return methods__;
+            };
+        };
+    })();
+
+    /**
+     * static method Interface.ensureImplements
+     * for ensure class implements an interfaces.
+     */
+    Interface.ensureImplements = function(clazz, interfacs) {
+        if (arguments.length !== 2) {
+            throw new Error('Interface.ensureImplements require 2 arguments : Interface.ensureImplement({object} obj, {interface[]} interfaces).');
+        }
+
+        if (!isObject(clazz)) {
+            throw new Error('first argument of Interface.ensureImplements is not \'object\', but is \'' + (typeof clazz) + '\'.');
+        }
+
+        if (!isArray(interfacs)) {
+            throw new Error('second argument of Interface.ensureImplements is not \'array of interface\', but is \'' + (typeof interfacs) + '\'.');
+        }
+
+        for (var index = 0; index < interfacs.length; index++) {
+            var interf = interfacs[index];
+            if (interf.constructor !== Interface) {
+                throw new Error('second argument of Interface.ensureImplements index ' + index + ' is not interface.');
+            }
+
+            var methods = interf.getMethods();
+            for (var property in methods) {
+                var method = methods[property];
+
+                if (notDefined(clazz[method])) {
+                    throw new Error('implementation class is not define method \'' + method + '\' of Interface \'' + interf.getName() + '\'.');
+                }
+
+                if (!isFunction(clazz[method])) {
+                    throw new Error('implementation class define \'' + method + '\' is not \'method\', but is \'' + (typeof clazz[method]) + '\'.');
+                }
+            }
+        }
+    };
+
+    /**
+     * class ResultSearch 
+     * bean for keep result after searching
+     */
+    var ResultSearch = function(result) {
+        var totalPosition__ = result.totalPosition || 0;
+        var totalSentence__ = result.totalSentence || 0;
+        var content__ = result.content || {nodes: {}};
+        var suggestions__ = result.suggestions || [];
+
+        this.getTotalPosition = function() {
+            return totalPosition__;
+        };
+
+        this.getTotalSentence = function() {
+            return totalSentence__;
+        };
+
+        this.getContent = function() {
+            return content__;
+        };
+
+        this.getSuggestions = function() {
+            return suggestions__;
+        };
+    };
+
+    /**
+     * class Period
+     * for keep period information
+     */
+    var Period = function(start, end) {
+        var start__ = start;
+        var end__ = end;
+
+        this.getStart = function() {
+            return start__;
+        };
+
+        this.getEnd = function() {
+            return end__;
+        };
+
+        this.setStart = function(start) {
+            start__ = start;
+        };
+
+        this.setEnd = function(end) {
+            end__ = end;
+        };
+
+        this.equals = function(object) {
+            if (object.getStart() === start__ && object.getEnd() === end__) {
+                return true;
+            }
+
+            return false;
+        };
+
+        this.toString = function() {
+            return 'period {' + start__ + ', ' + end__ + '}';
+        };
+    };
+
+    /**
+     * class PeriodIntegrator
+     * for integrate period in timeline
+     * 
+     * document : http://na5cent.blogspot.com/2013/12/integrate-period-algorithm-java.html
+     */
+    var PeriodIntegrator = function() {
+
+        var periodSet__ = {};
+        var periodList__;
+
+        function getPeriodKey(period) {
+            return period.getStart() + ':' + period.getEnd();
+        }
+
+        this.addPeriod = function(period) {
+            var periodKey = getPeriodKey(period);
+            if (notDefined(periodSet__[periodKey])) {
+                periodSet__[periodKey] = period;
+            }
+
+            return this;
+        };
+
+        this.addAllPeriods = function(periodList) {
+            if (notEmpty(periodList)) {
+                forEach(periodList, function(period) {
+                    this.addPeriod(period);
+                }, this);
+            }
+
+            return this;
+        };
+
+        function toPeriodList() {
+            var list = [];
+            forEach(periodSet__, function(period) {
+                list.push(period);
+            });
+            return list;
+        }
+
+        function sortPeriods() {
+            periodList__ = toPeriodList().sort(function(period1, period2) {
+                if (period1.getStart() === period2.getStart()) {
+                    return period1.getEnd() - period2.getEnd();
+                }
+
+                return period1.getStart() - period2.getStart();
+            });
+        }
+
+        function changeOverlap() {
+            if (periodList__.length > 1) {
+                for (var i = 1; i < periodList__.length; i++) {
+                    var before = periodList__[i - 1];
+                    var current = periodList__[i];
+
+                    if (current.getStart() < before.getEnd()) {
+                        current.setStart(before.getEnd());
+                    }
+                }
+            }
+        }
+
+        function removePeriod(period) {
+            for (var index in periodList__) {
+                if (periodList__[index].equals(period)) {
+                    delete periodList__[index];
+                }
+            }
+        }
+
+        function removeIncorrect() {
+            if (periodList__.length > 1) {
+                for (var i = 1; i < periodList__.length; i++) {
+                    var periodI = periodList__[i];
+                    for (var j = i + 1; j < periodList__.length; j++) {
+                        var periodJ = periodList__[j];
+
+                        if (defined(periodI) && defined(periodJ) && (isIncorrect(periodJ) || isSubPeriod(periodJ, periodI))) {
+                            removePeriod(periodJ);
+                        }
+                    }
+                }
+            }
+        }
+
+        function isIncorrect(period) {
+            return period.getStart() >= period.getEnd();
+        }
+
+        function isSubPeriod(period1, period2) {
+            return period1.getStart() >= period2.getStart() && period1.getEnd() <= period2.getEnd();
+        }
+
+        function integratePeriods() {
+            if (periodList__.length > 1) {
+                for (var i = 1; i < periodList__.length; i++) {
+                    var before = periodList__[i - 1];
+                    var current = periodList__[i];
+
+                    if (defined(current) && defined(before) && current.getStart() === before.getEnd()) {
+                        current.setStart(before.getStart());
+                        removePeriod(before);
+                        i--;
+                    }
+                }
+            }
+        }
+
+        this.integrate = function() {
+            sortPeriods();
+            changeOverlap();
+            removeIncorrect();
+            integratePeriods();
+
+            return periodList__;
+        };
+    };
+
+    var InputSearchSplitor = function(input) {
+        var input__ = input || '';
+        var keywordSize__ = 0;
+
+        this.split = function() {
+            var result = [];
+            var keywordList = input__.split(' ');
+            forEach(keywordList, function(keyword) {
+                if (notEmpty(keyword)) {
+                    result.push(keyword);
+                    keywordSize__ = keywordSize__ + 1;
+                }
+            });
+
+            return result;
+        };
+
+        this.getKeywordSize = function() {
+            return keywordSize__;
+        };
+
+        this.getInput = function() {
+            return input__;
+        };
+    };
+
+    /**
+     * class Highlighter
+     * for make html highlight result search    				
+     */
+    var Highlighter = function(cssClass) {
+        var cssClass__ = cssClass;
+        var totalSentence__ = 0;
+        var totalHighlight__ = 0;
+
+        function highlightKeyword(keyword) {
+            return '<span class="' + cssClass__ + '">' + keyword + '</span>';
+        }
+
+        this.getTotalSentence = function() {
+            return totalSentence__;
+        };
+
+        this.resetTotalSentence = function() {
+            totalSentence__ = 0;
+        };
+
+        this.getTotalHighlight = function() {
+            return totalHighlight__;
+        };
+
+        this.resetTotalHighlight = function() {
+            totalHighlight__ = 0;
+        };
+
+        this.resetTotal = function() {
+            totalHighlight__ = 0;
+            totalSentence__ = 0;
+        };
+
+        function findPeriodsOfSentenceByKeyword(sentence, keywordString) {
+            var integrator = new PeriodIntegrator();
+            var splitor = new InputSearchSplitor(keywordString);
+
+            forEach(splitor.split(), function(keyword) {
+                if (empty(keyword)) {
+                    return true;
+                }
+
+                var keywordLength = keyword.length;
+
+                var start = 0;
+                var end = 0;
+                while (true) {
+                    var indexOf = findIndex(keyword, sentence, end);
+                    if (indexOf === -1) { //not found
+                        break;
+                    }
+
+                    start = indexOf;
+                    end = indexOf + keywordLength;
+
+                    integrator.addPeriod(new Period(start, end));
+                }
+            });
+
+            return integrator.integrate();
+        }
+
+        this.highlight = function(keywordString, sentence) {
+            totalSentence__ = totalSentence__ + 1;
+            var newSentence = escapseString(sentence);
+
+            var periods = findPeriodsOfSentenceByKeyword(newSentence, keywordString);
+            var highlightSize = 0;
+
+            forEach(periods, function(period) {
+                var start = period.getStart() + highlightSize;
+                var end = period.getEnd() + highlightSize;
+
+                var infront = newSentence.substring(0, start);
+                var word = newSentence.substring(start, end);
+                var highlighted = highlightKeyword(word);
+                var behind = newSentence.substring(end);
+
+                newSentence = infront + highlighted + behind;
+
+                highlightSize = highlightSize + highlighted.length - (word.length);
+                totalHighlight__ = totalHighlight__ + 1;
+            });
+
+            return newSentence;
+        };
+    };
+
+    /**
+     * define IndexStore interface
+     */
+    var IndexStore = new Interface('IndexStore', [
+        'writeIndex',
+        'readIndex',
+        'addDictionary',
+        'getDictionaries',
+        'getIndexs'
+    ]);
+
+    /**
+     * class InMemoryIndexStore
+     * for store index in memory (array)
+     */
+    var InMemoryIndexStore = function(maximumDictionaryKeySize) {
+        var maximumDictionaryKeySize__ = maximumDictionaryKeySize;
+
+        if (notDefined(maximumDictionaryKeySize__) || maximumDictionaryKeySize__ < 1) {
+            maximumDictionaryKeySize__ = 1;
+        }
+
+        var indexStore__ = [];
+        for (var index = 1; index <= maximumDictionaryKeySize__; index++) {
+            indexStore__[index] = {};
+        }
+
+        /**
+         * for write an index into IndexStore
+         * pattern : IndexStore --> stores --> dictionaries --> indexes
+         * 
+         * @param {string} index
+         * @param {string} sentence
+         */
+        this.writeIndex = function(index, sentence) {
+            if (notDefined(sentence)) {
+                return;
+            }
+
+            forEach(indexStore__, function(store) {
+                forEach(store, function(dictionaries) {
+                    forEach(dictionaries, function(indexes, keyword) {
+                        if (foundIn(keyword, sentence) && notFoundIn(index, indexes)) {
+                            indexes.push(index);
+                        }
+                    });
+                });
+            });
+        };
+
+        /**
+         * for read indexes from IndexStore by keyword search parameter
+         * 
+         * @param {string} keywordString
+         * @returns {array} indexs
+         */
+        this.readIndex = function(keywordString) {
+            var keywordMap = {};
+
+            var splitor = new InputSearchSplitor(keywordString);
+            forEach(splitor.split(), function(keyword) {
+                forEach(this.getDictionaries(keyword), function(indexes, dictionaryKey) {
+                    if (foundIn(keyword, dictionaryKey)) {
+                        if (notDefined(keywordMap[keyword])) {
+                            keywordMap[keyword] = {};
+                        }
+
+                        forEach(indexes, function(index) {
+                            keywordMap[keyword][index] = index;
+                        });
+                    }
+                });
+            }, this);
+
+            return intersecIndexesByKeywordSize(keywordMap, splitor.getKeywordSize());
+        };
+
+        function intersecIndexesByKeywordSize(keywordMap, keywordSearchSize) {
+            var indexMap = indexCountMapper(keywordMap);
+            return indexCountReducer(indexMap, keywordSearchSize);
+        }
+
+        function indexCountMapper(keywordMap) {
+            var indexMap = {};
+            forEach(keywordMap, function(indexes) {
+                forEach(indexes, function(index) {
+                    if (notDefined(indexMap[index])) {
+                        indexMap[index] = 0;
+                    }
+
+                    indexMap[index] = indexMap[index] + 1;
+                });
+            });
+
+            return indexMap;
+        }
+
+        function indexCountReducer(indexMap, reduceSize) {
+            var indexes = [];
+            forEach(indexMap, function(count, index) {
+                if (count >= reduceSize) {
+                    indexes.push(index);
+                }
+            });
+
+            return indexes;
+        }
+
+        this.addDictionary = function(keyword) {
+            keyword = keyword.trim().toLowerCase();
+
+            if (empty(keyword)) {
+                return;
+            }
+
+            forEach(indexStore__, function(store, dictionaryKeySize) {
+                if (keyword.length >= dictionaryKeySize) {
+                    var dictionaryKeyword = keyword.substring(0, dictionaryKeySize);
+
+                    if (notDefined(store[dictionaryKeyword])) {
+                        store[dictionaryKeyword] = {};
+                    }
+
+                    if (notDefined(store[dictionaryKeyword][keyword])) {
+                        store[dictionaryKeyword][keyword] = [];
+                    }
+                }
+            });
+        };
+
+        /**
+         * for read dictionaries from IndexStore which match by keyword search parameter
+         * 
+         * @param {string} keywordString
+         * @returns {object} dictionaries
+         */
+        this.getDictionaries = function(keywordString) {
+            if (empty(keywordString)) {
+                return {};
+            }
+
+            var splitor = new InputSearchSplitor(keywordString);
+            var dictionaries = {};
+            forEach(splitor.split(), function(keword) {
+                var source;
+                var destination = dictionaries;
+
+                if (keword.length <= maximumDictionaryKeySize__) {
+                    source = indexStore__[keword.length][keword];
+                } else {
+                    var patialKeyword = keword.substring(0, maximumDictionaryKeySize__);
+                    source = indexStore__[maximumDictionaryKeySize__][patialKeyword];
+                }
+
+                copyObject(source, destination);
+            });
+
+
+            if (notDefined(dictionaries)) {
+                dictionaries = {};
+            }
+
+            return dictionaries;
+        };
+
+        this.getIndexs = function() {
+            return indexStore__;
+        };
+    };
+
+    /**
+     * class IndexWriter
+     * for write index into index store
+     */
+    var IndexWriter = function(indexStore) {
+        var indexStore__ = indexStore;
+
+        this.writeIndex = function(index, sentence) {
+            indexStore__.writeIndex(index, sentence);
+        };
+
+        this.addDictionary = function(keyword) {
+            indexStore__.addDictionary(keyword);
+        };
+    };
+
+    /**
+     * class IndexReader
+     * for read index from index store
+     */
+    var IndexReader = function(indexStore) {
+        var indexStore__ = indexStore;
+
+        this.readIndex = function(keyword) {
+            return indexStore__.readIndex(keyword);
+        };
+
+        this.getDictionaries = function(keyword) {
+            return indexStore__.getDictionaries(keyword);
+        };
+
+        this.getIndexs = function() {
+            return indexStore__.getIndexs();
+        };
+    };
+
+    /**
+     * class Suggession 
+     * @description http://na5cent.blogspot.com/2013/02/algorithm-for-find-difference.html
+     */
+    var Suggestion = function(settings) {
+        //require
+        var dictionaries__ = settings.dictionary;
+        var highlighter__ = settings.highlighter;
+
+        //optional
+        var percentSuggest__ = settings.percentSuggest || 60;
+        var suggestionsSize__ = settings.suggestionsSize || 10;
+
+        /**
+         * for find total character map of string
+         */
+        function reduceKeywordAndTransformToMap(keyword) {
+            var map = {};
+            for (var i = 0; i < keyword.length; i++) {
+                var character = keyword.charAt(i);
+                if (notDefined(map[character])) {
+                    map[character] = {
+                        duplicate: 0,
+                        position: 0
+                    };
+                }
+                map[character].duplicate = map[character].duplicate + 1;
+                map[character].position = map[character].position + i;
+            }
+
+            return map;
+        }
+
+        /**
+         * for compute percentage between keyword and word compare
+         */
+        function computePercentage(keywordMap, compareMap) {
+            var percentTotal = 0;
+
+            for (var keywordProperty in keywordMap) {
+                if (notDefined(compareMap[keywordProperty])) {
+                    compareMap[keywordProperty] = {
+                        duplicate: 0,
+                        position: 0
+                    };
+                }
+
+                var keywordObj = keywordMap[keywordProperty];
+                var compareObj = compareMap[keywordProperty];
+
+                var keywordPropertyValue = keywordObj.duplicate + keywordObj.position;
+                var comparePropertyValue = compareObj.duplicate + compareObj.position;
+
+                if (keywordPropertyValue !== 0 && comparePropertyValue !== 0) {
+
+                    var propertyBase = (comparePropertyValue + keywordPropertyValue) / 2;
+                    if (keywordPropertyValue >= comparePropertyValue) {
+                        percentTotal = percentTotal + (comparePropertyValue / propertyBase);
+                    } else {
+                        percentTotal = percentTotal + (keywordPropertyValue / propertyBase);
+                    }
+                }
+            }
+
+            var mapBase = (totalProperties(keywordMap) + totalProperties(compareMap)) / 2;
+
+            return 100 * (percentTotal / mapBase);
+        }
+
+        function getSuggestions(keywordString, PERCENT_SUGGEST) {
+            var suggestions = [];
+            var splitor = new InputSearchSplitor(keywordString);
+            var keywordList = splitor.split();
+
+            forEach(keywordList, function(keyword) {
+                return forEach(dictionaries__, function(indexes, dictionaryKeyword) {
+                    if (!hasSuggest(dictionaryKeyword, suggestions)) {
+
+                        var keywordMap = reduceKeywordAndTransformToMap(keyword);
+                        var dictionaryMap = reduceKeywordAndTransformToMap(dictionaryKeyword);
+                        var percent = computePercentage(keywordMap, dictionaryMap);
+
+                        if (percent >= PERCENT_SUGGEST) {
+                            var highlightText = highlighter__.highlight(keywordString, dictionaryKeyword);
+                            if (empty(highlightText)) {
+                                highlightText = dictionaryKeyword;
+                            }
+
+                            suggestions.push({
+                                keywordMatch: keyword,
+                                word: dictionaryKeyword,
+                                highlight: highlightText,
+                                percent: numberFormat(percent)
+                            });
+
+                            if (suggestions.length === suggestionsSize__) {
+                                return false;
+                            }
+                        }
+                    }
+                });
+            });
+
+            suggestions = suggestions.sort(function(keyword1, keyword2) {
+                return keyword2.percent - keyword1.percent;
+            });
+
+            return suggestions;
+        }
+
+        function hasKeyword(word, list) {
+            for (var index in list) {
+                if (list[index] === word) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function hasSuggest(word, list) {
+            for (var index in list) {
+                if (list[index].word === word) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        this.getSuggestionsWhenSearchFound = function(keyword) {
+            return getSuggestions(keyword, 0);
+        };
+
+        this.getSuggestionsWhenSearchNotFound = function(keyword) {
+            return getSuggestions(keyword, percentSuggest__);
+        };
+    };
+
+
+    /**
+     * constructor of IndexSearch
+     * @param {object} settings
+     */
+    var constructor = function(settings) {
+        if (notDefined(settings)) {
+            throw new Error('require {object} settings');
+        }
+
+        var node__ = settings.repository;
+        if (notDefined(node__)) {
+            throw new Error('require {repository} settings.repository');
+        }
+
+        if (!isObject(node__)) {
+            throw new Error('require {repository} settings.repository is root node object');
+        }
+
+        var indexOnFields__ = settings.indexOnFields || [];
+        if (empty(indexOnFields__)) {
+            throw new Error('require index field on {string[]} : settings.indexOnFields');
+        } else if (foundIn('nodes', indexOnFields__)) {
+            throw new Error('field name \'nodes\' in {string[]} : settings.indexOnFields is reserved word');
+        }
+
+        var highlighter__ = new Highlighter(settings.highlightClass || 'keyword-highlight');
+        var suggestionHighlighter__ = new Highlighter(settings.highlightClass || 'keyword-highlight');
+
+        var indexStoreImpl__ = settings.indexStore || new InMemoryIndexStore(settings.maximumDictionaryKeySize || 3);
+        Interface.ensureImplements(indexStoreImpl__, [IndexStore]);
+
+        var indexWriter__ = new IndexWriter(indexStoreImpl__);
+        var indexReader__ = new IndexReader(indexStoreImpl__);
+
+        var indexSeparator__ = settings.indexSeparator || '/';
+        var postfixFieldNameHighlight__ = settings.postfixFieldNameHighlight || 'Highlight';
+
+        var resultNode__;
+        var keyword__ = '';
+        var duplicated__ = {};
+        var additionalDictionaries__ = settings.additionalDictionaries || [];
+        var suggestionList__ = [];
+        var suggestionsSize__ = settings.suggestionsSize;
+        var percentSuggest__ = settings.percentSuggest;
+
+        /**
+         * function stopword
+         * use for separate keyword from sentence
+         */
+        var stopword__ = settings.stopword || function(text) {
+            return replaceNotation(text).split(' ');
+        };
+
+        //----------------------------------------------------------------------
+        createIndex();
+
+        function createIndex() {
+            for (var dictionaryIndex in additionalDictionaries__) {
+                indexWriter__.addDictionary(additionalDictionaries__[dictionaryIndex]);
+            }
+            walkRepositoryReadKeyword(node__);
+
+            for (var nodeIndex in node__.nodes) {
+                walkRepositoryWriteIndex(0, nodeIndex, node__.nodes[nodeIndex]);
+            }
+
+            for (var duplicateType in duplicated__) {
+                delete duplicated__[duplicateType];
+            }
+        }
+
+        function createDictionary(sentence) {
+            if (empty(sentence)) {
+                return;
+            }
+
+            var keywords = stopword__(sentence);
+            for (var keywordIndex in keywords) {
+                indexWriter__.addDictionary(keywords[keywordIndex]);
+            }
+        }
+
+        function walkRepositoryReadKeyword(node) {
+            for (var field in indexOnFields__) {
+                var indexName = indexOnFields__[field];
+                createDictionary(node[indexName]);
+            }
+
+            var nodes = node.nodes;
+            if (empty(nodes)) {
+                return;
+            }
+
+            for (var nodeIndex in nodes) {
+                walkRepositoryReadKeyword(nodes[nodeIndex]);
+            }
+        }
+
+        function walkRepositoryWriteIndex(level, index, node) {
+            reduceIndex(node, function(sentence) {
+                indexWriter__.writeIndex(index, sentence);
+            });
+
+            // add field
+            node.level = 'level-' + level;
+            node.index = index + '';
+
+            var nodes = node.nodes;
+            if (empty(nodes)) {
+                return;
+            }
+
+            for (var nodeIndex in nodes) {
+                walkRepositoryWriteIndex(level + 1, index + indexSeparator__ + nodeIndex, nodes[nodeIndex]);
+            }
+        }
+
+        function reduceIndex(node, callback) {
+            for (var field in indexOnFields__) {
+                var indexName = indexOnFields__[field];
+                var duplicatedType = duplicated__[indexName];
+
+                if (notDefined(duplicatedType)) {
+                    duplicatedType = {};
+                    duplicated__[indexName] = duplicatedType;
+                }
+
+                var duplicatedField = duplicatedType[node[indexName]];
+                if (notDefined(duplicatedField)) {
+                    duplicatedField = true;
+                    duplicatedType[node[indexName]] = duplicatedField;
+                    callback(node[indexName]);
+                }
+            }
+        }
+
+        this.reIndex = function(node) {
+            node__ = node;
+            createIndex();
+        };
+
+        this.getKeyword = function() {
+            return keyword__;
+        };
+
+        this.getRepository = function() {
+            return node__;
+        };
+
+        this.getIndexs = function() {
+            return indexReader__.getIndexs();
+        };
+
+        this.clear = function() {
+            keyword__ = '';
+            return new ResultSearch({
+                content: node__
+            });
+        };
+
+        this.search = function(keyword) {
+            if (empty(keyword)) {
+                return new ResultSearch({
+                    content: node__
+                });
+            }
+
+            keyword = keyword.trim().toLowerCase();
+
+            // keyword not change, such as user try typed an empty keyword
+            // return old result
+            if (keyword__ === keyword) {
+                return getResultSearch();
+            }
+
+            //clean results
+            highlighter__.resetTotal();
+            suggestionHighlighter__.resetTotal();
+
+            resultNode__ = {nodes: []};
+            suggestionList__ = [];
+            //
+            keyword__ = keyword;
+            pullSuggestions();
+            keyword__ = generateNewKeywrod();
+            search();
+            keyword__ = keyword;
+
+            return getResultSearch();
+        };
+
+        function generateNewKeywrod() {
+            var suggestMap = {};
+
+            forEach(suggestionList__, function(suggest) {
+                var firstCharactor = suggest.word[0];
+                if (notDefined(suggestMap[firstCharactor])) {
+                    suggestMap[firstCharactor] = [];
+                }
+
+                suggestMap[firstCharactor].push(suggest.word);
+            });
+
+            var splitor = new InputSearchSplitor(keyword__);
+            var keywordList = splitor.split();
+            forEach(suggestMap, function(suggests) {
+                getKeyword(suggests[0], keywordList);
+            });
+
+            removeSomeSuggests(keywordList);
+            return reduceKeyword(keywordList);
+        }
+
+        function removeSomeSuggests(keywordList) {
+            var newSuggets = [];
+            forEach(keywordList, function(keyword) {
+                forEach(suggestionList__, function(suggest) {
+                    if (keyword !== suggest.word && notFoundIn(suggest, newSuggets)) {
+                        newSuggets.push(suggest);
+                    }
+                });
+            });
+
+            suggestionList__ = newSuggets;
+        }
+
+        function reduceKeyword(keywordList) {
+            var keywordMap = {};
+            for (var index in keywordList) {
+                keywordMap[keywordList[index]] = keywordList[index];
+            }
+
+            return object2Array(keywordMap).join(' ');
+        }
+
+        function getKeyword(word, list) {
+            for (var index in list) {
+                if (matchWord(list[index], word)) {
+                    list[index] = word;
+                }
+            }
+        }
+
+        function matchWord(word1, word2) {
+            return word1[0] === word2[0] && (word2.length < word1.length || notFoundIn(word1, word2));
+        }
+
+        function getResultSearch() {
+            var splitor = new InputSearchSplitor(keyword__);
+            splitor.split();
+            return new ResultSearch({
+                totalPosition: splitor.getKeywordSize() > 0 ? parseInt(highlighter__.getTotalHighlight() / splitor.getKeywordSize()) : 0,
+                totalSentence: highlighter__.getTotalSentence(),
+                content: resultNode__,
+                suggestions: suggestionList__
+            });
+        }
+
+        function search() {
+            var indexes = indexReader__.readIndex(keyword__);
+            for (var idx in indexes) {
+                pullNode(indexes[idx]);
+            }
+        }
+
+        function pullSuggestions() {
+            suggestionList__ = new Suggestion({
+                dictionary: indexReader__.getDictionaries(keyword__),
+                suggestionsSize: suggestionsSize__,
+                percentSuggest: percentSuggest__,
+                highlighter: suggestionHighlighter__
+            }).getSuggestionsWhenSearchFound(keyword__);
+        }
+
+        function pullNode(index) {
+            var indexArray = index.split(indexSeparator__);
+            var nodePointer = node__;
+            var resultNodePointer = resultNode__;
+
+            for (var idx in indexArray) {
+                var subIndex = indexArray[idx];
+
+                if (empty(subIndex)) {
+                    break;
+                }
+
+                nodePointer = nodePointer.nodes[subIndex];
+                var nodeTemp = resultNodePointer.nodes[subIndex];
+                if (notDefined(nodeTemp)) {
+                    nodeTemp = copyNode(nodePointer);
+                    resultNodePointer.nodes[subIndex] = nodeTemp;
+                }
+
+                if (notDefined(nodeTemp.nodes)) {
+                    nodeTemp.nodes = [];
+                }
+
+                resultNodePointer = nodeTemp;
+            }
+        }
+
+        function copyNode(node) {
+            var newNode = {};
+            for (var fieldName in node) {
+                if (fieldName !== 'nodes') {
+                    newNode[fieldName] = node[fieldName];
+                    for (var indexName in indexOnFields__) {
+                        if (fieldName === indexOnFields__[indexName]) {
+                            var sentence = newNode[fieldName];
+                            var highlightText = highlighter__.highlight(keyword__, sentence);
+                            if (notEmpty(highlightText)) {
+                                newNode[fieldName + postfixFieldNameHighlight__] = highlightText;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return newNode;
+        }
+    };
+
+
+    /**
+     * IndexSearch return
+     */
+    return constructor;
+
+})();
+
+
+
+
+
+
+
+
+
+
+/**
+ * Blogger
+ * for pull repository from blogger
+ * 
+ * @author redcrow (jittagorn pitakmetagoon)
+ */
+
+window.Blogger = window.Blogger || {};
+window.Blogger.pullRepositoryFromBlog = function(blogUrl, callback) {
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = blogUrl + '/feeds/posts/default?max-results=10000&alt=json-in-script&callback=blogFeedCallback';
+    script.onload = function() {
+        callback(window.blogFeedRepository);
+    };
+
+    document.getElementsByTagName('head')[0].appendChild(script);
+};
+
+
+function blogFeedCallback(xml) {
+    var blogFeedRepository__ = {nodes: []};
+    var feed = xml.feed;
+    var categories = feed.category;
+    for (var index in categories) {
+        var category = categories[index];
+        blogFeedRepository__.nodes.push({
+            name: category.term,
+            link: '/search/label/' + encodeURIComponent(category.term)
+        });
+    }
+
+    var entries = feed.entry;
+    for (var index in entries) {
+        var entry = entries[index];
+        entry.title.$t;
+        var entryCategories = entry.category;
+        for (var categoryIndex in entryCategories) {
+            var entryCategory = entryCategories[categoryIndex];
+            var category = getCategory(entryCategory.term);
+
+            var nodes = category.nodes;
+            if (!nodes) {
+                nodes = [];
+            }
+
+            var node = {
+                name: entry.title.$t,
+                published: new Date(entry.published.$t),
+                link: getPostLink(entry),
+                nodes: []
+            };
+
+            if (index < 5) {
+                node.newPost = true;
+            }
+
+            nodes.push(node);
+
+            category.nodes = nodes;
+        }
+    }
+
+    sortNodesByName(blogFeedRepository__.nodes);
+    for (var index in blogFeedRepository__.nodes) {
+        var node = blogFeedRepository__.nodes[index];
+        sortByPublished(node.nodes);
+    }
+
+    function sortNodesByName(nodes) {
+        nodes = nodes.sort(function(node1, node2) {
+            return node1.name.localeCompare(node2.name);
+        });
+    }
+
+    function sortByPublished(nodes) {
+        nodes = nodes.sort(function(node1, node2) {
+            return node1.published > node2.published;
+        });
+    }
+
+    function getCategory(name) {
+        var nodes = blogFeedRepository__.nodes;
+        for (var index in nodes) {
+            var node = nodes[index];
+            if (node.name === name) {
+                return node;
+            }
+        }
+
+        return null;
+    }
+
+    function getPostLink(entry) {
+        var links = entry.link;
+        for (var index in links) {
+            if (links[index].rel === 'alternate') {
+                return links[index].href;
+            }
+        }
+
+        return '';
+    }
+
+    window.blogFeedRepository = blogFeedRepository__;
+}
+;
 
 
 //additional dictionaries
