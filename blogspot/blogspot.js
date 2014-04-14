@@ -464,12 +464,12 @@ __searchPluginLocale__.th = {
 
     Blogger.pullRepositoryFromBlog(context.url, function(repository) {
         /**/
-        var hasDictionary = context.dictionary && context.dictionary.length > 0;
+        var hasDictionary = context.locale.dictionaries && context.locale.dictionaries.length > 0;
         var settings = {
             repository: repository, //require
             indexOnFields: ['name'], //require
             maximumIndexKeySize: 5,
-            additionalDictionaries: hasDictionary ? context.dictionary.split(',') : window.additionalDictionaries
+            additionalDictionaries: hasDictionary ? context.locale.dictionaries.split(',') : window.additionalDictionaries
         };
 
         var indexSearch = new IndexSearch(settings);
