@@ -617,7 +617,7 @@ window.IndexSearch = window.IndexSearch || (function() {
         }
 
         var indexStore__ = [];
-        for (var index = 1; index <= maximumDictionaryKeySize__; index++) {
+        for (var index = 0; index <= maximumDictionaryKeySize__; index++) {
             indexStore__[index] = {};
         }
 
