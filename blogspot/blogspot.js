@@ -558,7 +558,7 @@ __searchPluginLocale__.th = {
             for (var index in nodes) {
                 var childNode = nodes[index];
                 var $childLink = $('<a>').attr('href', childNode.link).html(childNode.nameHighlight || childNode.name);
-                var $newPost = childNode.newPost ? $('<span>').text(context.locale.lange.NEW + '!').addClass('index-search-new-post') : '';
+                var $newPost = childNode.newPost ? $('<span>').text(context.locale.lang.NEW + '!').addClass('index-search-new-post') : '';
                 var $childDOM = $('<ol>');
                 var $list = $('<li>').attr('class', childNode.level)
                         .append($childLink)
