@@ -430,7 +430,7 @@ __searchPluginLocale__.th = {
     }
 
     function getSearchScript() {
-        document.querySelectorAll('.ns-blogsearch-script')[0];
+        return document.querySelectorAll('.ns-blogsearch-script')[0];
     }
 
     function getHeadElement() {
