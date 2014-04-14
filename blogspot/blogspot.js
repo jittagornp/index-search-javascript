@@ -325,81 +325,113 @@ __searchPluginLocale__.th = {
 
 
 (function(window, document, controller) {
-	var SOURCE_CODE = 'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/';
+    var SOURCE_ORIGIN = 'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/';
 
     var resourceJS = [
+        //
     ];
 
     var resourceStyle = [
-        SOURCE_CODE + 'blogspot.css?time=1'
+        SOURCE_ORIGIN + 'blogspot.css?time=1'
     ];
+
+    function forEachArray(array, callback, context_opt) {
+        var length = array.length;
+        for (var i = 0; i < length; i++) {
+            var value = callback.call(context_opt, array[i], i, array, length);
+            if (value === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     window.addEventListener('load', function() {
         //
-        var na5centScript = document.querySelectorAll('.ns-blogsearch-script')[0];
-        var blogspotURL = na5centScript.getAttribute('data-blogspot-url');
-        var languages = na5centScript.getAttribute('data-languages') ? JSON.parse(na5centScript.getAttribute('data-languages')) : {};
-		var locale = na5centScript.getAttribute('data-locale') || 'en';
-		var localeObj = __searchPluginLocale__[locale];
-		if(!localeObj){
-			alert('Not support locale (data-locale) "' + locale + '"');
-		}
-		
-        var targetElementId = na5centScript.getAttribute('data-element-id');
-        var additionalDictionaries = na5centScript.getAttribute('data-additionalDictionaries') || [];
-        var slideSearch = na5centScript.getAttribute('data-slide-search');
-		if(!slideSearch){
-			slideSearch = 'true';
-		}
-		
-        var theme = na5centScript.getAttribute('data-theme') || 'facebook'; //default
-        if (Boolean(slideSearch)) {
-            resourceJS.push(SOURCE_CODE + 'slide.js');
+        var jscript = getSearchScript();
 
-            resourceStyle.push(SOURCE_CODE + 'jscrollpane/jscrollpane.css');
-            resourceStyle.push(SOURCE_CODE + 'slide.css');
-            resourceStyle.push(SOURCE_CODE + 'theme/' + theme + '/css/default.css?time=2');
+        var blogspotURL = jscript.getAttribute('data-blogspot-url');
+        var langs = jscript.getAttribute('data-languages');
+        langs = langs ? JSON.parse(langs) : {};
+
+        var localeName = jscript.getAttribute('data-locale') || 'en';
+        var localeObj = __searchPluginLocale__[localeName];
+        if (!localeObj) {
+            alert('Not support locale (data-locale) "' + localeName + '"');
         }
 
-        var html = ['<div class="ns-plugin-search-scroll">',
-                        '<div class="ns-plugin-search-scroll-content">',
-                            '<div class="ns-plugin-search-box" style="display : none;">',
-                                '<input class="ns-plugin-search-input" placeholder="' + (languages.PLACE_HOLDER || localeObj.PLACE_HOLDER) + '"/>',
-                                '<button class="ns-plugin-search-clear-button">' + (languages.CLEAR || localeObj.CLEAR) + '</button>',
-                                '<div class="ns-plugin-search-result">',
-                                    '<div class="ns-plugin-search-summary"></div>',
-                                    '<div class="ns-plugin-search-suggestions"></div>',
-                                    '<div class="ns-plugin-search-repositories"></div>',
-                                '</div>',
-                            '</div>',
-                        '</div>',
-                    '</div>',
-					
-                    '<div class="ns-plugin-search-button" title="' + (languages.SEARCH_BUTTON_TITLE || localeObj.SEARCH_BUTTON_TITLE) + '">',
-                    '</div>'
+        var elementId = jscript.getAttribute('data-element-id');
+        var adDics = jscript.getAttribute('data-additionalDictionaries') || [];
+        var isSlide = jscript.getAttribute('data-slide-search');
+        if (!isSlide) {
+            isSlide = 'true';
+        }
+
+        var theme = jscript.getAttribute('data-theme') || 'facebook'; //default
+        if (Boolean(isSlide)) {
+            resourceJS.push(SOURCE_ORIGIN + 'slide.js');
+
+            resourceStyle.push(SOURCE_ORIGIN + 'jscrollpane/jscrollpane.css');
+            resourceStyle.push(SOURCE_ORIGIN + 'slide.css');
+            resourceStyle.push(SOURCE_ORIGIN + 'theme/' + theme + '/css/default.css?time=2');
+        }
+
+        var html = [
+            '<div class="ns-plugin-search-scroll">',
+            /**/'<div class="ns-plugin-search-scroll-content">',
+            /******/'<div class="ns-plugin-search-box" style="display : none;">',
+            /**********/'<input class="ns-plugin-search-input" placeholder="' + (langs.PLACE_HOLDER || localeObj.PLACE_HOLDER) + '"/>',
+            /**********/'<button class="ns-plugin-search-clear-button">' + (langs.CLEAR || localeObj.CLEAR) + '</button>',
+            /**********/'<div class="ns-plugin-search-result">',
+            /**************/'<div class="ns-plugin-search-summary"></div>',
+            /**************/'<div class="ns-plugin-search-suggestions"></div>',
+            /**************/'<div class="ns-plugin-search-repositories"></div>',
+            /**********/'</div>',
+            /******/'</div>',
+            /**/'</div>',
+            '</div>',
+            '<div class="ns-plugin-search-button" title="' + (langs.SEARCH_BUTTON_TITLE || localeObj.SEARCH_BUTTON_TITLE) + '">',
+            '</div>'
         ];
 
-        document.getElementById(targetElementId).innerHTML = html.join('');
-        document.getElementById(targetElementId).className += 'ns-plugin-slide-search ns-plugin-theme-' + theme;
+        findById(elementId).innerHTML = html.join('');
+        findById(elementId).className += 'ns-plugin-slide-search ns-plugin-theme-' + theme;
 
-        for (var index in resourceStyle) {
-            loadStyle(resourceStyle[index]);
+        forEachArray(resourceStyle, function(css) {
+            loadStyle(css);
+        });
+
+        var searchContext = {
+            url: blogspotURL,
+            languages: langs,
+            locale: {
+                name: localeName,
+                lang: localeObj,
+                dictionaries: adDics
+            }
+        };
+
+        if (resourceJS.length === 0) {
+            controller && controller(searchContext, window.jQuery);
+            return;
         }
 
-        if (resourceJS.length > 0) {
-            for (var index in resourceJS) {
-                loadScript(resourceJS[index], function() {
-                    if (index == (resourceJS.length - 1) && controller) {
-                        controller(blogspotURL, languages, localeObj, additionalDictionaries, window.jQuery);
-                    }
-                });
-            }
-        } else {
-            if (controller) {
-                controller(blogspotURL, languages, localeObj, additionalDictionaries, window.jQuery);
-            }
-        }
+        forEachArray(resourceJS, function(js, index, array, size) {
+            var isLastest = index === (size - 1);
+            loadScript(js, function() {
+                isLastest && controller && controller(searchContext, window.jQuery);
+            });
+        });
     });
+
+    function findById(id) {
+        return document.getElementById(id);
+    }
+
+    function getSearchScript() {
+        document.querySelectorAll('.ns-blogsearch-script')[0];
+    }
 
     function getHeadElement() {
         return document.getElementsByTagName('head')[0];
@@ -409,33 +441,38 @@ __searchPluginLocale__.th = {
         var link = document.createElement('link');
         link.setAttribute('rel', 'stylesheet');
         link.setAttribute('href', styleUrl);
-
         getHeadElement().appendChild(link);
     }
 
-    function loadScript(jsURL, callback) {
+    function loadScript(url, callback) {
         var script = document.createElement('script');
         script.type = 'text/javascript';
         script.onload = callback;
-        script.src = jsURL;
-        //script.async = false;
+        script.onreadystatechange = function() {
+            if (this.readyState === "loaded" || this.readyState === "complete") {
+                callback.apply(this);
+            }
+        };
 
+        script.src = url;
         getHeadElement().appendChild(script);
     }
-})(window, document, function(blogspotURL, languages, localeObj, additionalDictionaries, $) {
+})(window, document, function(context, $) {
     if (!window.Blogger || !$) {
         return;
     }
 
-    Blogger.pullRepositoryFromBlog(blogspotURL, function(repository) {
+    Blogger.pullRepositoryFromBlog(context.url, function(repository) {
+        /**/
+        var hasDictionary = context.dictionary && context.dictionary.length > 0;
         var settings = {
             repository: repository, //require
             indexOnFields: ['name'], //require
             maximumIndexKeySize: 5,
-            additionalDictionaries: (additionalDictionaries && additionalDictionaries.length > 0) ? additionalDictionaries.split(',') : window.additionalDictionaries
+            additionalDictionaries: hasDictionary ? context.dictionary.split(',') : window.additionalDictionaries
         };
 
-        var indexSearch__ = new IndexSearch(settings);
+        var indexSearch = new IndexSearch(settings);
         //====================================================================================
 
 
@@ -449,22 +486,22 @@ __searchPluginLocale__.th = {
         showResult(repository);
         $searchInput.keyup(function() {
             var keyword = $searchInput.val();
-            var result = indexSearch__.search(keyword);
+            var result = indexSearch.search(keyword);
 
             $summary.text('').hide();
             if (result.getTotalPosition() !== 0) {
-                $summary.append((languages.SEARCH || localeObj.SEARCH) + ' \'')
-                        .append($('<span>').text(indexSearch__.getKeyword()).addClass('summary-highlight'))
-                        .append('\' ' + (languages.FOUND || localeObj.FOUND) + ' ')
+                $summary.append((context.languages.SEARCH || context.locale.lange.SEARCH) + ' \'')
+                        .append($('<span>').text(indexSearch.getKeyword()).addClass('summary-highlight'))
+                        .append('\' ' + (context.languages.FOUND || context.locale.lange.FOUND) + ' ')
                         .append($('<span>').text(result.getTotalPosition()).addClass('summary-highlight'))
-                        .append(' ' + (languages.POSITIONS || localeObj.POSITIONS) + ' ')
+                        .append(' ' + (context.languages.POSITIONS || context.locale.lange.POSITIONS) + ' ')
                         .append($('<span>').text(result.getTotalSentence()).addClass('summary-highlight'))
-                        .append(' ' + (languages.SENTENCES || localeObj.SENTENCES))
+                        .append(' ' + (context.languages.SENTENCES || context.locale.lange.SENTENCES))
                         .show();
             } else if (keyword !== '') {
-                $summary.append((languages.SEARCH || localeObj.SEARCH) + ' \'')
-                        .append($('<span>').text(indexSearch__.getKeyword()).addClass('summary-highlight'))
-                        .append('\' ' + (languages.NOT_FOUND || localeObj.NOT_FOUND))
+                $summary.append((context.languages.SEARCH || context.locale.lange.SEARCH) + ' \'')
+                        .append($('<span>').text(indexSearch.getKeyword()).addClass('summary-highlight'))
+                        .append('\' ' + (context.languages.NOT_FOUND || context.locale.lange.NOT_FOUND))
                         .show();
             }
 
@@ -472,7 +509,7 @@ __searchPluginLocale__.th = {
             $suggestions.text('').hide();
             var suggestions = result.getSuggestions();
             if (suggestions.length !== 0) {
-                $suggestions.append((languages.DO_YOU_MEAN || localeObj.DO_YOU_MEAN) + ' ');
+                $suggestions.append((context.languages.DO_YOU_MEAN || context.locale.lange.DO_YOU_MEAN) + ' ');
                 for (var suggestIndex in suggestions) {
                     var suggest = suggestions[suggestIndex];
                     var highlight = suggest.highlight;
@@ -485,9 +522,9 @@ __searchPluginLocale__.th = {
                             .attr('data-suggest', suggest.word)
                             .html(highlight)
                             .click(function(event) {
-                        event.preventDefault();
-                        $searchInput.val($(this).attr('data-suggest')).keyup();
-                    });
+                                event.preventDefault();
+                                $searchInput.val($(this).attr('data-suggest')).keyup();
+                            });
 
                     $suggestions.append($suggestItem);
                 }
@@ -500,7 +537,7 @@ __searchPluginLocale__.th = {
 
         $clearButton.click(function() {
             $searchInput.val('');
-            indexSearch__.clear();
+            indexSearch.clear();
             $summary.text('').hide();
             $suggestions.text('').hide();
             showResult(repository);
@@ -521,13 +558,13 @@ __searchPluginLocale__.th = {
             for (var index in nodes) {
                 var childNode = nodes[index];
                 var $childLink = $('<a>').attr('href', childNode.link).html(childNode.nameHighlight || childNode.name);
-                var $newPost = childNode.newPost ? $('<span>').text(localeObj.NEW + '!').addClass('index-search-new-post') : '';
+                var $newPost = childNode.newPost ? $('<span>').text(context.locale.lange.NEW + '!').addClass('index-search-new-post') : '';
                 var $childDOM = $('<ol>');
                 var $list = $('<li>').attr('class', childNode.level)
                         .append($childLink)
                         .append($newPost);
-                
-                if(childNode.nodes && childNode.nodes.length > 0){
+
+                if (childNode.nodes && childNode.nodes.length > 0) {
                     $list.append($childDOM);
                 }
 
@@ -544,11 +581,10 @@ __searchPluginLocale__.th = {
         function dateFormat(date) {
             return moment(date).format('MMMM Do YYYY, h:mm:ss a');
         }
-        
+
         $('.ns-plugin-search-scroll-content').append('<div class="ns-plugin-search-about">Search plugin by <a target="_blank" href="http://search-plugin.blogspot.com/">search-plugin.blogspot.com</a></div>');
     });
 });
-
 
 
 
