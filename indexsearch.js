@@ -100,14 +100,16 @@ window.IndexSearch = window.IndexSearch || (function() {
     }
 
     function forEach(obj, callback, context_opt) {
-        var forEachImpl;
-        if (isObject(obj)) {
-            forEachImpl = forEachObject;
-        } else if (isArray(obj)) {
-            forEachImpl = forEachArray;
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                var value = callback.call(context_opt, obj[key], key, obj);
+                if (value === false) {
+                    return false;
+                }
+            }
         }
 
-        return forEachImpl(obj, callback, context_opt);
+        return true;
     }
 
     function object2Array(obj) {

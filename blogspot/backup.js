@@ -1,4 +1,4 @@
-﻿/**
+/**
  * blogspot search plugin
  * by index search javascript
  * code : https://github.com/jittagornp/index-search-javascript
@@ -297,20 +297,296 @@ var additionalDictionaries="\u0e2b\u0e25\u0e32\u0e22 \u0e14\u0e39\u0e41\u0e25 \u
 
 
 
-var __searchPluginLocale__={en:{SEARCH:"search",FOUND:"found",NOT_FOUND:"not found",POSITIONS:"positions on",SENTENCES:"sentences",DO_YOU_MEAN:"do you mean",CLEAR:"clear",PLACE_HOLDER:"search...",SEARCH_BUTTON_TITLE:"click for search contents of blog",NEW:"New"},th:{SEARCH:"\u0e04\u0e49\u0e19\u0e2b\u0e32",FOUND:"\u0e1e\u0e1a",NOT_FOUND:"\u0e44\u0e21\u0e48\u0e1e\u0e1a",POSITIONS:"\u0e15\u0e33\u0e41\u0e2b\u0e19\u0e48\u0e07 \u0e1a\u0e19",SENTENCES:"\u0e1b\u0e23\u0e30\u0e42\u0e22\u0e04",DO_YOU_MEAN:"\u0e04\u0e38\u0e13\u0e2b\u0e21\u0e32\u0e22\u0e16\u0e36\u0e07",
-CLEAR:"\u0e40\u0e04\u0e25\u0e35\u0e22\u0e23\u0e4c",PLACE_HOLDER:"\u0e1e\u0e34\u0e21\u0e1e\u0e4c\u0e2a\u0e34\u0e48\u0e07\u0e17\u0e35\u0e48\u0e15\u0e49\u0e2d\u0e07\u0e01\u0e32\u0e23\u0e04\u0e49\u0e19\u0e2b\u0e32...",SEARCH_BUTTON_TITLE:"\u0e04\u0e25\u0e34\u0e01\u0e40\u0e1e\u0e37\u0e48\u0e2d\u0e04\u0e49\u0e19\u0e2b\u0e32\u0e1a\u0e19\u0e04\u0e27\u0e32\u0e21\u0e02\u0e2d\u0e07 blog",NEW:"\u0e43\u0e2b\u0e21\u0e48"}};
+var __searchPluginLocale__ = {};
 
-var BLOGSPOT_SEARCH_ORIGIN = 'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/';
+__searchPluginLocale__.en = {
+	SEARCH: 'search',
+	FOUND: 'found',
+	NOT_FOUND: 'not found',
+	POSITIONS: 'positions on',
+	SENTENCES: 'sentences',
+	DO_YOU_MEAN: 'do you mean',
+	CLEAR: 'clear',
+	PLACE_HOLDER : 'search...',
+	SEARCH_BUTTON_TITLE : 'click for search contents of blog',
+	NEW : 'New'
+};
 
-(function(c,b,e){function m(b,c,a){for(var d=b.length,g=0;g<d;g++)if(!1===c.call(a,b[g],g,b,d))return!1;return!0}function q(c,d){var a=b.createElement("script");a.type="text/javascript";a.onload=d;a.onreadystatechange=function(){"loaded"!==this.readyState&&"complete"!==this.readyState||d.apply(this)};a.src=c;b.getElementsByTagName("head")[0].appendChild(a)}var l=[],d=[BLOGSPOT_SEARCH_ORIGIN+"blogspot.css?time=1"];c.addEventListener("load",function(){var f=b.querySelectorAll(".ns-blogsearch-script")[0],
-n=f.getAttribute("data-blogspot-url"),a=f.getAttribute("data-languages"),a=a?JSON.parse(a):{},p=f.getAttribute("data-locale")||"en",g=__searchPluginLocale__[p];g||alert('Not support locale (data-locale) "'+p+'"');var r=f.getAttribute("data-element-id"),s=f.getAttribute("data-additionalDictionaries")||[],k=f.getAttribute("data-slide-search");k||(k="true");f=f.getAttribute("data-theme")||"facebook";Boolean(k)&&(l.push(BLOGSPOT_SEARCH_ORIGIN+"slide.js"),d.push(BLOGSPOT_SEARCH_ORIGIN+"jscrollpane/jscrollpane.css"),
-d.push(BLOGSPOT_SEARCH_ORIGIN+"slide.css"),d.push(BLOGSPOT_SEARCH_ORIGIN+"theme/"+f+"/css/default.css?time=2"));k=['<div class="ns-plugin-search-scroll">','<div class="ns-plugin-search-scroll-content">','<div class="ns-plugin-search-box" style="display : none;">','<input class="ns-plugin-search-input" placeholder="'+(a.PLACE_HOLDER||g.PLACE_HOLDER)+'"/>','<button class="ns-plugin-search-clear-button">'+(a.CLEAR||g.CLEAR)+"</button>",'<div class="ns-plugin-search-result">','<div class="ns-plugin-search-summary"></div>',
-'<div class="ns-plugin-search-suggestions"></div>','<div class="ns-plugin-search-repositories"></div>',"</div>","</div>","</div>","</div>",'<div class="ns-plugin-search-button" title="'+(a.SEARCH_BUTTON_TITLE||g.SEARCH_BUTTON_TITLE)+'">',"</div>"];b.getElementById(r).innerHTML=k.join("");b.getElementById(r).className+="ns-plugin-slide-search ns-plugin-theme-"+f;m(d,function(c){var a=b.createElement("link");a.setAttribute("rel","stylesheet");a.setAttribute("href",c);b.getElementsByTagName("head")[0].appendChild(a)});
-var h={url:n,languages:a,locale:{name:p,lang:g,dictionaries:s}};0===l.length?e&&e(h,c.jQuery):m(l,function(b,a,g,f){var d=a===f-1;q(b,function(){d&&e&&e(h,c.jQuery)})})})})(window,document,function(c,b){window.Blogger&&b&&Blogger.pullRepositoryFromBlog(c.url,function(e){function m(c){var a=b("<ul>");p.html(a);q(c,a)}function q(a,f){var d=a.nodes;if(d&&0!==d.length)for(var k in d){var h=d[k],e=b("<a>").attr("href",h.link).html(h.nameHighlight||h.name),l=h.newPost?b("<span>").text(c.locale.lang.NEW+
-"!").addClass("index-search-new-post"):"",m=b("<ol>"),e=b("<li>").attr("class",h.level).append(e).append(l);h.nodes&&0<h.nodes.length&&e.append(m);h.published&&e.attr("title",moment(h.published).format("MMMM Do YYYY, h:mm:ss a"));f.append(e);q(h,m)}}var l={repository:e,indexOnFields:["name"],maximumIndexKeySize:5,additionalDictionaries:c.locale.dictionaries&&0<c.locale.dictionaries.length?c.locale.dictionaries.split(","):window.additionalDictionaries},d=new IndexSearch(l),f=b(".ns-plugin-search-input"),
-l=b(".ns-plugin-search-clear-button"),n=b(".ns-plugin-search-summary"),a=b(".ns-plugin-search-suggestions"),p=b(".ns-plugin-search-repositories");b(".ns-plugin-search-box").show();m(e);f.keyup(function(){var g=f.val(),e=d.search(g);n.text("").hide();0!==e.getTotalPosition()?n.append((c.languages.SEARCH||c.locale.lang.SEARCH)+" '").append(b("<span>").text(d.getKeyword()).addClass("summary-highlight")).append("' "+(c.languages.FOUND||c.locale.lang.FOUND)+" ").append(b("<span>").text(e.getTotalPosition()).addClass("summary-highlight")).append(" "+
-(c.languages.POSITIONS||c.locale.lang.POSITIONS)+" ").append(b("<span>").text(e.getTotalSentence()).addClass("summary-highlight")).append(" "+(c.languages.SENTENCES||c.locale.lang.SENTENCES)).show():""!==g&&n.append((c.languages.SEARCH||c.locale.lang.SEARCH)+" '").append(b("<span>").text(d.getKeyword()).addClass("summary-highlight")).append("' "+(c.languages.NOT_FOUND||c.locale.lang.NOT_FOUND)).show();a.text("").hide();g=e.getSuggestions();if(0!==g.length){a.append((c.languages.DO_YOU_MEAN||c.locale.lang.DO_YOU_MEAN)+
-" ");for(var l in g){var k=g[l],h=k.highlight;0!=l&&a.append(", ");k=b("<a>").attr("href","#"+k.word).attr("data-suggest",k.word).html(h).click(function(a){a.preventDefault();f.val(b(this).attr("data-suggest")).keyup()});a.append(k)}a.append(" ").append("?").show()}m(e.getContent())});l.click(function(){f.val("");d.clear();n.text("").hide();a.text("").hide();m(e)});b(".ns-plugin-search-scroll-content").append('<div class="ns-plugin-search-about">Search plugin by <a target="_blank" href="http://search-plugin.blogspot.com/">search-plugin.blogspot.com</a></div>')})});
+__searchPluginLocale__.th = {
+	SEARCH: 'ค้นหา',
+	FOUND: 'พบ',
+	NOT_FOUND: 'ไม่พบ',
+	POSITIONS: 'ตำแหน่ง บน',
+	SENTENCES: 'ประโยค',
+	DO_YOU_MEAN: 'คุณหมายถึง',
+	CLEAR: 'เคลียร์',
+	PLACE_HOLDER : 'พิมพ์สิ่งที่ต้องการค้นหา...',
+	SEARCH_BUTTON_TITLE : 'คลิกเพื่อค้นหาบนความของ blog',
+	NEW : 'ใหม่'
+};
+
+
+(function(window, document, controller) {
+    var SOURCE_ORIGIN = 'https://rawgithub.com/jittagornp/index-search-javascript/master/blogspot/';
+
+    var resourceJS = [
+        //
+    ];
+
+    var resourceStyle = [
+        SOURCE_ORIGIN + 'blogspot.css?time=1'
+    ];
+
+    function forEachArray(array, callback, context_opt) {
+        var length = array.length;
+        for (var i = 0; i < length; i++) {
+            var value = callback.call(context_opt, array[i], i, array, length);
+            if (value === false) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    window.addEventListener('load', function() {
+        //
+        var jscript = getSearchScript();
+
+        var blogspotURL = jscript.getAttribute('data-blogspot-url');
+        var langs = jscript.getAttribute('data-languages');
+        langs = langs ? JSON.parse(langs) : {};
+
+        var localeName = jscript.getAttribute('data-locale') || 'en';
+        var localeObj = __searchPluginLocale__[localeName];
+        if (!localeObj) {
+            alert('Not support locale (data-locale) "' + localeName + '"');
+        }
+
+        var elementId = jscript.getAttribute('data-element-id');
+        var adDics = jscript.getAttribute('data-additionalDictionaries') || [];
+        var isSlide = jscript.getAttribute('data-slide-search');
+        if (!isSlide) {
+            isSlide = 'true';
+        }
+
+        var theme = jscript.getAttribute('data-theme') || 'facebook'; //default
+        if (Boolean(isSlide)) {
+            resourceJS.push(SOURCE_ORIGIN + 'slide.js');
+
+            resourceStyle.push(SOURCE_ORIGIN + 'jscrollpane/jscrollpane.css');
+            resourceStyle.push(SOURCE_ORIGIN + 'slide.css');
+            resourceStyle.push(SOURCE_ORIGIN + 'theme/' + theme + '/css/default.css?time=2');
+        }
+
+        var html = [
+            '<div class="ns-plugin-search-scroll">',
+            /**/'<div class="ns-plugin-search-scroll-content">',
+            /******/'<div class="ns-plugin-search-box" style="display : none;">',
+            /**********/'<input class="ns-plugin-search-input" placeholder="' + (langs.PLACE_HOLDER || localeObj.PLACE_HOLDER) + '"/>',
+            /**********/'<button class="ns-plugin-search-clear-button">' + (langs.CLEAR || localeObj.CLEAR) + '</button>',
+            /**********/'<div class="ns-plugin-search-result">',
+            /**************/'<div class="ns-plugin-search-summary"></div>',
+            /**************/'<div class="ns-plugin-search-suggestions"></div>',
+            /**************/'<div class="ns-plugin-search-repositories"></div>',
+            /**********/'</div>',
+            /******/'</div>',
+            /**/'</div>',
+            '</div>',
+            '<div class="ns-plugin-search-button" title="' + (langs.SEARCH_BUTTON_TITLE || localeObj.SEARCH_BUTTON_TITLE) + '">',
+            '</div>'
+        ];
+
+        findById(elementId).innerHTML = html.join('');
+        findById(elementId).className += 'ns-plugin-slide-search ns-plugin-theme-' + theme;
+
+        forEachArray(resourceStyle, function(css) {
+            loadStyle(css);
+        });
+
+        var searchContext = {
+            url: blogspotURL,
+            languages: langs,
+            locale: {
+                name: localeName,
+                lang: localeObj,
+                dictionaries: adDics
+            }
+        };
+
+        if (resourceJS.length === 0) {
+            controller && controller(searchContext, window.jQuery);
+            return;
+        }
+
+        forEachArray(resourceJS, function(js, index, array, size) {
+            var isLastest = index === (size - 1);
+            loadScript(js, function() {
+                isLastest && controller && controller(searchContext, window.jQuery);
+            });
+        });
+    });
+
+    function findById(id) {
+        return document.getElementById(id);
+    }
+
+    function getSearchScript() {
+        return document.querySelectorAll('.ns-blogsearch-script')[0];
+    }
+
+    function getHeadElement() {
+        return document.getElementsByTagName('head')[0];
+    }
+
+    function loadStyle(styleUrl) {
+        var link = document.createElement('link');
+        link.setAttribute('rel', 'stylesheet');
+        link.setAttribute('href', styleUrl);
+        getHeadElement().appendChild(link);
+    }
+
+    function loadScript(url, callback) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.onload = callback;
+        script.onreadystatechange = function() {
+            if (this.readyState === "loaded" || this.readyState === "complete") {
+                callback.apply(this);
+            }
+        };
+
+        script.src = url;
+        getHeadElement().appendChild(script);
+    }
+})(window, document, function(context, $) {
+    if (!window.Blogger || !$) {
+        return;
+    }
+
+    Blogger.pullRepositoryFromBlog(context.url, function(repository) {
+        /**/
+        var hasDictionary = context.locale.dictionaries && context.locale.dictionaries.length > 0;
+        var settings = {
+            repository: repository, //require
+            indexOnFields: ['name'], //require
+            maximumIndexKeySize: 5,
+            additionalDictionaries: hasDictionary ? context.locale.dictionaries.split(',') : window.additionalDictionaries
+        };
+
+        var indexSearch = new IndexSearch(settings);
+        //====================================================================================
+
+
+        var $searchInput = $('.ns-plugin-search-input');
+        var $clearButton = $('.ns-plugin-search-clear-button');
+        var $summary = $('.ns-plugin-search-summary');
+        var $suggestions = $('.ns-plugin-search-suggestions');
+        var $repositories = $('.ns-plugin-search-repositories');
+        $('.ns-plugin-search-box').show();
+
+        showResult(repository);
+        $searchInput.keyup(function() {
+            var keyword = $searchInput.val();
+            var result = indexSearch.search(keyword);
+
+            $summary.text('').hide();
+            if (result.getTotalPosition() !== 0) {
+                $summary.append((context.languages.SEARCH || context.locale.lang.SEARCH) + ' \'')
+                        .append($('<span>').text(indexSearch.getKeyword()).addClass('summary-highlight'))
+                        .append('\' ' + (context.languages.FOUND || context.locale.lang.FOUND) + ' ')
+                        .append($('<span>').text(result.getTotalPosition()).addClass('summary-highlight'))
+                        .append(' ' + (context.languages.POSITIONS || context.locale.lang.POSITIONS) + ' ')
+                        .append($('<span>').text(result.getTotalSentence()).addClass('summary-highlight'))
+                        .append(' ' + (context.languages.SENTENCES || context.locale.lang.SENTENCES))
+                        .show();
+            } else if (keyword !== '') {
+                $summary.append((context.languages.SEARCH || context.locale.lang.SEARCH) + ' \'')
+                        .append($('<span>').text(indexSearch.getKeyword()).addClass('summary-highlight'))
+                        .append('\' ' + (context.languages.NOT_FOUND || context.locale.lang.NOT_FOUND))
+                        .show();
+            }
+
+
+            $suggestions.text('').hide();
+            var suggestions = result.getSuggestions();
+            if (suggestions.length !== 0) {
+                $suggestions.append((context.languages.DO_YOU_MEAN || context.locale.lang.DO_YOU_MEAN) + ' ');
+                for (var suggestIndex in suggestions) {
+                    var suggest = suggestions[suggestIndex];
+                    var highlight = suggest.highlight;
+
+                    if (suggestIndex != 0) {
+                        $suggestions.append(', ');
+                    }
+
+                    var $suggestItem = $('<a>').attr('href', '#' + suggest.word)
+                            .attr('data-suggest', suggest.word)
+                            .html(highlight)
+                            .click(function(event) {
+                                event.preventDefault();
+                                $searchInput.val($(this).attr('data-suggest')).keyup();
+                            });
+
+                    $suggestions.append($suggestItem);
+                }
+
+                $suggestions.append(' ').append('?').show();
+            }
+
+            showResult(result.getContent());
+        });
+
+        $clearButton.click(function() {
+            $searchInput.val('');
+            indexSearch.clear();
+            $summary.text('').hide();
+            $suggestions.text('').hide();
+            showResult(repository);
+        });
+
+        function showResult(rootNode) {
+            var $rootDOM = $('<ul>');
+            $repositories.html($rootDOM);
+            walkRepositoryShowResult(rootNode, $rootDOM);
+        }
+
+        function walkRepositoryShowResult(parentNode, $parentDOM) {
+            var nodes = parentNode.nodes;
+            if (!nodes || nodes.length === 0) {
+                return;
+            }
+
+            for (var index in nodes) {
+                var childNode = nodes[index];
+                var $childLink = $('<a>').attr('href', childNode.link).html(childNode.nameHighlight || childNode.name);
+                var $newPost = childNode.newPost ? $('<span>').text(context.locale.lang.NEW + '!').addClass('index-search-new-post') : '';
+                var $childDOM = $('<ol>');
+                var $list = $('<li>').attr('class', childNode.level)
+                        .append($childLink)
+                        .append($newPost);
+
+                if (childNode.nodes && childNode.nodes.length > 0) {
+                    $list.append($childDOM);
+                }
+
+                if (childNode.published) {
+                    $list.attr('title', dateFormat(childNode.published));
+                }
+
+                $parentDOM.append($list);
+
+                walkRepositoryShowResult(childNode, $childDOM);
+            }
+        }
+
+        function dateFormat(date) {
+            return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+        }
+
+        $('.ns-plugin-search-scroll-content').append('<div class="ns-plugin-search-about">Search plugin by <a target="_blank" href="http://search-plugin.blogspot.com/">search-plugin.blogspot.com</a></div>');
+    });
+});
 
 
 
